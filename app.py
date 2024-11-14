@@ -1,6 +1,6 @@
 import streamlit as st
 import vertexai
-from vertexai.preview.generative_models import GenerativeModel, GenerationConfig, Image
+from vertexai.preview.generative_models import GenerativeModel, Image
 import os
 import json
 
@@ -31,37 +31,29 @@ if uploaded_file is not None:
     # Load the image from the local file
     image = Image.load_from_file(image_path)
 
-    # Define the JSON schema
-    json_schema = {
-        "title": "Receipt OCR Result",
-        "description": "Return the shop name, order date, and final payment amount from the receipt",
-        "type": "object",
-        "properties": {
-            "shop_name": {"type": "string", "description": "Shop name"},
-            "order_date": {"type": "string", "description": "Transaction date"},
-            "payment_total": {"type": "string", "description": "Final payment amount"}
-        },
-    }
-
-    # Construct the prompt
-    prompt = f"""Convert the provided image into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
-    Requirements:
-    - Output: Return solely the JSON content without any additional explanations or comments.
-    - Use this JSON schema: <JSONSchema>{json.dumps(json_schema)}</JSONSchema>.
-    - No Delimiters: Do not use code fences or delimiters like ```json.
-    - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
-    - Shop Name Format: Keep the first row of detected texts only.
-    - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
-    - Final Payment Format: Do not include detected texts.
-    """
-
     # Create the generative model
-    generation_config = GenerationConfig(response_mime_type="application/json")
-    generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002", generation_config=generation_config)
+    generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
 
     # Generate content
-    response = generative_multimodal_model.generate_content([prompt, image])
+    response = generative_multimodal_model.generate_content(
+        ["""Convert the provided image into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
+         Requirements:
+          - Output: Return solely the JSON content without any additional explanations or comments.
+          - Use this JSON schema: {"shop_name": "string", "order_date": "string", "payment_total": "string"}
+          - No Delimiters: Do not use code fences or delimiters like ```json.
+          - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
+          - Shop Name Format: Keep the first row of detected texts only.
+          - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
+          - Final Payment Format: Do not include detected texts.
+        """,
+        image]
+    )
+
+    content = response.content
 
     # Display the result in the second column
     with col2:
-        st.write(response.text)
+        json_response = json.loads(content)
+        pretty_json = json.dumps(json_response, indent=4)
+        st.code(pretty_json, language='json')
+        #st.write(response.text)
