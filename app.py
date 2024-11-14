@@ -37,9 +37,9 @@ if uploaded_file is not None:
         "description": "Return the shop name, order date, and final payment amount from the receipt",
         "type": "object",
         "properties": {
-            "shop_name": {"type": "string", "description": "Name of the shop"},
-            "order_date": {"type": "string", "description": "Date of the order in YYYY-MM-DD format"},
-            "payment_total": {"type": "string", "description": "Total payment amount"}
+            "shop_name": {"type": "string", "description": "Shop name"},
+            "order_date": {"type": "string", "description": "Transaction date"},
+            "payment_total": {"type": "string", "description": "Final payment amount"}
         },
     }
 
