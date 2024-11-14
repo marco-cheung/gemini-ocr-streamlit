@@ -59,7 +59,7 @@ if uploaded_file is not None:
             json_response = json.loads(content)
             pretty_json = json.dumps(json_response, indent=4)
             st.code(pretty_json, language='json')
-            
+
         except json.JSONDecodeError as e:
             st.error(f"Failed to parse JSON: {e}")
-            st.write("Raw content:", content)
+            st.write(content)
