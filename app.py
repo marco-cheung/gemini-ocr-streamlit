@@ -40,13 +40,16 @@ if uploaded_file is not None:
         """]
     )
 
-    # Print the raw response for debugging
-    st.write("Raw response:", response)
+    # Extract the content from the response
+    content = response[0].text
 
-    # Attempt to parse the response as JSON
+    # Print the raw content for debugging
+    st.write("Raw content:", content)
+
+    # Attempt to parse the content as JSON
     try:
-        json_response = json.loads(response)
+        json_response = json.loads(content)
         st.json(json_response)
     except json.JSONDecodeError as e:
         st.error(f"Failed to parse JSON: {e}")
-        st.write("Raw response:", response)
+        st.write("Raw content:", content)
