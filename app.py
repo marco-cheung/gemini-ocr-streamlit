@@ -9,7 +9,7 @@ REGION = os.environ.get("GCP_REGION")
 vertexai.init(project=PROJECT_ID, location=REGION)
 
 # Streamlit app
-st.title("Gemini API OCR with Streamlit")
+st.title("Demo of Receipt OCR with Google Gemini API")
 
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
