@@ -2,6 +2,7 @@ import streamlit as st
 import vertexai
 from vertexai.preview.generative_models import GenerativeModel, Image
 import os
+import json
 
 # Initialize Vertex AI
 PROJECT_ID = os.environ.get("GCP_PROJECT")
@@ -39,4 +40,13 @@ if uploaded_file is not None:
         """]
     )
 
-    st.json(response)
+    # Print the raw response for debugging
+    st.write("Raw response:", response)
+
+    # Attempt to parse the response as JSON
+    try:
+        json_response = json.loads(response)
+        st.json(json_response)
+    except json.JSONDecodeError as e:
+        st.error(f"Failed to parse JSON: {e}")
+        st.write("Raw response:", response)
