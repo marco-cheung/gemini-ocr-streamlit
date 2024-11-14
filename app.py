@@ -49,7 +49,7 @@ if uploaded_file is not None:
         image]
     )
 
-    content = response.content
+    content = response.text
 
     # Display the result in the second column
     with col2:
