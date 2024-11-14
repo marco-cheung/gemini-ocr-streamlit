@@ -2,7 +2,6 @@ import streamlit as st
 import vertexai
 from vertexai.preview.generative_models import GenerativeModel, Image
 import os
-import json
 
 # Initialize Vertex AI
 PROJECT_ID = os.environ.get("GCP_PROJECT")
@@ -20,6 +19,9 @@ if uploaded_file is not None:
        
     with open(image_path, "wb") as f:
         f.write(uploaded_file.getbuffer())
+
+    # Display the uploaded image
+    st.image(image_path, caption='Uploaded Image', use_column_width=True)
 
     # Load the image from the local file
     image = Image.load_from_file(image_path)
