@@ -46,7 +46,7 @@ if uploaded_file is not None:
           - Use this JSON schema: {"shop_name": "string", "order_date": "string", "payment_total": "string"}
           - No Delimiters: Do not use code fences or delimiters like ```json.
           - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
-          - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding
+          - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
           - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
           - Final Payment Format: Do not include detected texts.
         """,
