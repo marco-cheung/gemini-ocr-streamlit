@@ -53,7 +53,10 @@ if uploaded_file is not None:
 
     # Display the result in the second column
     with col2:
+        # Print the raw content
+        st.write(content)
+
+        #Parse the content as JSON and display it in a code block
         json_response = json.loads(content)
         pretty_json = json.dumps(json_response, indent=4)
         st.code(pretty_json, language='json')
-        #st.write(response.text)
