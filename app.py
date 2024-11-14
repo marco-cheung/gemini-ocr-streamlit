@@ -11,7 +11,7 @@ vertexai.init(project=PROJECT_ID, location=REGION)
 # Streamlit app
 st.title("Demo of Receipt OCR with Google Gemini API")
 
-uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("Please upload an image...")
 
 if uploaded_file is not None:
     # Save the uploaded file to a temporary location
