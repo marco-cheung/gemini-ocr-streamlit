@@ -11,7 +11,7 @@ vertexai.init(project=PROJECT_ID, location=REGION)
 
 # Display the banner image
 banner_image_path = "image/hkairport-logo.png"  # Update this path to the correct path of your banner image
-st.image(banner_image_path, use_column_width=True)
+st.image(banner_image_path, use_container_width=True)
 
 # Streamlit app
 st.title("Demo of Receipt OCR with Google Gemini API")
