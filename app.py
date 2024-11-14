@@ -42,7 +42,8 @@ if uploaded_file is not None:
           - Shop Name Format: Keep the first row of detected texts only.
           - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
           - Final Payment Format: Do not include detected texts.
-        """]
+        """,
+        image]
     )
 
     # Print the raw content for debugging
