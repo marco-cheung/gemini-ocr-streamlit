@@ -53,7 +53,7 @@ if uploaded_file is not None:
         image]
     )
 
-    content = response.text
+    content = response.text.encode('utf-8').decode('utf-8')
 
     # Display the result in the second column
     with col2:
