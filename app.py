@@ -2,6 +2,7 @@ import streamlit as st
 import vertexai
 from vertexai.preview.generative_models import GenerativeModel, Image
 import os
+import json
 
 # Initialize Vertex AI
 PROJECT_ID = os.environ.get("GCP_PROJECT")
@@ -27,14 +28,14 @@ if uploaded_file is not None:
 
     # Generate content
     response = generative_multimodal_model.generate_content(
-        ["""Convert the provided image into JSON format. Return shop name, transacion date (null if not present on the receipt), and final payment amount only.
+        ["""Convert the provided image into JSON format. Return shop name, order date (null if not present on the receipt), and final payment amount only.
          Requirements:
           - Output: Return solely the JSON content without any additional explanations or comments.
-          - Use this JSON schema: {"shop_name": "str", "date": "str", "payment_total": "str"}
+          - Use this JSON schema: {"shop_name": "string", "order_date": "string", "payment_total": "string"}
           - No Delimiters: Do not use code fences or delimiters like ```json.
           - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
           - Shop Name Format: Keep the first row of detected texts only.
-          - Transaction Date Format: Change to date format (YYYY-MM-DD) if detected.
+          - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
           - Final Payment Format: Do not include detected texts.
         """]
     )
