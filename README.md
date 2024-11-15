@@ -1,11 +1,5 @@
 # Building Cloud Run application utilizing Streamlit Framework that demonstrates Receipt OCR using Gemini API
 
-|           |                                                |
-| --------- | ---------------------------------------------- |
-| Author(s) | [Marco Cheung](https://github.com/marco-cheung/) |
-
-This application demonstrates a Cloud Run application that uses the [Streamlit](https://streamlit.io/) framework.
-
 ## Run the Application locally (on Cloud Shell)
 
 > NOTE: **Before you move forward, ensure that you have followed the instructions in [SETUP.md](./SETUP.md).**
