@@ -66,9 +66,6 @@ gcloud services enable cloudbuild.googleapis.com cloudfunctions.googleapis.com r
 
 After some time, you should see the operation finish successfully:
 
-```bash
-Operation "operations/acf.5c5ef4f6-f734-455d-b2f0-ee70b5a17322" finished successfully.
-```
 
 ## Clone the Repository
 
