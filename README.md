@@ -86,4 +86,5 @@ To deploy the Streamlit Application in [Cloud Run](https://cloud.google.com/run/
      --region=$GCP_REGION \
      --project=$GCP_PROJECT \
      --set-env-vars=GCP_PROJECT=$GCP_PROJECT,GCP_REGION=$GCP_REGION
+     --memory 2Gi
    ```
