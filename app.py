@@ -21,12 +21,18 @@ st.title("Demo of Receipt OCR with Google Gemini API")
 
 uploaded_files = st.file_uploader("Please upload images...", accept_multiple_files=True)
 
+for uploaded_file in uploaded_files:
+    bytes_data = uploaded_file.read()
+
 if uploaded_files is not None:
     # Create two columns
     col1, col2 = st.columns(2)
 
-    images = []
-    for uploaded_file in uploaded_files:
+    image_paths = []
+    for i, uploaded_file in enumerate(uploaded_files):
+        if i >= 2:
+            break  # Limit to two images
+
         # Save the uploaded file to a temporary location
         image_path = f"/tmp/{uploaded_file.name}"
         
@@ -37,9 +43,8 @@ if uploaded_files is not None:
         with col1:
             st.image(image_path, caption=f'Uploaded Image: {uploaded_file.name}', use_container_width=True)
 
-        # Load the image from the local file
-        image = Image.load_from_file(image_path)
-        images.append(image)
+        # Append the image path to the list
+        image_paths.append(image_path)
 
     # Create the generative model
     generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
@@ -55,8 +60,7 @@ if uploaded_files is not None:
           - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
           - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
           - Final Payment Format: Do not include detected texts.
-        """], images
-    )
+        """] + image_paths)
 
     content = response.text.encode().decode('utf-8')
 
