@@ -56,7 +56,7 @@ if uploaded_files is not None:
           - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
           - Final Payment Format: Do not include detected texts.
         """] + images
-        )
+    )
 
     content = response.text.encode().decode('utf-8')
 
