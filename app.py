@@ -62,8 +62,8 @@ if uploaded_files is not None:
     content = response.text.encode().decode('utf-8')
 
     # Display the result in the second column
-    with col2:
+    #with col2:
         #Parse the content as JSON and display it in a code block
-        json_response = json.loads(content)
-        pretty_json = json.dumps(json_response, indent=4)
-        st.code(pretty_json, language='json')
+        #json_response = json.loads(content)
+        #pretty_json = json.dumps(json_response, indent=4)
+        #st.code(pretty_json, language='json')
