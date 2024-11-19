@@ -25,6 +25,7 @@ if uploaded_files is not None:
     # Create two columns
     col1, col2 = st.columns(2)
 
+    images = []
     for uploaded_file in uploaded_files:
         # Save the uploaded file to a temporary location
         image_path = f"/tmp/{uploaded_file.name}"
@@ -38,13 +39,14 @@ if uploaded_files is not None:
 
         # Load the image from the local file
         image = Image.load_from_file(image_path)
+        images.append(image)
 
-        # Create the generative model
-        generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
+    # Create the generative model
+    generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
 
-        # Generate content
-        response = generative_multimodal_model.generate_content(
-        ["""Convert the provided image into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
+    # Generate content
+    response = generative_multimodal_model.generate_content(
+        ["""Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
          Requirements:
           - Output: Return solely the JSON content without any additional explanations or comments.
           - Use this JSON schema: {"shop_name": "string", "order_date": "string", "payment_total": "string"}
@@ -53,15 +55,14 @@ if uploaded_files is not None:
           - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
           - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
           - Final Payment Format: Do not include detected texts.
-        """,
-        image]
+        """] + images
         )
 
-        content = response.text.encode().decode('utf-8')
+    content = response.text.encode().decode('utf-8')
 
-        # Display the result in the second column
-        with col2:
-            #Parse the content as JSON and display it in a code block
-            json_response = json.loads(content)
-            pretty_json = json.dumps(json_response, indent=4)
-            st.code(pretty_json, language='json')
+    # Display the result in the second column
+    with col2:
+        #Parse the content as JSON and display it in a code block
+        json_response = json.loads(content)
+        pretty_json = json.dumps(json_response, indent=4)
+        st.code(pretty_json, language='json')
