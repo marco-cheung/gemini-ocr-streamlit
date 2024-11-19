@@ -19,30 +19,31 @@ st.image(banner_image_path, use_container_width=True)
 # Streamlit app
 st.title("Demo of Receipt OCR with Google Gemini API")
 
-uploaded_file = st.file_uploader("Please upload an image...")
+uploaded_files = st.file_uploader("Please upload images...", accept_multiple_files=True)
 
-if uploaded_file is not None:
-    # Save the uploaded file to a temporary location
-    image_path = f"/tmp/{uploaded_file.name}"
-       
-    with open(image_path, "wb") as f:
-        f.write(uploaded_file.getbuffer())
-
+if uploaded_files is not None:
     # Create two columns
     col1, col2 = st.columns(2)
 
-    # Display the uploaded image in the first column
-    with col1:
-        st.image(image_path, caption='Uploaded Image', use_container_width=True)
+    for uploaded_file in uploaded_files:
+        # Save the uploaded file to a temporary location
+        image_path = f"/tmp/{uploaded_file.name}"
+        
+        with open(image_path, "wb") as f:
+            f.write(uploaded_file.getbuffer())
 
-    # Load the image from the local file
-    image = Image.load_from_file(image_path)
+        # Display the uploaded image in the first column
+        with col1:
+            st.image(image_path, caption=f'Uploaded Image: {uploaded_file.name}', use_container_width=True)
 
-    # Create the generative model
-    generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
+        # Load the image from the local file
+        image = Image.load_from_file(image_path)
 
-    # Generate content
-    response = generative_multimodal_model.generate_content(
+        # Create the generative model
+        generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
+
+        # Generate content
+        response = generative_multimodal_model.generate_content(
         ["""Convert the provided image into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
          Requirements:
           - Output: Return solely the JSON content without any additional explanations or comments.
@@ -54,13 +55,13 @@ if uploaded_file is not None:
           - Final Payment Format: Do not include detected texts.
         """,
         image]
-    )
+        )
 
-    content = response.text.encode().decode('utf-8')
+        content = response.text.encode().decode('utf-8')
 
-    # Display the result in the second column
-    with col2:
-        #Parse the content as JSON and display it in a code block
-        json_response = json.loads(content)
-        pretty_json = json.dumps(json_response, indent=4)
-        st.code(pretty_json, language='json')
+        # Display the result in the second column
+        with col2:
+            #Parse the content as JSON and display it in a code block
+            json_response = json.loads(content)
+            pretty_json = json.dumps(json_response, indent=4)
+            st.code(pretty_json, language='json')
