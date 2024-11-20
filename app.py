@@ -29,7 +29,7 @@ def pil_image_to_base64(image):
     return base64.b64encode(buffered.getvalue()).decode()
 
 # Create two columns
-col1, col2 = st.columns(2)
+col1, col2, col3 = st.columns(3)
 
 with col1:
     uploaded_file1 = st.file_uploader("Shop Invoice", key="file1")
@@ -81,8 +81,8 @@ if uploaded_file1 is not None:
     content = response.text.encode().decode('utf-8')
 
     # Display the result in the second column
-    # with col2:
-    # Parse the content as JSON and display it in a code block
-    json_response = json.loads(content)
-    pretty_json = json.dumps(json_response, indent=4)
-    st.code(pretty_json, language='json')
+    with col3:
+        # Parse the content as JSON and display it in a code block
+        json_response = json.loads(content)
+        pretty_json = json.dumps(json_response, indent=4)
+        st.code(pretty_json, language='json')
