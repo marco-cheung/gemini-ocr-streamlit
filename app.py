@@ -29,15 +29,24 @@ with col1:
 #Display uploaded image
 if uploaded_file1 is not None:
     image1 = PIL.Image.open(uploaded_file1)
-    st.image(image1, caption='Uploaded Image 1.', use_container_width=True)
 
     #Display col2 file uploader if uploaded_file1 is not None
     with col2:
         uploaded_file2 = st.file_uploader("Shop Invoice (2nd image when necessary)", key="file2")
         
-        if uploaded_file2 is not None:
-            image2 = PIL.Image.open(uploaded_file1)
-            st.image(image2, caption='Uploaded Image 2.', use_container_width=True)
+    # Create a container to display images side by side
+    image_container = st.container()
+    
+    with image_container:
+        col_img1, col_img2 = st.columns(2)
+        
+        with col_img1:
+            st.image(image1, caption='Uploaded Image 1.', use_container_width=True)
+        
+        with col_img2:
+            if uploaded_file2 is not None:
+                image2 = PIL.Image.open(uploaded_file2)  # Fixed: Changed uploaded_file1 to uploaded_file2
+                st.image(image2, caption='Uploaded Image 2.', use_container_width=True)
 
 
     # Create the generative model
