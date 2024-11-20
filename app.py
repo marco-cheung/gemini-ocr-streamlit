@@ -20,48 +20,38 @@ st.image(banner_image_path, use_container_width=True)
 st.title("Demo of Receipt OCR with Google Gemini API")
 
 # Initialize session state for uploaded files
-if 'uploaded_files' not in st.session_state:
-    st.session_state['uploaded_files'] = []
+if 'uploaded_file1' not in st.session_state:
+    st.session_state['uploaded_file1'] = None
+if 'uploaded_file2' not in st.session_state:
+    st.session_state['uploaded_file2'] = None
 
 # Create an expander for file uploader
 with st.expander("Upload Files", expanded=True):
     col1, col2 = st.columns(2)
     with col1:
-        uploaded_file1 = st.file_uploader("Upload Image 1", key="file1")
-    with col2:
-        uploaded_file2 = st.file_uploader("Upload Image 2", key="file2")
+        if st.session_state['uploaded_file1'] is None:
+            st.session_state['uploaded_file1'] = st.file_uploader("Upload Image 1", key="file1")
 
-    uploaded_files = [f for f in [uploaded_file1, uploaded_file2] if f is not None]
-    st.session_state['uploaded_files'] = uploaded_files
+    with col2:
+        if st.session_state['uploaded_file2'] is None:
+            st.session_state['uploaded_file2'] = st.file_uploader("Upload Image 2", key="file2")
 
 # Retrieve uploaded files from session state
-uploaded_files = st.session_state['uploaded_files']
+uploaded_files = [
+    st.session_state['uploaded_file1'],
+    st.session_state['uploaded_file2']
+]
+uploaded_files = [f for f in uploaded_files if f is not None]
 
 if uploaded_files:
     # Create two columns
     col1, col2 = st.columns(2)
-
-    image_paths = []
-    for i, uploaded_file in enumerate(uploaded_files):
-        if i >= 2:
-            break  # Limit to two images
-
-        # Save the uploaded file to a temporary location
-        image_path = f"/tmp/{uploaded_file.name}"
-
-        with open(image_path, "wb") as f:
-            f.write(uploaded_file.getbuffer())
-
-        # Display the uploaded image in the first column
+    if len(uploaded_files) >= 1:
         with col1:
-            st.image(
-                image_path,
-                caption=f'Uploaded Image: {uploaded_file.name}',
-                use_container_width=True
-            )
-
-        # Append the image path to the list
-        image_paths.append(image_path)
+            st.image(uploaded_files[0], caption="Uploaded Image 1")
+    if len(uploaded_files) == 2:
+        with col2:
+            st.image(uploaded_files[1], caption="Uploaded Image 2")
 
     # Create the generative model
     generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
