@@ -32,7 +32,7 @@ with st.container():
     col1, col2 = st.columns(2)
 
     with col1:
-        uploaded_file1 = st.file_uploader("Upload Shop Invoice (1/2)", key="file1", use_container_width=True)                                          )
+        uploaded_file1 = st.file_uploader("Upload Shop Invoice (1/2)", key="file1", use_container_width=True)
 
     with col2:
         uploaded_file2 = st.file_uploader("Upload Shop Invoice (2/2)", key="file2", use_container_width=True)   
