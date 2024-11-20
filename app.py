@@ -59,7 +59,7 @@ if uploaded_files:
             """
 
     # Generate content using the generative model
-    response = generative_multimodal_model.generate_content(prompt, uploaded_files[0], uploaded_files[1])
+    response = generative_multimodal_model.generate_content([prompt, uploaded_files[0], uploaded_files[1]])
 
     content = response.text.encode().decode('utf-8')
 
