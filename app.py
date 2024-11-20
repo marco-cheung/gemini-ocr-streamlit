@@ -62,7 +62,7 @@ if uploaded_file1 is not None:
     # Create the generative model
     generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
 
-    # Generate content
+    # Generate contents
     response = generative_multimodal_model.generate_content(
             ["""Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
             Requirements:
