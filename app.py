@@ -29,7 +29,7 @@ def pil_image_to_base64(image):
     return base64.b64encode(buffered.getvalue()).decode()
 
 # Create two columns
-col1, col2, col3 = st.columns(3)
+col1, col2 = st.columns(2)
 
 with col1:
     uploaded_file1 = st.file_uploader("Shop Invoice", key="file1")
@@ -53,13 +53,8 @@ if uploaded_file1 is not None:
         
         with col_img2:
             if uploaded_file2 is not None:
-                image2 = PIL.Image.open(uploaded_file2)  # Fixed: Changed uploaded_file1 to uploaded_file2
+                image2 = PIL.Image.open(uploaded_file2)
                 st.image(image2, caption='Uploaded Image 2.', use_container_width=True)
-
-    # Convert images to base64
-    image1_base64 = pil_image_to_base64(image1)
-    image2_base64 = pil_image_to_base64(image2) if uploaded_file2 is not None else None
-
 
     # Create the generative model
     generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
@@ -75,14 +70,13 @@ if uploaded_file1 is not None:
             - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
             - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
             - Final Payment Format: Do not include detected texts.
-            """, image1_base64, image2_base64]
+            """, image1]
         )
 
     content = response.text.encode().decode('utf-8')
 
-    # Display the result in the second column
-    with col3:
-        # Parse the content as JSON and display it in a code block
-        json_response = json.loads(content)
-        pretty_json = json.dumps(json_response, indent=4)
-        st.code(pretty_json, language='json')
+    # Display the result
+    # Parse the content as JSON and display it in a code block
+    json_response = json.loads(content)
+    pretty_json = json.dumps(json_response, indent=4)
+    st.code(pretty_json, language='json')
