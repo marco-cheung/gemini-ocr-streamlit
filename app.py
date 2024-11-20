@@ -11,7 +11,7 @@ REGION = os.environ.get("GCP_REGION")
 vertexai.init(project=PROJECT_ID, location=REGION)
 
 # Change page title
-st.set_page_config(page_title = "Receipt OCR")
+st.set_page_config(page_title="Receipt OCR")
 
 # Display the banner image
 banner_image_path = "image/hkairport-logo.png"
@@ -37,32 +37,30 @@ uploaded_files = [f for f in uploaded_files if f is not None]
 
 if uploaded_files:
     # Display the uploaded images
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.image(uploaded_files[0], caption="Uploaded Image 1")
-    with col2:
-        st.image(uploaded_files[1], caption="Uploaded Image 2")
-
-    img_1 = PIL.Image.open(uploaded_files[0])
-    img_2 = PIL.Image.open(uploaded_files[1])
+    cols = st.columns(len(uploaded_files))
+    images = []
+    for idx, uploaded_file in enumerate(uploaded_files):
+        with cols[idx]:
+            st.image(uploaded_file, caption=f"Uploaded Image {idx + 1}")
+        images.append(PIL.Image.open(uploaded_file))
 
     # Create the generative model
     generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
 
     prompt = """Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
-            Requirements:
-            - Output: Return solely the JSON content without any additional explanations or comments.
-            -  Use this JSON schema: {"shop_name": "string", "order_date": "string", "payment_total": "string"}
-            - No Delimiters: Do not use code fences or delimiters like ```json.
-            - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
-            - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
-            - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
-            - Final Payment Format: Do not include detected texts.
-            """
+        Requirements:
+        - Output: Return solely the JSON content without any additional explanations or comments.
+        - Use this JSON schema: {"shop_name": "string", "order_date": "string", "payment_total": "string"}
+        - No Delimiters: Do not use code fences or delimiters like ```json.
+        - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
+        - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
+        - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
+        - Final Payment Format: Do not include detected texts.
+        """
 
     # Generate content using the generative model
-    response = generative_multimodal_model.generate_content([prompt, img_1, img_2])
+    inputs = [prompt] + images
+    response = generative_multimodal_model.generate_content(inputs)
 
     content = response.text.encode().decode('utf-8')
 
