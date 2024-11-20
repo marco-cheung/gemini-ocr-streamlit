@@ -34,10 +34,14 @@ uploaded_files = [
 ]
 uploaded_files = [f for f in uploaded_files if f is not None]
 
+# Display the uploaded images and call the Gemini API
 if uploaded_files is not None:
-    # Display the uploaded images
-    image = Image.open(uploaded_files)
-    st.image(image, caption="Uploaded Image", use_container_width=True)
+    if len(uploaded_files) > 0:
+        image_1 = Image.open(uploaded_files[0])
+        st.image(image_1, caption="Uploaded Image 1", use_container_width=True)
+    if len(uploaded_files) > 1:
+        image_2 = Image.open(uploaded_files[1])
+        st.image(image_2, caption="Uploaded Image 2", use_container_width=True)
 
     # Create the generative model
     generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
@@ -54,7 +58,10 @@ if uploaded_files is not None:
         """
 
     # Generate content using the generative model
-    response = generative_multimodal_model.generate_content(prompt, uploaded_files[0])
+    if image_2:
+        response = generative_multimodal_model.generate_content([prompt, image_1, image_2])
+    else:
+        response = generative_multimodal_model.generate_content([prompt, image_1])
 
     content = response.text.encode().decode('utf-8')
 
