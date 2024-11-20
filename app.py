@@ -3,6 +3,7 @@ import vertexai
 from vertexai.preview.generative_models import GenerativeModel, Image
 import os
 import json
+import PIL.Image
 
 # Initialize Vertex AI
 PROJECT_ID = os.environ.get("GCP_PROJECT")
@@ -21,45 +22,54 @@ st.title("Demo of Receipt OCR with Google Gemini API")
 
 uploaded_files = st.file_uploader("Please upload images...", accept_multiple_files=True)
 
-if uploaded_files is not None:
-    # Create two columns
+# Create two columns
+with st.container():
     col1, col2 = st.columns(2)
 
-    image_paths = []
-    for i, uploaded_file in enumerate(uploaded_files):
-        if i >= 2:
-            break  # Limit to two images
+    with col1:
+        uploaded_file1 = st.file_uploader("Upload Shop Invoice (1/2)", key="file1", use_container_width=True)                                          )
 
+    with col2:
+        uploaded_file2 = st.file_uploader("Upload Shop Invoice (2/2)", key="file2", use_container_width=True)   
+
+
+# Create a button to trigger the upload
+if st.button("Upload"):
+    if uploaded_file1 and not uploaded_file2:
         # Save the uploaded file to a temporary location
-        image_path = f"/tmp/{uploaded_file.name}"
-        
-        with open(image_path, "wb") as f:
-            f.write(uploaded_file.getbuffer())
+        image_1 = PIL.Image.open(uploaded_file1)
+        image_2 = None
 
-        # Display the uploaded image in the first column
-        with col1:
-            st.image(image_path, caption=f'Uploaded Image: {uploaded_file.name}', use_container_width=True)
+    elif uploaded_file1 and uploaded_file2:
+        # Save the uploaded files to temporary locations
+        image_1 = PIL.Image.open(uploaded_file1)
+        image_2 = PIL.Image.open(uploaded_file2)
+    else:
+        st.error("Please upload at least one file.")
+        image_1 = image_2 = None
 
-        # Append the image path to the list
-        image_paths.append(image_path)
+    if image_1:
+        # Create the generative model
+        generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
 
-    # Create the generative model
-    generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
+        # Generate content
+        response = generative_multimodal_model.generate_content(
+            ["""Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
+            Requirements:
+            - Output: Return solely the JSON content without any additional explanations or comments.
+            - Use this JSON schema: {"shop_name": "string", "order_date": "string", "payment_total": "string"}
+            - No Delimiters: Do not use code fences or delimiters like ```json.
+            - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
+            - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
+            - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
+            - Final Payment Format: Do not include detected texts.
+            """] + [Image(image_1), Image(image_2)] if image_2 else [Image(image_1)]
+        )
 
-    # Generate content
-    response = generative_multimodal_model.generate_content(
-        ["""Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
-         Requirements:
-          - Output: Return solely the JSON content without any additional explanations or comments.
-          - Use this JSON schema: {"shop_name": "string", "order_date": "string", "payment_total": "string"}
-          - No Delimiters: Do not use code fences or delimiters like ```json.
-          - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
-          - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
-          - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
-          - Final Payment Format: Do not include detected texts.
-        """] + image_paths)
-
-    content = response.text.encode().decode('utf-8')
+        # Display the result in the second column
+        with col2:
+            st.json(response)
+    #content = response.text.encode().decode('utf-8')
 
     # Display the result in the second column
     #with col2:
