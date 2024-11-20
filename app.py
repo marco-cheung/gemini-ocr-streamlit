@@ -27,7 +27,7 @@ generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
 col1, col2 = st.columns(2)
 
 with col1:
-    uploaded_file1 = st.file_uploader("Upload Shop Invoice 1", key="file1")
+    uploaded_file1 = st.file_uploader("Shop Invoice", key="file1")
 
 #Display uploaded image
 if uploaded_file1 is not None:
@@ -36,7 +36,7 @@ if uploaded_file1 is not None:
 
     #Display col2 file uploader if uploaded_file1 is not None
     with col2:
-        uploaded_file2 = st.file_uploader("Upload Shop Invoice 2", key="file2")
+        uploaded_file2 = st.file_uploader("Shop Invoice (2nd image when necessary)", key="file2")
 
     # Create the generative model
     generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
