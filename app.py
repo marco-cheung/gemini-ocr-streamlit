@@ -1,6 +1,6 @@
 import streamlit as st
 import vertexai
-from vertexai.generative_models import GenerativeModel, Part, Image
+from vertexai.generative_models import GenerativeModel
 import os
 import json
 import PIL.Image
@@ -73,7 +73,7 @@ if uploaded_file1 is not None:
             - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
             - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
             - Final Payment Format: Do not include detected texts.
-            """, image_1_byte, image_2_byte]
+            """, image_1_byte]
         )
 
     content = response.text.encode().decode('utf-8')
