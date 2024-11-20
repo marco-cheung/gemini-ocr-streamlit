@@ -34,7 +34,7 @@ col1, col2 = st.columns(2)
 with col1:
     uploaded_file1 = st.file_uploader("Shop Invoice", key="file1")
 
-#Display uploaded image
+# Display uploaded image
 if uploaded_file1 is not None:
     image1 = PIL.Image.open(uploaded_file1)
 
