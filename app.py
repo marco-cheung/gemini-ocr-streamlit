@@ -32,7 +32,7 @@ with col1:
 #Display uploaded image
 if uploaded_file1 is not None:
     image1 = PIL.Image.open(uploaded_file1)
-    st.image(image1, caption='Uploaded Image 1.', use_column_width=True)
+    st.image(image1, caption='Uploaded Image 1.', use_container_width=True)
 
     #Display col2 file uploader if uploaded_file1 is not None
     with col2:
