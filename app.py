@@ -20,6 +20,20 @@ st.image(banner_image_path, use_container_width=True)
 # Streamlit app
 st.title("Demo of Receipt OCR with Google Gemini API")
 
+# Create the generative model
+generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
+
+prompt = """Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
+        Requirements:
+        - Output: Return solely the JSON content without any additional explanations or comments.
+        - Use this JSON schema: {"shop_name": "string", "order_date": "string", "payment_total": "string"}
+        - No Delimiters: Do not use code fences or delimiters like ```json.
+        - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
+        - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
+        - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
+        - Final Payment Format: Do not include detected texts.
+        """
+
 # Create columns for file uploaders
 col1, col2 = st.columns(2)
 with col1:
@@ -35,34 +49,20 @@ uploaded_files = [
 uploaded_files = [f for f in uploaded_files if f is not None]
 
 # Display the uploaded images and call the Gemini API
-if uploaded_files is not None:
-    if len(uploaded_files) > 0:
+if uploaded_files:
+    if len(uploaded_files) > 1:
+        image_1 = Image.open(uploaded_files[0])
+        image_2 = Image.open(uploaded_files[1])
+        st.image(image_1, caption="Uploaded Image 1", use_container_width=True)
+        st.image(image_2, caption="Uploaded Image 2", use_container_width=True)
+        response = generative_multimodal_model.generate_content([prompt, image_1, image_2])
+        
+    elif len(uploaded_files) > 0:
         image_1 = Image.open(uploaded_files[0])
         st.image(image_1, caption="Uploaded Image 1", use_container_width=True)
-    if len(uploaded_files) > 1:
-        image_2 = Image.open(uploaded_files[1])
-        st.image(image_2, caption="Uploaded Image 2", use_container_width=True)
-
-    # Create the generative model
-    generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
-
-    prompt = """Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
-        Requirements:
-        - Output: Return solely the JSON content without any additional explanations or comments.
-        - Use this JSON schema: {"shop_name": "string", "order_date": "string", "payment_total": "string"}
-        - No Delimiters: Do not use code fences or delimiters like ```json.
-        - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
-        - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
-        - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
-        - Final Payment Format: Do not include detected texts.
-        """
-
-    # Generate content using the generative model
-    if image_2:
-        response = generative_multimodal_model.generate_content([prompt, image_1, image_2])
-    else:
         response = generative_multimodal_model.generate_content([prompt, image_1])
 
+    # Display the response
     content = response.text.encode().decode('utf-8')
 
     # Display the result in the second column
