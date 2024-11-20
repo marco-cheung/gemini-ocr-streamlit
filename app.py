@@ -13,15 +13,35 @@ vertexai.init(project=PROJECT_ID, location=REGION)
 st.set_page_config(page_title = "Receipt OCR")
 
 # Display the banner image
-banner_image_path = "image/hkairport-logo.png"  # Update this path to the correct path of your banner image
+banner_image_path = "image/hkairport-logo.png"
 st.image(banner_image_path, use_container_width=True)
 
 # Streamlit app
 st.title("Demo of Receipt OCR with Google Gemini API")
 
-uploaded_files = st.file_uploader("Please upload images...", accept_multiple_files=True)
+# Initialize session state for uploaded files
+if 'uploaded_files' not in st.session_state:
+    st.session_state['uploaded_files'] = []
 
-if uploaded_files is not None:
+# Determine if the expander should be open
+expander_state = len(st.session_state['uploaded_files']) < 2
+
+# Create an expander for file uploader
+with st.expander("Upload Files", expanded=expander_state):
+    # File uploader
+    uploaded_files = st.file_uploader(
+        "Please upload up to 2 images...",
+        accept_multiple_files=True
+    )
+    if uploaded_files is not None:
+        # Limit to 2 files
+        uploaded_files = uploaded_files[:2]
+        st.session_state['uploaded_files'] = uploaded_files
+
+# Retrieve uploaded files from session state
+uploaded_files = st.session_state['uploaded_files']
+
+if uploaded_files:
     # Create two columns
     col1, col2 = st.columns(2)
 
@@ -32,13 +52,17 @@ if uploaded_files is not None:
 
         # Save the uploaded file to a temporary location
         image_path = f"/tmp/{uploaded_file.name}"
-        
+
         with open(image_path, "wb") as f:
             f.write(uploaded_file.getbuffer())
 
         # Display the uploaded image in the first column
         with col1:
-            st.image(image_path, caption=f'Uploaded Image: {uploaded_file.name}', use_container_width=True)
+            st.image(
+                image_path,
+                caption=f'Uploaded Image: {uploaded_file.name}',
+                use_container_width=True
+            )
 
         # Append the image path to the list
         image_paths.append(image_path)
@@ -48,22 +72,25 @@ if uploaded_files is not None:
 
     # Generate content
     response = generative_multimodal_model.generate_content(
-        ["""Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
-         Requirements:
-          - Output: Return solely the JSON content without any additional explanations or comments.
-          - Use this JSON schema: {"shop_name": "string", "order_date": "string", "payment_total": "string"}
-          - No Delimiters: Do not use code fences or delimiters like ```json.
-          - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
-          - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
-          - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
-          - Final Payment Format: Do not include detected texts.
-        """] + image_paths)
+        [
+            """Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
+            Requirements:
+             - Output: Return solely the JSON content without any additional explanations or comments.
+             - Use this JSON schema: {"shop_name": "string", "order_date": "string", "payment_total": "string"}
+             - No Delimiters: Do not use code fences or delimiters like ```json.
+             - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
+             - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
+             - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
+             - Final Payment Format: Do not include detected texts.
+            """
+        ] + image_paths
+    )
 
     content = response.text.encode().decode('utf-8')
 
     # Display the result in the second column
-    #with col2:
-        #Parse the content as JSON and display it in a code block
-        #json_response = json.loads(content)
-        #pretty_json = json.dumps(json_response, indent=4)
-        #st.code(pretty_json, language='json')
+    # with col2:
+    #     # Parse the content as JSON and display it in a code block
+    #     json_response = json.loads(content)
+    #     pretty_json = json.dumps(json_response, indent=4)
+    #     st.code(pretty_json, language='json')
