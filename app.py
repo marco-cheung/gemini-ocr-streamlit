@@ -20,13 +20,12 @@ st.image(banner_image_path, use_container_width=True)
 # Streamlit app
 st.title("Demo of Receipt OCR with Google Gemini API")
 
-# Create an expander for file uploader
-with st.expander("Upload Files", expanded=True):
-    col1, col2 = st.columns(2)
-    with col1:
-        st.session_state['uploaded_file1'] = st.file_uploader("Upload Image 1", key="file1")
-    with col2:
-        st.session_state['uploaded_file2'] = st.file_uploader("Upload Image 2", key="file2")
+# Create columns for file uploaders
+col1, col2 = st.columns(2)
+with col1:
+    st.session_state['uploaded_file1'] = st.file_uploader("Upload Image 1", key="file1")
+with col2:
+    st.session_state['uploaded_file2'] = st.file_uploader("Upload Image 2", key="file2")
 
 # Retrieve uploaded files from session state
 uploaded_files = [
@@ -44,6 +43,7 @@ if uploaded_files:
             st.image(uploaded_file, caption=f"Uploaded Image {idx + 1}")
         images.append(PIL.Image.open(uploaded_file))
 
+
     # Create the generative model
     generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
 
@@ -59,8 +59,7 @@ if uploaded_files:
         """
 
     # Generate content using the generative model
-    inputs = [prompt] + images
-    response = generative_multimodal_model.generate_content(inputs)
+    response = generative_multimodal_model.generate_content([prompt, images])
 
     content = response.text.encode().decode('utf-8')
 
