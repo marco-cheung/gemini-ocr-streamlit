@@ -37,6 +37,10 @@ if uploaded_file1 is not None:
     #Display col2 file uploader if uploaded_file1 is not None
     with col2:
         uploaded_file2 = st.file_uploader("Shop Invoice (2nd image when necessary)", key="file2")
+        
+        if uploaded_file2 is not None:
+            image2 = PIL.Image.open(uploaded_file1)
+            st.image(image2, caption='Uploaded Image 2.', use_container_width=True)
 
     # Create the generative model
     generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
@@ -52,7 +56,7 @@ if uploaded_file1 is not None:
             - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
             - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
             - Final Payment Format: Do not include detected texts.
-            """], image1
+            """, image1, image2]
         )
 
     content = response.text.encode().decode('utf-8')
