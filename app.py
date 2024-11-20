@@ -1,11 +1,9 @@
 import streamlit as st
 import vertexai
-from vertexai.preview.generative_models import GenerativeModel, Image
+from vertexai.generative_models import GenerativeModel, Part, Image
 import os
 import json
 import PIL.Image
-import base64
-from io import BytesIO
 
 # Initialize Vertex AI
 PROJECT_ID = os.environ.get("GCP_PROJECT")
@@ -22,11 +20,14 @@ st.image(banner_image_path, use_container_width=True)
 # Streamlit app
 st.title("Demo of Receipt OCR with Google Gemini API")
 
-def pil_image_to_base64(image):
-    buffered = BytesIO()
-    image_format = image.format if image.format else "JPEG"  # Default to JPEG if format is not available
-    image.save(buffered, format=image_format)
-    return base64.b64encode(buffered.getvalue()).decode()
+def input_image_setup(uploaded_file):
+    if uploaded_file is not None:
+        bytes_data = uploaded_file.getvalue()
+        image_parts = [{"mime_type": uploaded_file.type, "data": bytes_data}]
+        return image_parts
+    else:
+        raise FileNotFoundError("No file uploaded")
+
 
 # Create two columns
 col1, col2 = st.columns(2)
@@ -37,6 +38,7 @@ with col1:
 # Display uploaded image
 if uploaded_file1 is not None:
     image1 = PIL.Image.open(uploaded_file1)
+    image_1_byte = input_image_setup(uploaded_file1)
 
     #Display col2 file uploader if uploaded_file1 is not None
     with col2:
@@ -55,7 +57,8 @@ if uploaded_file1 is not None:
             if uploaded_file2 is not None:
                 image2 = PIL.Image.open(uploaded_file2)
                 st.image(image2, caption='Uploaded Image 2.', use_container_width=True)
-
+                image_2_byte = input_image_setup(uploaded_file2)
+    
     # Create the generative model
     generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
 
@@ -70,7 +73,7 @@ if uploaded_file1 is not None:
             - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
             - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
             - Final Payment Format: Do not include detected texts.
-            """, image1]
+            """, image_1_byte, image_2_byte]
         )
 
     content = response.text.encode().decode('utf-8')
