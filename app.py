@@ -3,7 +3,7 @@ import vertexai
 from vertexai.preview.generative_models import GenerativeModel, Image
 import os
 import json
-import PIL.Image
+from PIL import Image
 
 # Initialize Vertex AI
 PROJECT_ID = os.environ.get("GCP_PROJECT")
@@ -34,15 +34,10 @@ uploaded_files = [
 ]
 uploaded_files = [f for f in uploaded_files if f is not None]
 
-if uploaded_files:
+if uploaded_files is not None:
     # Display the uploaded images
-    cols = st.columns(len(uploaded_files))
-    images = []
-    for idx, uploaded_file in enumerate(uploaded_files):
-        with cols[idx]:
-            st.image(uploaded_file, caption=f"Uploaded Image {idx + 1}")
-        images.append(PIL.Image.open(uploaded_file))
-
+    image = Image.open(uploaded_files)
+    st.image(image, caption="Uploaded Image", use_container_width=True)
 
     # Create the generative model
     generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
@@ -59,7 +54,7 @@ if uploaded_files:
         """
 
     # Generate content using the generative model
-    response = generative_multimodal_model.generate_content([prompt, images])
+    response = generative_multimodal_model.generate_content(prompt, image)
 
     content = response.text.encode().decode('utf-8')
 
