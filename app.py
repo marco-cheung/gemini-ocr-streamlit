@@ -4,6 +4,8 @@ from vertexai.preview.generative_models import GenerativeModel, Image
 import os
 import json
 import PIL.Image
+import base64
+from io import BytesIO
 
 # Initialize Vertex AI
 PROJECT_ID = os.environ.get("GCP_PROJECT")
@@ -20,6 +22,12 @@ st.image(banner_image_path, use_container_width=True)
 # Streamlit app
 st.title("Demo of Receipt OCR with Google Gemini API")
 
+def pil_image_to_base64(image):
+    buffered = BytesIO()
+    image_format = image.format if image.format else "JPEG"  # Default to JPEG if format is not available
+    image.save(buffered, format=image_format)
+    return base64.b64encode(buffered.getvalue()).decode()
+
 # Create two columns
 col1, col2 = st.columns(2)
 
@@ -33,7 +41,7 @@ if uploaded_file1 is not None:
     #Display col2 file uploader if uploaded_file1 is not None
     with col2:
         uploaded_file2 = st.file_uploader("Shop Invoice (2nd image when necessary)", key="file2")
-        
+
     # Create a container to display images side by side
     image_container = st.container()
 
@@ -47,6 +55,10 @@ if uploaded_file1 is not None:
             if uploaded_file2 is not None:
                 image2 = PIL.Image.open(uploaded_file2)  # Fixed: Changed uploaded_file1 to uploaded_file2
                 st.image(image2, caption='Uploaded Image 2.', use_container_width=True)
+
+    # Convert images to base64
+    image1_base64 = pil_image_to_base64(image1)
+    image2_base64 = pil_image_to_base64(image2) if uploaded_file2 is not None else None
 
 
     # Create the generative model
@@ -63,7 +75,7 @@ if uploaded_file1 is not None:
             - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
             - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
             - Final Payment Format: Do not include detected texts.
-            """, image1]
+            """, image1_base64]
         )
 
     content = response.text.encode().decode('utf-8')
