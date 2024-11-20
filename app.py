@@ -20,9 +20,6 @@ st.image(banner_image_path, use_container_width=True)
 # Streamlit app
 st.title("Demo of Receipt OCR with Google Gemini API")
 
-# Create the generative model
-generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
-
 # Create two columns
 col1, col2 = st.columns(2)
 
@@ -42,12 +39,13 @@ if uploaded_file1 is not None:
             image2 = PIL.Image.open(uploaded_file1)
             st.image(image2, caption='Uploaded Image 2.', use_container_width=True)
 
+
     # Create the generative model
     generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
 
     # Generate content
     response = generative_multimodal_model.generate_content(
-            ["""Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
+            """Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
             Requirements:
             - Output: Return solely the JSON content without any additional explanations or comments.
             - Use this JSON schema: {"shop_name": "string", "order_date": "string", "payment_total": "string"}
@@ -56,7 +54,7 @@ if uploaded_file1 is not None:
             - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
             - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
             - Final Payment Format: Do not include detected texts.
-            """, image1, image2]
+            """, image1
         )
 
     content = response.text.encode().decode('utf-8')
