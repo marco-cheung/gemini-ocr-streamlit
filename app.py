@@ -23,20 +23,16 @@ st.title("Demo of Receipt OCR with Google Gemini API")
 if 'uploaded_files' not in st.session_state:
     st.session_state['uploaded_files'] = []
 
-# Determine if the expander should be open
-expander_state = len(st.session_state['uploaded_files']) < 2
-
 # Create an expander for file uploader
-with st.expander("Upload Files", expanded=expander_state):
-    # File uploader
-    uploaded_files = st.file_uploader(
-        "Please upload up to 2 images...",
-        accept_multiple_files=True
-    )
-    if uploaded_files is not None:
-        # Limit to 2 files
-        uploaded_files = uploaded_files[:2]
-        st.session_state['uploaded_files'] = uploaded_files
+with st.expander("Upload Files", expanded=True):
+    col1, col2 = st.columns(2)
+    with col1:
+        uploaded_file1 = st.file_uploader("Upload Image 1", key="file1")
+    with col2:
+        uploaded_file2 = st.file_uploader("Upload Image 2", key="file2")
+
+    uploaded_files = [f for f in [uploaded_file1, uploaded_file2] if f is not None]
+    st.session_state['uploaded_files'] = uploaded_files
 
 # Retrieve uploaded files from session state
 uploaded_files = st.session_state['uploaded_files']
