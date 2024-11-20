@@ -3,6 +3,7 @@ import vertexai
 from vertexai.preview.generative_models import GenerativeModel, Image
 import os
 import json
+import PIL.Image
 
 # Initialize Vertex AI
 PROJECT_ID = os.environ.get("GCP_PROJECT")
@@ -37,12 +38,14 @@ uploaded_files = [f for f in uploaded_files if f is not None]
 if uploaded_files:
     # Display the uploaded images
     col1, col2 = st.columns(2)
-    if len(uploaded_files) >= 1:
-        with col1:
-            st.image(uploaded_files[0], caption="Uploaded Image 1")
-    if len(uploaded_files) == 2:
-        with col2:
-            st.image(uploaded_files[1], caption="Uploaded Image 2")
+    
+    with col1:
+        st.image(uploaded_files[0], caption="Uploaded Image 1")
+    with col2:
+        st.image(uploaded_files[1], caption="Uploaded Image 2")
+
+    img_1 = PIL.Image.open(uploaded_files[0])
+    img_2 = PIL.Image.open(uploaded_files[1])
 
     # Create the generative model
     generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
@@ -51,7 +54,7 @@ if uploaded_files:
             Requirements:
             - Output: Return solely the JSON content without any additional explanations or comments.
             -  Use this JSON schema: {"shop_name": "string", "order_date": "string", "payment_total": "string"}
-             - No Delimiters: Do not use code fences or delimiters like ```json.
+            - No Delimiters: Do not use code fences or delimiters like ```json.
             - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
             - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
             - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
@@ -59,7 +62,7 @@ if uploaded_files:
             """
 
     # Generate content using the generative model
-    response = generative_multimodal_model.generate_content([prompt, uploaded_files[0], uploaded_files[1]])
+    response = generative_multimodal_model.generate_content([prompt, img_1, img_2])
 
     content = response.text.encode().decode('utf-8')
 
