@@ -27,10 +27,10 @@ generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
 col1, col2 = st.columns(2)
 
 with col1:
-    uploaded_file1 = st.file_uploader("Upload Shop Invoice 1", key="file1", use_container_width=True)
+    uploaded_file1 = st.file_uploader("Upload Shop Invoice 1", key="file1")
 
 with col2:
-    uploaded_file2 = st.file_uploader("Upload Shop Invoice 2", key="file2", use_container_width=True)   
+    uploaded_file2 = st.file_uploader("Upload Shop Invoice 2", key="file2")   
 
 
 # Create a button to trigger the upload
