@@ -3,11 +3,7 @@ import vertexai
 from vertexai.preview.generative_models import GenerativeModel, Image
 import os
 import json
-<<<<<<< HEAD
 import PIL.Image
-=======
-from PIL import Image
->>>>>>> a760ff21acd57804f5cb4683e2a6b700db0d1eb9
 
 # Initialize Vertex AI
 PROJECT_ID = os.environ.get("GCP_PROJECT")
@@ -28,14 +24,13 @@ st.title("Demo of Receipt OCR with Google Gemini API")
 generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
 
 # Create two columns
-with st.container():
-    col1, col2 = st.columns(2)
+col1, col2 = st.columns(2)
 
-    with col1:
-        uploaded_file1 = st.file_uploader("Upload Shop Invoice (1/2)", key="file1", use_container_width=True)
+with col1:
+    uploaded_file1 = st.file_uploader("Upload Shop Invoice (1/2)", key="file1", use_container_width=True)
 
-    with col2:
-        uploaded_file2 = st.file_uploader("Upload Shop Invoice (2/2)", key="file2", use_container_width=True)   
+with col2:
+    uploaded_file2 = st.file_uploader("Upload Shop Invoice (2/2)", key="file2", use_container_width=True)   
 
 
 # Create a button to trigger the upload
