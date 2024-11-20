@@ -29,31 +29,20 @@ col1, col2 = st.columns(2)
 with col1:
     uploaded_file1 = st.file_uploader("Upload Shop Invoice 1", key="file1")
 
-with col2:
-    uploaded_file2 = st.file_uploader("Upload Shop Invoice 2", key="file2")   
+#Display uploaded image
+if uploaded_file1 is not None:
+    image1 = PIL.Image.open(uploaded_file1)
+    st.image(image1, caption='Uploaded Image 1.', use_column_width=True)
 
+    #Display col2 file uploader if uploaded_file1 is not None
+    with col2:
+        uploaded_file2 = st.file_uploader("Upload Shop Invoice 2", key="file2")
 
-# Create a button to trigger the upload
-if st.button("Upload"):
-    if uploaded_file1 and not uploaded_file2:
-        # Save the uploaded file to a temporary location
-        image_1 = PIL.Image.open(uploaded_file1)
-        image_2 = None
+    # Create the generative model
+    generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
 
-    elif uploaded_file1 and uploaded_file2:
-        # Save the uploaded files to temporary locations
-        image_1 = PIL.Image.open(uploaded_file1)
-        image_2 = PIL.Image.open(uploaded_file2)
-    else:
-        st.error("Please upload at least one file.")
-        image_1 = image_2 = None
-
-    if image_1:
-        # Create the generative model
-        generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
-
-        # Generate content
-        response = generative_multimodal_model.generate_content(
+    # Generate content
+    response = generative_multimodal_model.generate_content(
             ["""Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
             Requirements:
             - Output: Return solely the JSON content without any additional explanations or comments.
@@ -63,13 +52,10 @@ if st.button("Upload"):
             - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
             - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
             - Final Payment Format: Do not include detected texts.
-            """] + [Image(image_1), Image(image_2)] if image_2 else [Image(image_1)]
+            """], image1
         )
 
-        # Display the result in the second column
-        with col2:
-            st.json(response)
-    #content = response.text.encode().decode('utf-8')
+    content = response.text.encode().decode('utf-8')
 
     # Display the result in the second column
     # with col2:
