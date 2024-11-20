@@ -75,14 +75,14 @@ if uploaded_file1 is not None:
             - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
             - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
             - Final Payment Format: Do not include detected texts.
-            """, image1_base64]
+            """, image1_base64, image2_base64]
         )
 
     content = response.text.encode().decode('utf-8')
 
     # Display the result in the second column
     # with col2:
-    #     # Parse the content as JSON and display it in a code block
-    #     json_response = json.loads(content)
-    #     pretty_json = json.dumps(json_response, indent=4)
-    #     st.code(pretty_json, language='json')
+    # Parse the content as JSON and display it in a code block
+    json_response = json.loads(content)
+    pretty_json = json.dumps(json_response, indent=4)
+    st.code(pretty_json, language='json')
