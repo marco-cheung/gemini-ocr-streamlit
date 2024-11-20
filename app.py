@@ -54,7 +54,7 @@ if uploaded_files is not None:
         """
 
     # Generate content using the generative model
-    response = generative_multimodal_model.generate_content(prompt, image)
+    response = generative_multimodal_model.generate_content(prompt, uploaded_files[0])
 
     content = response.text.encode().decode('utf-8')
 
