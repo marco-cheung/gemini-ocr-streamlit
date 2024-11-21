@@ -22,6 +22,13 @@ st.image(banner_image_path, use_container_width=True)
 st.title("Demo of Receipt OCR with Google Gemini API")
 
 
+def generate_response(prompt, image1_info, image2_info=None):
+    inputs = [prompt, image1_info]
+    if image2_info is not None:
+        inputs.append(image2_info)
+    return generative_multimodal_model.generate_content(inputs)
+
+
 # Create two columns
 col1, col2 = st.columns(2)
 
@@ -49,7 +56,10 @@ if uploaded_file1 is not None:
         with col_img2:
             if uploaded_file2 is not None:
                 image2 = PIL.Image.open(uploaded_file2)
-                st.image(image2, caption='Uploaded Image 2.', use_container_width=True)
+                image2_info = Image.from_bytes(uploaded_file2.getvalue())
+                st.image(image2, caption='Uploaded Image 2.', use_container_width=True)          
+            else:
+                image2_info = None
     
     # Create the generative model
     generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
@@ -65,8 +75,8 @@ if uploaded_file1 is not None:
     - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
     - Final Payment Format: Do not include detected texts.
     """
-
-    response = generative_multimodal_model.generate_content([prompt, image1_info])
+    
+    response = generate_response(prompt, image1_info, image2_info)
 
     content = response.text.encode().decode('utf-8')
 
