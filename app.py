@@ -88,6 +88,6 @@ if uploaded_file1 is not None:
 
     # Display the result
     # Parse the content as JSON and display it in a code block
-    #json_response = json.loads(content)
-    #pretty_json = json.dumps(json_response, indent=4)
-    #st.code(pretty_json, language='json')
+    json_response = json.loads(content)
+    pretty_json = json.dumps(json_response, indent=4)
+    st.code(pretty_json, language='json')
