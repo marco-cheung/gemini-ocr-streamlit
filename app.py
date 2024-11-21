@@ -66,12 +66,12 @@ if uploaded_file1 is not None:
     # Generate contents
     prompt = """Return shop name, order date (null if not present on the receipt) and final payment amount only.
         1) Error check:
-           If shop name detected in the second image differs from the first, return "" JSON value for shop_name, order_date, payment_total, 
-           For 'remarks' in JSON output, return error message "Detected disparate shop name, please re-upload two invoice images for a single transaction only."
+           If shop name detected in the second image differs from the first, return "" JSON value for "shop_name", "order_date", "payment_total". 
+           For "remarks" in JSON output, return error message "Detected disparate shop name, please re-upload two invoice images for a single transaction only."
            Otherwise, follow the instructions below.
 
         2) - Output: Return solely the Markdown content without any additional explanations or comments.
-           - Use this JSON schema: {'shop_name': str, 'order_date': str, 'payment_total': str, 'remarks': str} 
+           - Use this JSON schema: {"shop_name": str, "order_date": str, "payment_total": str, "remarks": str} 
            - No Delimiters: Do not use code fences or delimiters like ```markdown.
            - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
            - Shop Name Format: Keep the first row of detected texts only.
@@ -87,11 +87,6 @@ if uploaded_file1 is not None:
 
     # Display the result
     # Parse the content as JSON and display it in a code block
-    try:
-        json_response = json.loads(content)
-        pretty_json = json.dumps(json_response, indent=4)
-        st.code(pretty_json, language='json')
-    except json.JSONDecodeError as e:
-        st.error(f"JSON decoding failed: {e}")
-        st.write("Raw content received:")
-        st.write(content)
+    json_response = json.loads(content)
+    pretty_json = json.dumps(json_response, indent=4)
+    st.code(pretty_json, language='json')
