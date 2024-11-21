@@ -89,28 +89,17 @@ if uploaded_file1 is not None:
     "type": "object",
     "properties": {
         "shop_name": {
-            "anyOf": [
-                {"type": "string"},
-                {"type": "null"}
-            ]
+            "type": ["string", "null"],
         },
         "order_date": {
-            "anyOf": [
-                {"type": "string", "format": "date"},
-                {"type": "null"}
-            ]
+            "type": ["string", "null"],
+            "format": "date",
         },
         "payment_total": {
-            "anyOf": [
-                {"type": "string"},
-                {"type": "null"}
-            ]
+            "type": ["string", "null"],
         },
         "remarks": {
-            "anyOf": [
-                {"type": "string"},
-                {"type": "null"}
-            ]
+            "type": ["string", "null"],
         },
     },
     "required": ["shop_name", "order_date", "payment_total", "remarks"],
