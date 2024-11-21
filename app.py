@@ -50,7 +50,7 @@ if uploaded_file is not None:
     generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
 
     # Generate contents
-    prompt = """Return shop name, order date, order number and final payment amount only.
+    prompt = """
     1) Error check:
        - If shop name and/or final payment amount is not detected, return null JSON value for "shop_name", "order_date", "order_num", "payment_total". 
          For "remarks" in JSON output, return error message "Please upload a clear invoice image for text recognition."
