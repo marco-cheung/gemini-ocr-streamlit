@@ -23,17 +23,18 @@ st.title("Demo of Receipt OCR with Google Gemini API")
 
 def get_image_bytes(uploaded_image):
     if uploaded_image is not None:
-        # Read the uploaded image in bytes
+        # read the uploaded image in bytes
         image_bytes = uploaded_image.getvalue()
-        # Base64-encode the image bytes
-        image_base64 = base64.b64encode(image_bytes).decode('utf-8')
-        image_info = {
-            'mime_type': uploaded_image.type,
-            'data': image_base64
+
+        image_info = [
+            {
+            "mime_type": uploaded_image.type,
+            "data": image_bytes
         }
+        ]
         return image_info
     else:
-        raise FileNotFoundError("Upload a valid image file!")
+        raise FileNotFoundError("Upload Valid image file!")
 
 
 # Create two columns
@@ -69,19 +70,24 @@ if uploaded_file1 is not None:
     # Create the generative model
     generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
 
+    # Prepare images list
+    images_list = [image1_info]
+    if uploaded_file2 is not None:
+        images_list.append(image2_info)
+
     # Generate contents
-    response = generative_multimodal_model.generate_content(
-           ["""Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
-            Requirements:
-            - Output: Return solely the JSON content without any additional explanations or comments.
-            - Use this JSON schema: {"shop_name": "string", "order_date": "string", "payment_total": "string"}
-            - No Delimiters: Do not use code fences or delimiters like ```json.
-            - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
-            - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
-            - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
-            - Final Payment Format: Do not include detected texts.
-            """, image1_info[0]]
-        )
+    prompt_text = """Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
+    Requirements:
+    - Output: Return solely the JSON content without any additional explanations or comments.
+    - Use this JSON schema: {"shop_name": "string", "order_date": "string", "payment_total": "string"}
+    - No Delimiters: Do not use code fences or delimiters like ```json.
+    - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
+    - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
+    - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
+    - Final Payment Format: Do not include detected texts.
+    """
+
+    response = generative_multimodal_model.generate_content(prompt=prompt_text, images=images_list)
 
     content = response.text.encode().decode('utf-8')
 
