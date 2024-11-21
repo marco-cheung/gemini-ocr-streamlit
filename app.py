@@ -47,7 +47,7 @@ if uploaded_file is not None:
     st.image(image, caption='Uploaded Image.', use_container_width=True)
    
     # Create the generative model
-    generative_multimodal_model = GenerativeModel("gemini-1.5-flash-8b")
+    generative_multimodal_model = GenerativeModel("gemini-1.5-flash-8b-001")
 
     # Generate contents
     prompt = """
