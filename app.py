@@ -71,7 +71,7 @@ if uploaded_file1 is not None:
            Otherwise, follow the instructions below.
 
         2) - Output: Return solely the Markdown content without any additional explanations or comments.
-           - Use this JSON schema: {"shop_name": str, "order_date": str, "payment_total": str, "remarks": str} 
+           - Use this JSON schema: {'shop_name': str, 'order_date': str, 'payment_total': str, 'remarks': str} 
            - No Delimiters: Do not use code fences or delimiters like ```markdown.
            - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
            - Shop Name Format: Keep the first row of detected texts only.
