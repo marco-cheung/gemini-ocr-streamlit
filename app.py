@@ -84,10 +84,10 @@ if uploaded_file1 is not None:
     response = generate_response(prompt, image1_info, image2_info)
 
     content = response.text.encode().decode('utf-8')
-    st.write(content)
+    #st.write(content)
 
     # Display the result
     # Parse the content as JSON and display it in a code block
-    #json_response = json.loads(content)
-    #pretty_json = json.dumps(json_response, indent=4)
-    #st.code(pretty_json, language='json')
+    json_response = json.loads(content)
+    pretty_json = json.dumps(json_response, indent=4)
+    st.code(pretty_json, language='json')
