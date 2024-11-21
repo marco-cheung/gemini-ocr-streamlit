@@ -1,6 +1,6 @@
 import streamlit as st
 import vertexai
-from vertexai.generative_models import GenerativeModel, Image
+from vertexai.generative_models import GenerationConfig, GenerativeModel, Image
 import os
 import json
 import PIL.Image
@@ -25,8 +25,10 @@ def generate_response(prompt, image1_info, image2_info=None):
     inputs = [prompt, image1_info]
     if image2_info is not None:
         inputs.append(image2_info)
-    return generative_multimodal_model.generate_content(inputs)
-
+    return generative_multimodal_model.generate_content(inputs, 
+                                                        generation_config=GenerationConfig(response_mime_type="application/json",
+                                                                                           response_schema=response_schema),
+                                                                                           )
 
 # Create two columns
 col1, col2 = st.columns(2)
@@ -79,7 +81,27 @@ if uploaded_file1 is not None:
            - Final Payment Format: Do not include detected texts.
            - Remarks: Error message if any, else return null JSON value.
       """
-        
+    
+    response_schema = {
+        "type": "object",
+        "properties": {
+            "shop_name": {
+                "type": ["string", "null"],
+            },
+            "order_date": {
+                "type": ["string", "null"],
+                "format": "date",
+            },
+            "payment_total": {
+                "type": ["string", "null"],
+            },
+            "remarks": {
+                "type": ["string", "null"],
+            },
+        },
+        "required": ["shop_name", "order_date", "payment_total", "remarks"],
+    }
+
     response = generate_response(prompt, image1_info, image2_info)
 
     content = response.text.encode().decode('utf-8')
