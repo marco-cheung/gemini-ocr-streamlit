@@ -1,6 +1,6 @@
 import streamlit as st
 import vertexai
-from vertexai.generative_models import GenerativeModel
+from vertexai.generative_models import GenerativeModel, Image
 import os
 import json
 import base64
@@ -21,21 +21,6 @@ st.image(banner_image_path, use_container_width=True)
 # Streamlit app
 st.title("Demo of Receipt OCR with Google Gemini API")
 
-def get_image_bytes(uploaded_image):
-    if uploaded_image is not None:
-        # read the uploaded image in bytes
-        image_bytes = uploaded_image.getvalue()
-
-        image_info = [
-            {
-            "mime_type": uploaded_image.type,
-            "data": image_bytes
-        }
-        ]
-        return image_info
-    else:
-        raise FileNotFoundError("Upload Valid image file!")
-
 
 # Create two columns
 col1, col2 = st.columns(2)
@@ -46,7 +31,7 @@ with col1:
 # Display uploaded image
 if uploaded_file1 is not None:
     image1 = PIL.Image.open(uploaded_file1)
-    image1_info = get_image_bytes(uploaded_file1)
+    image1_info = Image.from_bytes(uploaded_file1.getvalue())
 
     #Display col2 file uploader if uploaded_file1 is not None
     with col2:
@@ -64,16 +49,10 @@ if uploaded_file1 is not None:
         with col_img2:
             if uploaded_file2 is not None:
                 image2 = PIL.Image.open(uploaded_file2)
-                image2_info = get_image_bytes(uploaded_file2)
                 st.image(image2, caption='Uploaded Image 2.', use_container_width=True)
     
     # Create the generative model
     generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
-
-    # Prepare images list
-    images_list = [image1_info]
-    if uploaded_file2 is not None:
-        images_list.append(image2_info)
 
     # Generate contents
     prompt = """Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
@@ -87,7 +66,7 @@ if uploaded_file1 is not None:
     - Final Payment Format: Do not include detected texts.
     """
 
-    response = generative_multimodal_model.generate_content([prompt, image1_info[0]])
+    response = generative_multimodal_model.generate_content([prompt, image1_info])
 
     content = response.text.encode().decode('utf-8')
 
