@@ -52,7 +52,7 @@ if uploaded_file is not None:
     # Generate contents
     prompt = """
     1) Error check:
-       - If "shop_name" or "order_date" or "payment_total" is not detected, return error message "Please upload a clear invoice image for text recognition." for "remarks" in JSON output.
+       - If any of the required fields ('shop_name', 'order_date', or 'payment_total') is missing or cannot be detected, return a JSON response with the 'remarks' field set to 'Please upload a clear invoice image for text recognition.'
          Otherwise, follow the instructions below.
 
     2) - Output: Return solely the Markdown content without any additional explanations or comments.
