@@ -65,32 +65,28 @@ if uploaded_file1 is not None:
     generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
 
     # Generate contents
-    base_prompt = """Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
-    Requirements:
-    - Output: Return solely the JSON content without any additional explanations or comments.
-    - Do not include any prefixes or suffixes.
-    - Use this JSON schema: {"shop_name": "string", "order_date": "string", "payment_total": "string"}
-    - No Delimiters: Do not use code fences or delimiters like ```json.
-    - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
-    - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
-    - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
-    - Final Payment Format: Do not include detected texts.
-    """
-    
-    # Add additional requirement if a second image is uploaded
-    if uploaded_file2 is not None:
-        additional_requirement = '- Validation: If the shop name detected in the second image differs from the first, return error message "Detected disparate shop name, please upload two invoice images for a single transaction only.'
-        prompt = f"{base_prompt}\n{additional_requirement}"
-    else:
-        prompt = base_prompt
-    
+    prompt = """Return shop name, order date (null if not present on the receipt) and final payment amount only.
+        Error check:
+        1) if shop name detected in the second image differs from the first, return null JSON value for shop_name, order_date, payment_total.
+           FOr remarks, return error message "Detected disparate shop name, please re-upload two invoice images for a single transaction only."
+
+        If no errors of the above, please follow the instructions below:
+        1) Output: Return solely the Markdown content without any additional explanations or comments.
+        2) Use this JSON schema: {'shop_name': str, 'order_date': str, 'payment_total': str, 'remarks': str} 
+        3) No Delimiters: Do not use code fences or delimiters like ```markdown.
+        4) Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
+        5) Shop Name Format: Keep the first row of detected texts only.
+        6) Order Date Format: Change to date format (YYYY-MM-DD) if detected.
+        7) Final Payment Format: Do not include detected texts.
+        8) Remarks: Error message if any, else return null JSON value.
+      """
+        
     response = generate_response(prompt, image1_info, image2_info)
 
     content = response.text.encode().decode('utf-8')
     
-    st.write(content)
     # Display the result
     # Parse the content as JSON and display it in a code block
-    #json_response = json.loads(content)
-    #pretty_json = json.dumps(json_response, indent=4)
-    #st.code(pretty_json, language='json')
+    json_response = json.loads(content)
+    pretty_json = json.dumps(json_response, indent=4)
+    st.code(pretty_json, language='json')
