@@ -3,7 +3,6 @@ import vertexai
 from vertexai.generative_models import GenerativeModel, Image
 import os
 import json
-import base64
 import PIL.Image
 
 # Initialize Vertex AI
@@ -88,6 +87,11 @@ if uploaded_file1 is not None:
 
     # Display the result
     # Parse the content as JSON and display it in a code block
-    json_response = json.loads(content)
-    pretty_json = json.dumps(json_response, indent=4)
-    st.code(pretty_json, language='json')
+    try:
+        json_response = json.loads(content)
+        pretty_json = json.dumps(json_response, indent=4)
+        st.code(pretty_json, language='json')
+    except json.JSONDecodeError as e:
+        st.error(f"JSON decoding failed: {e}")
+        st.write("Raw content received:")
+        st.write(content)
