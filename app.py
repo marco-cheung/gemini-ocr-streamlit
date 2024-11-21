@@ -68,6 +68,7 @@ if uploaded_file1 is not None:
     prompt = """Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
     Requirements:
     - Output: Return solely the JSON content without any additional explanations or comments.
+    - Do not include any prefixes or suffixes.
     - Use this JSON schema: {"shop_name": "string", "order_date": "string", "payment_total": "string"}
     - No Delimiters: Do not use code fences or delimiters like ```json.
     - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
@@ -79,9 +80,10 @@ if uploaded_file1 is not None:
     response = generate_response(prompt, image1_info, image2_info)
 
     content = response.text.encode().decode('utf-8')
-
+    
+    st.write(content)
     # Display the result
     # Parse the content as JSON and display it in a code block
-    json_response = json.loads(content)
-    pretty_json = json.dumps(json_response, indent=4)
-    st.code(pretty_json, language='json')
+    #json_response = json.loads(content)
+    #pretty_json = json.dumps(json_response, indent=4)
+    #st.code(pretty_json, language='json')
