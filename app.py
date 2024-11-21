@@ -3,6 +3,7 @@ import vertexai
 from vertexai.generative_models import GenerativeModel
 import os
 import json
+import base64
 import PIL.Image
 
 # Initialize Vertex AI
@@ -22,16 +23,17 @@ st.title("Demo of Receipt OCR with Google Gemini API")
 
 def get_image_bytes(uploaded_image):
     if uploaded_image is not None:
-        # read the uploaded image in bytes
+        # Read the uploaded image in bytes
         image_bytes = uploaded_image.getvalue()
-
+        # Base64-encode the image bytes
+        image_base64 = base64.b64encode(image_bytes).decode('utf-8')
         image_info = {
-            "mime_type": uploaded_image.type,
-            "data": image_bytes
+            'mime_type': uploaded_image.type,
+            'data': image_base64
         }
         return image_info
     else:
-        raise FileNotFoundError("Upload Valid image file!")
+        raise FileNotFoundError("Upload a valid image file!")
 
 
 # Create two columns
@@ -69,7 +71,7 @@ if uploaded_file1 is not None:
 
     # Generate contents
     response = generative_multimodal_model.generate_content(
-            ["""Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
+            """Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
             Requirements:
             - Output: Return solely the JSON content without any additional explanations or comments.
             - Use this JSON schema: {"shop_name": "string", "order_date": "string", "payment_total": "string"}
@@ -78,7 +80,7 @@ if uploaded_file1 is not None:
             - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
             - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
             - Final Payment Format: Do not include detected texts.
-            """, image1_info]
+            """, image1_info
         )
 
     content = response.text.encode().decode('utf-8')
