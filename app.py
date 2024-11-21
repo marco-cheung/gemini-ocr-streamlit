@@ -61,6 +61,7 @@ if uploaded_file is not None:
        - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
        - Shop Name Format: Keep the first row of detected texts only. Remove any additional texts.
        - Order Date Format: Change to date format (YYYY-MM-DD) if detected. Otherwise, return null JSON value.
+       - Payment Total Format: If not found, try to find search similar keywords such as "Amount Due". 
        - Remarks: Error message if any, else return null JSON value.
      """
 
