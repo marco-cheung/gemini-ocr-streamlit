@@ -25,10 +25,13 @@ def generate_response(prompt, image1_info, image2_info=None):
     inputs = [prompt, image1_info]
     if image2_info is not None:
         inputs.append(image2_info)
-    return generative_multimodal_model.generate_content(inputs, 
-                                                        generation_config=GenerationConfig(response_mime_type="application/json",
-                                                                                           response_schema=response_schema),
-                                                                                           )
+    return generative_multimodal_model.generate_content(
+        inputs,
+        generation_config=GenerationConfig(
+            response_mime_type="application/json",
+            response_schema=response_schema
+        )
+    )
 
 # Create two columns
 col1, col2 = st.columns(2)
@@ -86,17 +89,28 @@ if uploaded_file1 is not None:
     "type": "object",
     "properties": {
         "shop_name": {
-            "type": ["string", "null"],
+            "anyOf": [
+                {"type": "string"},
+                {"type": "null"}
+            ]
         },
         "order_date": {
-            "type": ["string", "null"],
-            "format": "date",
+            "anyOf": [
+                {"type": "string", "format": "date"},
+                {"type": "null"}
+            ]
         },
         "payment_total": {
-            "type": ["string", "null"],
+            "anyOf": [
+                {"type": "string"},
+                {"type": "null"}
+            ]
         },
         "remarks": {
-            "type": ["string", "null"],
+            "anyOf": [
+                {"type": "string"},
+                {"type": "null"}
+            ]
         },
     },
     "required": ["shop_name", "order_date", "payment_total", "remarks"],
