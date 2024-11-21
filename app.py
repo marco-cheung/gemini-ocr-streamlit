@@ -37,7 +37,7 @@ def generate_response(prompt, image1_info, image2_info=None):
 col1, col2 = st.columns(2)
 
 with col1:
-    uploaded_file = st.file_uploader("Shop Invoice", key="file")
+    uploaded_file = st.file_uploader("Shop Invoice")
 
 # Display uploaded image
 if uploaded_file is not None:
@@ -53,7 +53,7 @@ if uploaded_file is not None:
     prompt = """Return shop name, order date and final payment amount only.
     1) Error check:
        - If shop name and/or final payment amount is not detected, return null JSON value for "shop_name", "order_date", "payment_total". 
-         For "remarks" in JSON output, return error message "Please re-upload invoice images clearly."
+         For "remarks" in JSON output, return error message "Please upload a clear invoice image for text recognition."
          Otherwise, follow the instructions below.
 
     2) - Output: Return solely the Markdown content without any additional explanations or comments.
