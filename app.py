@@ -87,7 +87,7 @@ if uploaded_file1 is not None:
     - Final Payment Format: Do not include detected texts.
     """
 
-    response = generative_multimodal_model.generate_content([prompt, image1_info])
+    response = generative_multimodal_model.generate_content([prompt, image1_info[0]])
 
     content = response.text.encode().decode('utf-8')
 
