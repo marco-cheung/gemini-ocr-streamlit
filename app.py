@@ -58,7 +58,7 @@ if uploaded_file is not None:
     2) - Output: Return solely the Markdown content without any additional explanations or comments.
        - No Delimiters: Do not use code fences or delimiters like ```markdown.
        - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
-       - Shop Name Format: Remove special character. Encoding as UTF-8. 
+       - Shop Name Format: Remove special character. Encoding as UTF-8. Convert Unicode escape sequences to characters.
        - Order Date Format: Change to date format (YYYY-MM-DD) if detected. Otherwise, return null JSON value.
        - Order Datetime Format: Change to datetime format (YYYY-MM-DD hh:mm) if detected. Otherwise, return null JSON value.
        - Invoice Number Format: Trim whitespaces if any.
