@@ -83,23 +83,23 @@ if uploaded_file1 is not None:
       """
     
     response_schema = {
-        "type": "object",
-        "properties": {
-            "shop_name": {
-                "type": ["string", "null"],
-            },
-            "order_date": {
-                "type": ["string", "null"],
-                "format": "date",
-            },
-            "payment_total": {
-                "type": ["string", "null"],
-            },
-            "remarks": {
-                "type": ["string", "null"],
-            },
+    "type": "object",
+    "properties": {
+        "shop_name": {
+            "type": ["string", "null"],
         },
-        "required": ["shop_name", "order_date", "payment_total", "remarks"],
+        "order_date": {
+            "type": ["string", "null"],
+            "format": "date",
+        },
+        "payment_total": {
+            "type": ["string", "null"],
+        },
+        "remarks": {
+            "type": ["string", "null"],
+        },
+    },
+    "required": ["shop_name", "order_date", "payment_total", "remarks"],
     }
 
     response = generate_response(prompt, image1_info, image2_info)
