@@ -65,7 +65,7 @@ if uploaded_file1 is not None:
     generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
 
     # Generate contents
-    prompt = """Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
+    base_prompt = """Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
     Requirements:
     - Output: Return solely the JSON content without any additional explanations or comments.
     - Do not include any prefixes or suffixes.
@@ -76,6 +76,13 @@ if uploaded_file1 is not None:
     - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
     - Final Payment Format: Do not include detected texts.
     """
+    
+    # Add additional requirement if a second image is uploaded
+    if uploaded_file2 is not None:
+        additional_requirement = '- Validation: If the shop name detected in the second image differs from the first, return error message "Detected disparate shop name, please upload two invoice images for a single transaction only.'
+        prompt = f"{base_prompt}\n{additional_requirement}"
+    else:
+        prompt = base_prompt
     
     response = generate_response(prompt, image1_info, image2_info)
 
