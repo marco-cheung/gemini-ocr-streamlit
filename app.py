@@ -20,13 +20,20 @@ st.image(banner_image_path, use_container_width=True)
 # Streamlit app
 st.title("Demo of Receipt OCR with Google Gemini API")
 
-def input_image_setup(uploaded_file):
-    if uploaded_file is not None:
-        bytes_data = uploaded_file.getvalue()
-        image_parts = [{"mime_type": uploaded_file.type, "data": bytes_data}]
-        return image_parts
+def get_image_bytes(uploaded_image):
+    if uploaded_image is not None:
+        # read the uploaded image in bytes
+        image_bytes = uploaded_image.getvalue()
+
+        image_info = [
+            {
+            "mime_type": uploaded_image.type,
+            "data": image_bytes
+        }
+        ]
+        return image_info
     else:
-        raise FileNotFoundError("No file uploaded")
+        raise FileNotFoundError("Upload Valid image file!")
 
 
 # Create two columns
@@ -38,7 +45,7 @@ with col1:
 # Display uploaded image
 if uploaded_file1 is not None:
     image1 = PIL.Image.open(uploaded_file1)
-    image_1_byte = input_image_setup(uploaded_file1)
+    image1_info = get_image_bytes(uploaded_file1)
 
     #Display col2 file uploader if uploaded_file1 is not None
     with col2:
@@ -56,8 +63,8 @@ if uploaded_file1 is not None:
         with col_img2:
             if uploaded_file2 is not None:
                 image2 = PIL.Image.open(uploaded_file2)
+                image2_info = get_image_bytes(uploaded_file2)
                 st.image(image2, caption='Uploaded Image 2.', use_container_width=True)
-                image_2_byte = input_image_setup(uploaded_file2)
     
     # Create the generative model
     generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
@@ -73,7 +80,7 @@ if uploaded_file1 is not None:
             - Shop Name Format: Keep the first row of detected texts only, using 'UTF-8' decoding.
             - Order Date Format: Change to date format (YYYY-MM-DD) if detected.
             - Final Payment Format: Do not include detected texts.
-            """, image_1_byte]
+            """, image1_info]
         )
 
     content = response.text.encode().decode('utf-8')

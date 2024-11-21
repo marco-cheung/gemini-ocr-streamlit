@@ -2,3 +2,5 @@ streamlit
 vertexai
 google-cloud-aiplatform
 google-cloud-logging
+python-dotenv
+pillow
