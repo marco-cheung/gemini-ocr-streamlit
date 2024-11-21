@@ -52,8 +52,7 @@ if uploaded_file is not None:
     # Generate contents
     prompt = """
     1) Error check:
-       - If shop name and/or final payment amount is not detected, return null JSON value for "shop_name", "order_date", "order_num", "payment_total". 
-         For "remarks" in JSON output, return error message "Please upload a clear invoice image for text recognition."
+       - If "shop_name" or "order_date" or "payment_total" is not detected, return error message "Please upload a clear invoice image for text recognition." for "remarks" in JSON output.
          Otherwise, follow the instructions below.
 
     2) - Output: Return solely the Markdown content without any additional explanations or comments.
@@ -61,6 +60,7 @@ if uploaded_file is not None:
        - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
        - Shop Name Format: Keep the first row of detected texts only. Remove any additional texts.
        - Order Date Format: Change to date format (YYYY-MM-DD) if detected. Otherwise, return null JSON value.
+       - Order Datetime Format: Change to datetime format (YYYY-MM-DD hh:mm) if detected. Otherwise, return null JSON value.
        - Payment Total Format: If not found, try to find search similar keywords such as "Amount Due". 
        - Remarks: Error message if any, else return null JSON value.
      """
@@ -77,7 +77,12 @@ if uploaded_file is not None:
             "format": "date",
             "nullable": True
         },
-        "order_num": {
+        "order_datetime": {
+            "type": "string", 
+            "format": "datetime",
+            "nullable": True
+        },
+        "invoice_num": {
             "type": "string", 
             "format": "string",
             "nullable": True
@@ -91,7 +96,7 @@ if uploaded_file is not None:
             "nullable": True
         }
     },
-    "required": ["shop_name", "order_date", "order_num", "payment_total", "remarks"]
+    "required": ["shop_name", "order_date", "order_datetime", "invoice_num", "payment_total", "remarks"]
     }
 
     response = generate_response(prompt, image_info)
