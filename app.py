@@ -25,12 +25,10 @@ def get_image_bytes(uploaded_image):
         # read the uploaded image in bytes
         image_bytes = uploaded_image.getvalue()
 
-        image_info = [
-            {
+        image_info = {
             "mime_type": uploaded_image.type,
             "data": image_bytes
         }
-        ]
         return image_info
     else:
         raise FileNotFoundError("Upload Valid image file!")
