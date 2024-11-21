@@ -68,7 +68,7 @@ if uploaded_file1 is not None:
     prompt = """Return shop name, order date (null if not present on the receipt) and final payment amount only.
         Error check:
         1) if shop name detected in the second image differs from the first, return null JSON value for shop_name, order_date, payment_total.
-           FOr remarks, return error message "Detected disparate shop name, please re-upload two invoice images for a single transaction only."
+           For 'remarks' in JSON output, return error message "Detected disparate shop name, please re-upload two invoice images for a single transaction only."
 
         If no errors of the above, please follow the instructions below:
         1) Output: Return solely the Markdown content without any additional explanations or comments.
