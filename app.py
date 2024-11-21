@@ -76,7 +76,7 @@ if uploaded_file1 is not None:
         images_list.append(image2_info)
 
     # Generate contents
-    prompt_text = """Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
+    prompt = """Convert the provided images into dumped JSON body. Return shop name, order date (null if not present on the receipt), and final payment amount only.
     Requirements:
     - Output: Return solely the JSON content without any additional explanations or comments.
     - Use this JSON schema: {"shop_name": "string", "order_date": "string", "payment_total": "string"}
@@ -87,7 +87,7 @@ if uploaded_file1 is not None:
     - Final Payment Format: Do not include detected texts.
     """
 
-    response = generative_multimodal_model.generate_content(prompt=prompt_text, images=images_list)
+    response = generative_multimodal_model.generate_content([prompt, image1_info])
 
     content = response.text.encode().decode('utf-8')
 
