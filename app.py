@@ -97,7 +97,7 @@ if uploaded_file is not None:
     response = generate_response(prompt, image_info)
 
     content = response.text.encode().decode('utf-8')
-    st.write(content)
+    #st.write(content)
 
     # Display the result
     with col2:
