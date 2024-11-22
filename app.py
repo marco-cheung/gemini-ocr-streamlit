@@ -74,9 +74,9 @@ if uploaded_file1 is not None:
     "shop_name": string,       // UTF-8 encoded, special chars removed, convert Unicode escape sequences to readable characters
     "order_date": string,      // YYYY-MM-DD or null
     "order_datetime": string,  // YYYY-MM-DD HH:mm or null
-    "invoice_num": string,  // Trimmed all whitespaces, preserve alphanumeric characters
-    "payment_total": number,   // Search for keywords such as "Amount Due", "Grand Total" to extract final payment amount. Decimal or null.
-    "remarks": string         // Validation message if needed
+    "invoice_num": string,     // Trimmed all whitespaces, preserve alphanumeric characters
+    "payment_total": number,   // Final amount paid by customer. Decimal or null.
+    "remarks": string          // Set remarks to "Please upload a clear invoice image for verification." if any critical field ("shop_name", "order_date", "is null.
     }
 
     Validation:
