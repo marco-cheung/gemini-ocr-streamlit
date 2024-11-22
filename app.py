@@ -116,11 +116,9 @@ if uploaded_file1 is not None:
 
     # If there are null fields and a second image is provided, try to extract them from image2
     if null_fields and image2_info:
-        # Modify the prompt to extract only the null fields
-        fields_to_extract = ", ".join(f'"{field}"' for field in null_fields)
 
         # Prompt for the null fields
-        prompt_null_fields = f"""
+        prompt_null_fields = """
         {
             "shop_name": "Store Name", 
             "order_date": "YYYY-MM-DD",
@@ -136,9 +134,6 @@ if uploaded_file1 is not None:
         4. invoice_num: Trimmed whitespace or null
         5. payment_total: Final amount paid by customer, i.e. net payment amount after deducting amount such as gift card and e-Coupon discount
 
-        Additional Instructions:
-        Only extract the following fields: {fields_to_extract}
-
         Return clean JSON only, no additional text or further explanation.
         """
 
@@ -149,9 +144,9 @@ if uploaded_file1 is not None:
         content2 = response2.text.encode().decode('utf-8')
         json_response2 = json.loads(content2)
 
-        # Update the original response with values from the second image
-        for key in null_fields:
-            if key in json_response2 and json_response2[key]:
+        # Update null values in json_response from json_response2
+        for key in json_response:
+            if not json_response[key] and key in json_response2 and json_response2[key]:
                 json_response[key] = json_response2[key]
 
         # Identify fields that are still null
