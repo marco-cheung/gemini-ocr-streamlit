@@ -83,7 +83,7 @@ if uploaded_file1 is not None:
     - Order Datetime: Format as YYYY-MM-DD hh:mm if detected, otherwise return null.
     - Invoice Number: Trim whitespaces.
     - Payment Total: If not found, search for similar keywords like "Amount Due".
-    - Remarks: Return error message if any, else return null.
+    - Remarks: Return error message if any of the following fields ('shop_name', 'order_date', 'payment_total') is still missing, else return null.
     """
 
     response_schema = {
