@@ -120,7 +120,7 @@ if uploaded_file1 is not None:
         fields_to_extract = ", ".join(f'"{field}"' for field in null_fields)
 
         # Prompt for the null fields
-        prompt_null_fields = """
+        prompt_null_fields = f"""
         {
             "shop_name": "Store Name", 
             "order_date": "YYYY-MM-DD",
