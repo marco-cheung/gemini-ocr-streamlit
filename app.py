@@ -70,20 +70,20 @@ if uploaded_file1 is not None:
 
     # Generate contents
     prompt = """
-    1) Error Check:
-       - For 'image1_info', if any required fields are missing or undetectable, check 'image2_info' for missing values.
-       - If 'shop name', 'order date', or 'payment total' are still missing, return a JSON response with 'remarks' set to 'Please upload a clear invoice image for text recognition.'
+    1) Two-fold OCR for text detection in images:
+    - For 'image1_info', if any required fields are missing or undetectable, check 'image2_info' for missing values if available.
+    - If 'shop name', 'order date', or 'payment total' are still missing, return a JSON response with 'remarks' set to 'Please upload a clear invoice image for text recognition.'
 
     2) Output:
-       - Return only the Markdown content without explanations or comments.
-       - Do not use code fences or delimiters.
-       - Include all parts of the page, including headers, footers, and subtext.
-       - Shop Name: Remove special characters, encode as UTF-8, and convert Unicode escape sequences to characters.
-       - Order Date: Format as YYYY-MM-DD if detected, otherwise return null.
-       - Order Datetime: Format as YYYY-MM-DD hh:mm if detected, otherwise return null.
-       - Invoice Number: Trim whitespaces.
-       - Payment Total: If not found, search for similar keywords like "Amount Due".
-       - Remarks: Return error message if any, else return null.
+    - Return only the Markdown content without explanations or comments.
+    - Do not use code fences or delimiters.
+    - Include all parts of the page, including headers, footers, and subtext.
+    - Shop Name: Remove special characters, encode as UTF-8, and convert Unicode escape sequences to characters.
+    - Order Date: Format as YYYY-MM-DD if detected, otherwise return null.
+    - Order Datetime: Format as YYYY-MM-DD hh:mm if detected, otherwise return null.
+    - Invoice Number: Trim whitespaces.
+    - Payment Total: If not found, search for similar keywords like "Amount Due".
+    - Remarks: Return error message if any, else return null.
     """
 
     response_schema = {
