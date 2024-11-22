@@ -79,6 +79,17 @@ if uploaded_file1 is not None:
     "remarks": string         // Validation message if needed
     }
 
+    
+    Sequential Processing:
+    1. First, analyze Image 1 ('image1_info'):
+    - Extract all available required fields
+    - Record which fields were successfully extracted, then do not change them at any time
+
+    2. If Image 2 ('image2_info') is provided AND any required fields (except 'remarks') are missing:
+    - Analyze Image 2
+    - Only update fields that were not detected in Image 1.
+
+
     Extraction Rules:
     1. Shop Name:
     - Remove special characters
@@ -99,15 +110,6 @@ if uploaded_file1 is not None:
     - Extract numerical value only
     - Return null if not found 
 
-    Sequential Processing:
-    1. First, analyze Image 1 ('image1_info'):
-    - Extract all available required fields
-    - Record which fields were successfully extracted, then do not change them at any time
-
-    2. If Image 2 ('image2_info') is provided AND any required fields (except 'remarks') are missing:
-    - Analyze Image 2
-    - Only update fields that were null
-    - Do not override extracted field values in step 1
 
     Validation:
     1. Check if critical fields are still null after processing both images:
