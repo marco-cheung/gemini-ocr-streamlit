@@ -69,11 +69,8 @@ if uploaded_file1 is not None:
     generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
 
     # Generate contents
-    prompt = """
-    1) Two-fold OCR for text detection in images:
-    - If any required fields (except 'remarks') are missing or undetectable from the first image, try to extract missing values from the second image if available.
-
-    2) Output:
+    prompt1 = """
+    1) Output:
     - Return only the Markdown content without explanations or comments.
     - Do not use code fences or delimiters.
     - Include all parts of the page, including headers, footers, and subtext.
@@ -82,7 +79,10 @@ if uploaded_file1 is not None:
     - Order Datetime: Format as YYYY-MM-DD hh:mm if detected, otherwise return null.
     - Invoice Number: Trim whitespaces.
     - Payment Total: If not found, search for similar keywords like "Amount Due".
-    - Remarks: If any required fields ('shop_name', 'order_date', 'payment_total') is null, return a JSON response with 'remarks' set to 'Please upload a clear invoice image for verification.'.
+
+    2) Two-fold OCR for text detection in images:
+    - If any required fields (except 'remarks') are still missing or undetectable from the first image, try to replace those 'null' values with detected field values from the second image if available.
+    - Remarks: If any required fields ('shop_name', 'order_date', 'payment_total') are still null, return a JSON response with 'remarks' set to 'Please upload a clear invoice image for verification.'.
     """
 
     response_schema = {
