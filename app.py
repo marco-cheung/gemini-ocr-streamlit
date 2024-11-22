@@ -108,11 +108,6 @@ if uploaded_file1 is not None:
 
     2. If any critical field is null:
     - Set remarks to "Please upload a clear invoice image for verification."
-    - Return partial data with null values for missing fields
-
-    3. If all critical fields are present:
-    - Set remarks to empty string
-    - Return complete data
 
     Format the response as clean JSON without markdown decorators or explanations.
     """
