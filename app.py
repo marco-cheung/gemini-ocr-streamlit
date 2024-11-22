@@ -77,7 +77,7 @@ if uploaded_file1 is not None:
     "order_date": string,      // YYYY-MM-DD or null
     "order_datetime": string,  // YYYY-MM-DD HH:mm or null
     "invoice_num": string,     // Trimmed all whitespaces, preserve alphanumeric characters
-    "payment_total": number,   // Final amount paid by customer, i.e. net paid amount after deducting amount such as gift card and e-Coupon discount. Decimal or null.
+    "payment_total": number,   // Final amount paid by customer, i.e. net payment amount after deducting amount such as gift card and e-Coupon discount. Decimal or null.
     "remarks": string          // Set remarks to "{} field cannot be auto-detected. Please upload a clear invoice image for verification." if any critical field ("shop_name", "order_date", "payment_total") is null.
                                   Example: if "order_date" is null, set "remarks" to "'order_date' field cannot be auto-detected. Please upload a clear invoice image for verification."     
     }
