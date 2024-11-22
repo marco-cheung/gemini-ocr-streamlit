@@ -71,34 +71,13 @@ if uploaded_file1 is not None:
 
     Required Output Format:
     {
-    "shop_name": string,       // UTF-8 encoded, special chars removed
+    "shop_name": string,       // UTF-8 encoded, special chars removed, convert Unicode escape sequences to readable characters
     "order_date": string,      // YYYY-MM-DD or null
     "order_datetime": string,  // YYYY-MM-DD HH:mm or null
-    "invoice_num": string,  // Trimmed
-    "payment_total": number,   // Decimal or null
+    "invoice_num": string,  // Trimmed all whitespaces, preserve alphanumeric characters
+    "payment_total": number,   // Search for keywords such as "Amount Due", "Grand Total" to extract final payment amount. Decimal or null.
     "remarks": string         // Validation message if needed
     }
-
-    Extraction Rules:
-    1. Shop Name:
-    - Remove special characters
-    - Encode as UTF-8
-    - Convert Unicode escape sequences to readable characters
-
-    2. Date/Time Fields:
-    - Order Date: Format as YYYY-MM-DD
-    - Order Datetime: Format as YYYY-MM-DD HH:mm
-    - Return null if not detected
-
-    3. Invoice Number:
-    - Remove all whitespaces
-    - Preserve alphanumeric characters
-
-    4. Payment Total:
-    - Search for keywords such as "Amount Due", "Grand Total" to extract final payment amount
-    - Extract numerical value only
-    - Return null if not found 
-
 
     Validation:
     1. Check if critical fields are still null after processing both images:
