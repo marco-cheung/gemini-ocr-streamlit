@@ -79,7 +79,6 @@ if uploaded_file1 is not None:
     "remarks": string         // Validation message if needed
     }
 
-    
     Sequential Processing:
     1. First, analyze Image 1 ('image1_info'):
     - Extract all available required fields
@@ -88,14 +87,14 @@ if uploaded_file1 is not None:
     2. If Image 2 ('image2_info') is provided AND any required fields (except 'remarks') are missing:
     - Analyze Image 2
     - Only update fields that were not detected in Image 1.
-
+    - Do not overwrite any fields that were successfully extracted from Image 1.
 
     Extraction Rules:
     1. Shop Name:
     - Remove special characters
     - Encode as UTF-8
     - Convert Unicode escape sequences to readable characters
-    
+
     2. Date/Time Fields:
     - Order Date: Format as YYYY-MM-DD
     - Order Datetime: Format as YYYY-MM-DD HH:mm
