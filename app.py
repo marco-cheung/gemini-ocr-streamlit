@@ -69,18 +69,17 @@ if uploaded_file1 is not None:
 
     # Generate contents
     prompt = """
-    You are an intelligent receipt analyzer. Analyze the provided image and extract key information.
+    You are an intelligent receipt analyzer. Analyze the provided image and extract the following key information:
 
-    Required Output Format:
+    Required Output Format (JSON):
     {
-    "shop_name": string,       // UTF-8 encoded, special chars removed, convert Unicode escape sequences to readable characters
-    "order_date": string,      // YYYY-MM-DD or null
-    "order_datetime": string,  // YYYY-MM-DD HH:mm or null
-    "invoice_num": string,     // Trimmed all whitespaces, preserve alphanumeric characters
-    "payment_total": number,   // Final amount paid by customer, i.e. net payment amount after deducting amount such as gift card and e-Coupon discount. Decimal or null.
-    "remarks": string          // Example: if "order_date" and "payment_total" are null, returns "Order Date and Payment Total cannot be auto-detected. Please upload a clear invoice image for verification.";
-                                           no need to check whether "order_datetime" and "invoice_num" is null.
-                                           Required fields to check if they are null: "shop_name", "order_date", "payment_total"
+        "shop_name": string,       // UTF-8 encoded, special characters removed, Unicode escape sequences converted to readable characters
+        "order_date": string,      // Format: YYYY-MM-DD or null
+        "order_datetime": string,  // Format: YYYY-MM-DD HH:mm or null
+        "invoice_num": string,     // Alphanumeric characters only, trimmed of all whitespaces
+        "payment_total": number,   // Final amount paid by customer, net of discounts. Decimal or null.
+        "remarks": string          // If "shop_name" and "payment_total" are null, return: "Order Date and Payment Total cannot be auto-detected. Please upload a clear invoice image for verification."
+                                    // Ignore "order_datetime" and "invoice_num" if not available.
     }
 
     Format the response as clean JSON.
