@@ -21,17 +21,12 @@ st.image(banner_image_path, use_container_width=True)
 st.title("Demo of Receipt OCR with Google Gemini API")
 
 
-def generate_response(prompt, image1_info, image2_info=None):
-    inputs = [prompt, image1_info]
-    if image2_info is not None:
-        inputs.append(image2_info)
-    return generative_multimodal_model.generate_content(
-        inputs,
-        generation_config=GenerationConfig(
-            temperature=0.1,
-            response_mime_type="application/json")
-    )
-
+# Function to generate response from the generative model
+def generate_response(prompt, image):
+    inputs = [prompt, image]
+    return generative_multimodal_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1,
+                                                                                                   response_mime_type="application/json")
+                                                                                                   )
 # Create two columns
 col1, col2 = st.columns(2)
 
@@ -80,7 +75,7 @@ if uploaded_file1 is not None:
     }
 
     Rules:
-    1. shop_name: UTF-8 encoded, no special chars, convert Unicode escape sequences to actual unicode characters
+    1. shop_name: UTF-8 encoded, no special chars, convert escaped Unicode character to actual character (utf-8)
     2. order_date: YYYY-MM-DD format or null
     3. order_datetime: YYYY-MM-DD HH:mm format or null
     4. invoice_num: Trimmed whitespace or null
@@ -89,7 +84,7 @@ if uploaded_file1 is not None:
     Return clean JSON only, no additional text or further explanation.
     """
     
-    response = generate_response(prompt, image1_info, image2_info)
+    response = generate_response(prompt, image1_info)
 
     content = response.text.encode().decode('utf-8')
    
@@ -118,3 +113,41 @@ if uploaded_file1 is not None:
     # Display the response
     pretty_json = json.dumps(json_response, indent=4)
     st.code(pretty_json, language='json')
+
+    # If there are null fields and a second image is provided, try to extract them from image2
+    if null_fields and image2_info:
+        # Modify the prompt to extract only the null fields
+        fields_to_extract = ", ".join(f'"{field}": null' for field in null_fields)
+
+        # Prompt for the null fields
+        prompt_null_fields = f"""
+        You are an intelligent receipt analyzer. Analyze the provided image and extract the following key information:
+        {{
+            {fields_to_extract}
+        }}
+
+        Rules:
+        1. Only extract the following fields: {', '.join(null_fields)}
+        2. Follow the same formatting and rules as before.
+
+        Return clean JSON only, no additional text or further explanation.
+        """
+
+        # Generate response for the second image
+        response2 = generate_response(prompt_null_fields, image2_info)
+
+        # Parse the response from image2
+        content2 = response2.text.encode().decode('utf-8')
+        json_response2 = json.loads(content2)
+
+        # Update the original response with values from the second image
+        for key in null_fields:
+            if key in json_response2 and json_response2[key]:
+                json_response[key] = json_response2[key]
+            else:
+                # Update remarks if fields are still null
+                json_response["remarks"] += f"\n{key} still cannot be auto-detected. Please upload a clear invoice image for verification."
+
+        # Display the final JSON response
+        pretty_json = json.dumps(json_response, indent=4)
+        st.code(pretty_json, language='json')
