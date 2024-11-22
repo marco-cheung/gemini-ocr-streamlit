@@ -172,6 +172,8 @@ if uploaded_file1 is not None:
         #if updated_key is not empty, add remarks to the JSON response
         if updated_keys:
             json_response['remarks_to_cs'] = f"{updated_keys} values are auto-detected from second image, which may not come from the same transaction. Please verify."
+        else:
+            json_response['remarks_to_cs'] = ""
 
     # Display the final JSON response
     pretty_json = json.dumps(json_response, indent=4)
