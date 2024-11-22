@@ -82,7 +82,7 @@ if uploaded_file1 is not None:
     - Order Datetime: Format as YYYY-MM-DD hh:mm if detected, otherwise return null.
     - Invoice Number: Trim whitespaces.
     - Payment Total: If not found, search for similar keywords like "Amount Due".
-    - Remarks: If any required fields ('shop_name', 'order_date', 'payment_total') are still missing, return a JSON response with 'remarks' set to 'Please upload a clear invoice image for verification.'.
+    - Remarks: If any required fields ('shop_name', 'order_date', 'payment_total') is null, return a JSON response with 'remarks' set to 'Please upload a clear invoice image for verification.'.
     """
 
     response_schema = {
