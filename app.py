@@ -71,7 +71,7 @@ if uploaded_file1 is not None:
         "order_date": "YYYY-MM-DD",
         "order_datetime": "YYYY-MM-DD HH:mm",
         "invoice_num": "123456",
-        "payment_total": 99.99
+        "payment_total": "99.99"
     }
 
     Rules:
@@ -79,7 +79,7 @@ if uploaded_file1 is not None:
     2. order_date: YYYY-MM-DD format or null
     3. order_datetime: YYYY-MM-DD HH:mm format or null
     4. invoice_num: Trimmed whitespace or null
-    5. payment_total: Final amount paid by customer, i.e. net payment amount after deducting amount such as gift card and e-Coupon discount
+    5. payment_total: Final amount paid by customer, i.e. net payment amount after deducting amount such as gift card and e-Coupon discount. Or null.
   
     Return clean JSON only, no additional text or further explanation.
     """
@@ -127,7 +127,7 @@ if uploaded_file1 is not None:
             "order_date": "YYYY-MM-DD",
             "order_datetime": "YYYY-MM-DD HH:mm",
             "invoice_num": "123456",
-            "payment_total": 99.99
+            "payment_total": "99.99"
         }
 
         Rules:
@@ -135,7 +135,7 @@ if uploaded_file1 is not None:
         2. order_date: YYYY-MM-DD format or null
         3. order_datetime: YYYY-MM-DD HH:mm format or null
         4. invoice_num: Trimmed whitespace or null
-        5. payment_total: Final amount paid by customer, i.e. net payment amount after deducting amount such as gift card and e-Coupon discount
+        5. payment_total: Final amount paid by customer, i.e. net payment amount after deducting amount such as gift card and e-Coupon discount. Or null.
 
         Return clean JSON only, no additional text or further explanation.
         """
