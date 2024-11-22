@@ -108,9 +108,12 @@ if uploaded_file1 is not None:
         remarks = ""
 
     # Add remarks to the JSON response        
-    json_response['remarks'] = remarks
+    json_response['remarks_to_customer'] = remarks
 
     ########################################################
+    # List to store keys of updated values
+    updated_keys = []
+    
     # If there are null fields and a second image is provided, try to extract them from image2
     if null_fields and image2_info:
 
@@ -145,6 +148,7 @@ if uploaded_file1 is not None:
         for key in json_response:
             if not json_response[key] and key in json_response2 and json_response2[key]:
                 json_response[key] = json_response2[key]
+                updated_keys.append(key)
 
         # Identify fields that are still null
         remaining_null_fields = [key for key, value in json_response.items() if not value]
@@ -163,7 +167,8 @@ if uploaded_file1 is not None:
             remarks = ""
 
         # Add remarks to the JSON response        
-        json_response['remarks'] = remarks
+        json_response['remarks_to_customer'] = remarks
+        json_response['remarks_to_cs'] = f"{updated_keys} values are auto-detected from second image, which may not come from the same transaction. Please verify."
 
     # Display the final JSON response
     pretty_json = json.dumps(json_response, indent=4)
