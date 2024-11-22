@@ -78,9 +78,8 @@ if uploaded_file1 is not None:
     "order_datetime": string,  // YYYY-MM-DD HH:mm or null
     "invoice_num": string,     // Trimmed all whitespaces, preserve alphanumeric characters
     "payment_total": number,   // Final amount paid by customer, i.e. net payment amount after deducting amount such as gift card and e-Coupon discount. Decimal or null.
-    "remarks": string          // If "shop_name", "order_date", or "payment_total" is null, set remarks to "{} field cannot be auto-detected. Please upload a clear invoice image for verification.", else null.
-                                Ignore if 'order_datetime' or 'invoice_num' is null.
-                                Example: if "order_date" and "payment_total" are null, set "remarks" to "Order Date and Payment Total cannot be auto-detected. Please upload a clear invoice image for verification."
+    "remarks": string          // If any of the following required fields ("shop_name", "order_date", "payment_total") is null, set remarks to "{} field cannot be auto-detected. Please upload a clear invoice image for verification.", else null.
+                                  Example: if "order_date" and "payment_total" are null, set "remarks" to "Order Date and Payment Total cannot be auto-detected. Please upload a clear invoice image for verification."
     }
 
     Format the response as clean JSON.
