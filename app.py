@@ -65,7 +65,7 @@ if uploaded_file1 is not None:
                 image2_info = None
    
     # Create the generative model
-    generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
+    generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002")
 
     # Generate contents
     prompt = """
