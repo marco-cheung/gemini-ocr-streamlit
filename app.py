@@ -78,7 +78,7 @@ if uploaded_file1 is not None:
     "order_datetime": string,  // YYYY-MM-DD HH:mm or null
     "invoice_num": string,     // Trimmed all whitespaces, preserve alphanumeric characters
     "payment_total": number,   // Final amount paid by customer. Decimal or null.
-    "remarks": string          // Set remarks to "Please upload a clear invoice image for verification." if any critical field ("shop_name", "order_date", "is null after processing image.
+    "remarks": string          // Set remarks to "Please upload a clear invoice image for verification." if any critical field ("shop_name", "order_date", "payment_total") is null after processing image.
     }
 
     Format the response as clean JSON without markdown decorators or explanations.
