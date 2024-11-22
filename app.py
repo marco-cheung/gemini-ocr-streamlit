@@ -97,12 +97,12 @@ if uploaded_file1 is not None:
     4. Payment Total:
     - Search for keywords: "Total", "Amount Due", "Grand Total", "Payment", "Balance Due"
     - Extract numerical value only
-    - Return null if not found
+    - Return null if not found 
 
     Sequential Processing:
     1. First, analyze Image 1 ('image1_info'):
     - Extract all available required fields
-    - Record which fields were successfully extracted
+    - Record which fields were successfully extracted, do not change them in step 2
 
     2. If Image 2 is provided AND any required fields are missing:
     - Analyze Image 2 ('image2_info')
