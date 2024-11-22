@@ -69,20 +69,64 @@ if uploaded_file1 is not None:
     generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
 
     # Generate contents
-    prompt1 = """
-    1) Output:
-    - Return only the Markdown content without explanations or comments.
-    - Do not use code fences or delimiters.
-    - Include all parts of the page, including headers, footers, and subtext.
-    - Shop Name: Remove special characters, encode as UTF-8, and convert Unicode escape sequences to characters.
-    - Order Date: Format as YYYY-MM-DD if detected, otherwise return null.
-    - Order Datetime: Format as YYYY-MM-DD hh:mm if detected, otherwise return null.
-    - Invoice Number: Trim whitespaces.
-    - Payment Total: If not found, search for similar keywords like "Amount Due".
+    prompt = """
+    You are an intelligent receipt analyzer. Analyze the provided image(s) and extract key information.
 
-    2) Two-fold OCR for text detection in images:
-    - If any required fields (except 'remarks') are still missing or undetectable from the first image, try to replace those 'null' values with detected field values from the second image if available.
-    - Remarks: If any required fields ('shop_name', 'order_date', 'payment_total') are still null, return a JSON response with 'remarks' set to 'Please upload a clear invoice image for verification.'.
+    Required Output Format:
+    {
+    "shop_name": string,       // UTF-8 encoded, special chars removed
+    "order_date": string,      // YYYY-MM-DD or null
+    "order_datetime": string,  // YYYY-MM-DD HH:mm or null
+    "invoice_number": string,  // Trimmed
+    "payment_total": number,   // Decimal or null
+    "remarks": string         // Validation message if needed
+    }
+
+    Extraction Rules:
+    1. Shop Name:
+    - Remove special characters
+    - Encode as UTF-8
+    - Convert Unicode escape sequences to readable characters
+    
+    2. Date/Time Fields:
+    - Order Date: Format as YYYY-MM-DD
+    - Order Datetime: Format as YYYY-MM-DD HH:mm
+    - Return null if not detected
+
+    3. Invoice Number:
+    - Remove leading/trailing whitespace
+    - Preserve alphanumeric characters
+
+    4. Payment Total:
+    - Search for keywords: "Total", "Amount Due", "Grand Total", "Payment", "Balance Due"
+    - Extract numerical value only
+    - Return null if not found
+
+    Sequential Processing:
+    1. First, analyze Image 1:
+    - Extract all available required fields
+    - Record which fields were successfully extracted
+
+    2. If Image 2 is provided AND any required fields are missing:
+    - Analyze Image 2
+    - Only update fields that were null from Image 1
+    - Do not override valid values from Image 1
+
+    Validation:
+    1. Check if critical fields are still null after processing both images:
+    - shop_name
+    - order_date
+    - payment_total
+
+    2. If any critical field is null:
+    - Set remarks to "Please upload a clear invoice image for verification."
+    - Return partial data with null values for missing fields
+
+    3. If all critical fields are present:
+    - Set remarks to empty string
+    - Return complete data
+
+    Format the response as clean JSON without markdown decorators or explanations.
     """
 
     response_schema = {
