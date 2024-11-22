@@ -75,7 +75,7 @@ if uploaded_file1 is not None:
     }
 
     Rules:
-    1. shop_name: UTF-8 encoded, no special chars, convert escaped Unicode character to actual character (utf-8)
+    1. shop_name: UTF-8 encoded, no special chars, convert any escaped Unicode characters (like \u0041 or \u{1F600}) into their actual UTF-8 character representations
     2. order_date: YYYY-MM-DD format or null
     3. order_datetime: YYYY-MM-DD HH:mm format or null
     4. invoice_num: Trimmed whitespace or null
