@@ -67,7 +67,7 @@ if uploaded_file1 is not None:
 
     # Generate contents
     prompt = """
-    You are an intelligent receipt analyzer. Analyze the provided image(s) and extract key information.
+    You are an intelligent receipt analyzer. Analyze the provided first image and extract key information.
 
     Required Output Format:
     {
@@ -78,16 +78,6 @@ if uploaded_file1 is not None:
     "payment_total": number,   // Decimal or null
     "remarks": string         // Validation message if needed
     }
-
-    Sequential Processing:
-    1. First, analyze Image 1 ('image1_info'):
-    - Extract all available required fields
-    - Once fields were successfully extracted, do not change them even if user uploads Image 2 ('image2_info').
-
-    2. If Image 2 is provided AND any required fields (except 'remarks') are missing:
-    - Analyze Image 2
-    - Only update fields that were not detected in Image 1.
-    - Do not overwrite any fields that were successfully extracted from Image 1.
 
     Extraction Rules:
     1. Shop Name:
