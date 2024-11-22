@@ -70,20 +70,21 @@ if uploaded_file1 is not None:
 
     # Generate contents
     prompt = """
-    1) Error check:
-       - If any of the required fields ('shop_name', 'order_date', or 'payment_total') is missing or cannot be detected, return a JSON response with the 'remarks' field set to 'Please upload a clear invoice image for text recognition.'
-         Otherwise, follow the instructions below.
+    1) Error Check:
+       - For 'image1_info', if any required fields are missing or undetectable, check 'image2_info' for missing values.
+       - If 'shop name', 'order date', or 'payment total' are still missing, return a JSON response with 'remarks' set to 'Please upload a clear invoice image for text recognition.'
 
-    2) - Output: Return solely the Markdown content without any additional explanations or comments.
-       - No Delimiters: Do not use code fences or delimiters like ```markdown.
-       - Complete Content: Do not omit any part of the page, including headers, footers, and subtext.
-       - Shop Name Format: Remove special character. Encoding as UTF-8. Convert Unicode escape sequences to characters.
-       - Order Date Format: Change to date format (YYYY-MM-DD) if detected. Otherwise, return null JSON value.
-       - Order Datetime Format: Change to datetime format (YYYY-MM-DD hh:mm) if detected. Otherwise, return null JSON value.
-       - Invoice Number Format: Trim whitespaces if any.
-       - Payment Total Format: If not found, try to find search similar keywords such as "Amount Due". 
-       - Remarks: Error message if any, else return null JSON value.
-     """
+    2) Output:
+       - Return only the Markdown content without explanations or comments.
+       - Do not use code fences or delimiters.
+       - Include all parts of the page, including headers, footers, and subtext.
+       - Shop Name: Remove special characters, encode as UTF-8, and convert Unicode escape sequences to characters.
+       - Order Date: Format as YYYY-MM-DD if detected, otherwise return null.
+       - Order Datetime: Format as YYYY-MM-DD hh:mm if detected, otherwise return null.
+       - Invoice Number: Trim whitespaces.
+       - Payment Total: If not found, search for similar keywords like "Amount Due".
+       - Remarks: Return error message if any, else return null.
+    """
 
     response_schema = {
     "type": "object",
