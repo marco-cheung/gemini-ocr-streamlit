@@ -98,3 +98,7 @@ if uploaded_file1 is not None:
     json_response = json.loads(content)
     pretty_json = json.dumps(json_response, indent=4)
     st.code(pretty_json, language='json')
+
+    # Identify fields with null values (excluding 'remarks')
+    null_fields = [key for key, value in json_response.items() if not value and key != "remarks"]
+    st.write(null_fields)
