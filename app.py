@@ -106,8 +106,8 @@ if uploaded_file1 is not None:
 
     2. If Image 2 is provided AND any required fields are missing:
     - Analyze Image 2 ('image2_info')
-    - Only update fields that were null from Image 1
-    - Do not override valid values from Image 1
+    - Only update fields that were null
+    - Do not override extracted field values in step 1
 
     Validation:
     1. Check if critical fields are still null after processing both images:
