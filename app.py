@@ -65,25 +65,30 @@ if uploaded_file1 is not None:
                 image2_info = None
    
     # Create the generative model
-    generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002")
+    generative_multimodal_model = GenerativeModel("gemini-1.5-flash-002")
 
     # Generate contents
     prompt = """
     You are an intelligent receipt analyzer. Analyze the provided image and extract the following key information:
 
-    Required Output Format (JSON):
     {
-        "shop_name": string,       // UTF-8 encoded, special characters removed, Unicode escape sequences converted to readable characters
-        "order_date": string,      // Format: YYYY-MM-DD or null
-        "order_datetime": string,  // Format: YYYY-MM-DD HH:mm or null
-        "invoice_num": string,     // Alphanumeric characters only, trimmed of all whitespaces
-        "payment_total": float,   // Final amount paid by customer, net of discounts. Decimal or null.
-        "remarks": string         // If "shop_name" or "order_date" or "payment_total" are null, return: "{} cannot be auto-detected. Please upload a clear invoice image for verification."
-                                  // Example: "Shop Name cannot be auto-detected. Please upload a clear invoice image for verification."
-                                  // Ignore "order_datetime" and "invoice_num" if not available. Simply return null for them.
+        "shop_name": "Store Name", 
+        "order_date": "YYYY-MM-DD",
+        "order_datetime": "YYYY-MM-DD HH:mm",
+        "invoice_num": "123456",
+        "payment_total": 99.99,
+        "remarks": ""
     }
 
-    Format the response as clean JSON.
+    Rules:
+    1. shop_name: UTF-8 encoded, no special chars, convert Unicode escape sequences to readable characters
+    2. order_date: YYYY-MM-DD format or null
+    3. order_datetime: YYYY-MM-DD HH:mm format or null
+    4. invoice_num: Trimmed whitespace or null
+    5. payment_total: Final amount paid by customer, i.e. net payment amount after deducting amount such as gift card and e-Coupon discount. Decimal or null.
+    6. remarks: If shop_name/order_date/payment_total is null, add: "[Field] cannot be auto-detected. Please upload a clear invoice image for verification."
+
+    Return clean JSON only, no additional text.
     """
     
     response = generate_response(prompt, image1_info, image2_info)
