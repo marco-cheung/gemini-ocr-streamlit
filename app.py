@@ -71,8 +71,8 @@ if uploaded_file1 is not None:
     # Generate contents
     prompt = """
     1) Two-fold OCR for text detection in images:
-    - If any required fields (except 'remarks') are missing or undetectable from 'uploaded_file1', try to extract missing values from 'uploaded_file2'.
-    - If 'shop_name', 'order_date', or 'payment_total' are still missing after checking 'uploaded_file2', return a JSON response with 'remarks' set to 'Please upload a clear invoice image for verification.'.
+    - If any required fields (except 'remarks') are missing or undetectable from 'uploaded_file1', try to extract missing values from 'uploaded_file2' if available.
+    - If 'shop_name', 'order_date', or 'payment_total' are still missing ('null') after checking 'uploaded_file2', return a JSON response with 'remarks' set to 'Please upload a clear invoice image for verification.'.
 
     2) Output:
     - Return only the Markdown content without explanations or comments.
@@ -83,7 +83,7 @@ if uploaded_file1 is not None:
     - Order Datetime: Format as YYYY-MM-DD hh:mm if detected, otherwise return null.
     - Invoice Number: Trim whitespaces.
     - Payment Total: If not found, search for similar keywords like "Amount Due".
-    - Remarks: Return error message if any of the following fields ('shop_name', 'order_date', 'payment_total') is still missing after trying to extract missing values from 'uploaded_file2', else return null.
+    - Remarks: Return the error message, else return null.
     """
 
     response_schema = {
