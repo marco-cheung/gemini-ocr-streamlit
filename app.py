@@ -78,9 +78,9 @@ if uploaded_file1 is not None:
     "order_datetime": string,  // YYYY-MM-DD HH:mm or null
     "invoice_num": string,     // Trimmed all whitespaces, preserve alphanumeric characters
     "payment_total": number,   // Final amount paid by customer, i.e. net payment amount after deducting amount such as gift card and e-Coupon discount. Decimal or null.
-    "remarks": string          // Set remarks to "{} field cannot be auto-detected. Please upload a clear invoice image for verification." or null.
-                                  Example: if "order_date" and "payment_total" are null, returns "Order Date and Payment Total cannot be auto-detected. Please upload a clear invoice image for verification."
-                                           if only "order_datetime" and/or "invoice_num" are null, return null.
+    "remarks": string          // Example: if "order_date" and "payment_total" are null, returns "Order Date and Payment Total cannot be auto-detected. Please upload a clear invoice image for verification.";
+                                           no need to check whether "order_datetime" and "invoice_num" is null.
+                                           Required fields to check if they are null: "shop_name", "order_date", "payment_total"
     }
 
     Format the response as clean JSON.
