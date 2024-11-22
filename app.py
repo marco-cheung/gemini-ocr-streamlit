@@ -71,7 +71,7 @@ if uploaded_file1 is not None:
     # Generate contents
     prompt = """
     1) Two-fold OCR for text detection in images:
-    - If any required fields are missing or undetectable from 'uploaded_file1', try to extract missing values from 'uploaded_file2'.
+    - If any required fields (except 'remarks') are missing or undetectable from 'uploaded_file1', try to extract missing values from 'uploaded_file2'.
     - If 'shop_name', 'order_date', or 'payment_total' are still missing after checking 'uploaded_file2', return a JSON response with 'remarks' set to 'Please upload a clear invoice image for verification.'.
 
     2) Output:
