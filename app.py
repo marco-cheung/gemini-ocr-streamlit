@@ -109,6 +109,7 @@ if uploaded_file1 is not None:
 
     # Add remarks to the JSON response        
     json_response['remarks_to_customer'] = remarks
+    json_response['remarks_to_cs'] = ""
 
     ########################################################
     # List to store keys of updated values
