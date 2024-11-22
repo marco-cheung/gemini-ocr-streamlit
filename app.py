@@ -27,7 +27,9 @@ def generate_response(prompt, image1_info, image2_info=None):
         inputs.append(image2_info)
     return generative_multimodal_model.generate_content(
         inputs,
-        generation_config=GenerationConfig(response_mime_type="application/json")
+        generation_config=GenerationConfig(
+            temperature=0.1,
+            response_mime_type="application/json")
     )
 
 # Create two columns
@@ -76,17 +78,8 @@ if uploaded_file1 is not None:
     "order_datetime": string,  // YYYY-MM-DD HH:mm or null
     "invoice_num": string,     // Trimmed all whitespaces, preserve alphanumeric characters
     "payment_total": number,   // Final amount paid by customer. Decimal or null.
-    "remarks": string          // Set remarks to "Please upload a clear invoice image for verification." if any critical field ("shop_name", "order_date", "is null.
+    "remarks": string          // Set remarks to "Please upload a clear invoice image for verification." if any critical field ("shop_name", "order_date", "is null after processing image.
     }
-
-    Validation:
-    1. Check if critical fields are still null after processing both images:
-    - shop_name
-    - order_date
-    - payment_total
-
-    2. If any critical field is null:
-    - Set remarks to "Please upload a clear invoice image for verification."
 
     Format the response as clean JSON without markdown decorators or explanations.
     """
