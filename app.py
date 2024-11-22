@@ -95,8 +95,6 @@ if uploaded_file1 is not None:
    
     # Parse the content as JSON and display it in a code block
     json_response = json.loads(content)
-    pretty_json = json.dumps(json_response, indent=4)
-    st.code(pretty_json, language='json')
 
     # Identify fields with null values (excluding 'remarks')
     null_fields = [key for key, value in json_response.items() if not value and key != "remarks"]
@@ -112,3 +110,7 @@ if uploaded_file1 is not None:
     
         remarks = f"{fields_str} cannot be auto-detected. Please upload a clear invoice image for verification."
         json_response['remarks'] = remarks
+    
+    # Display the JSON response
+    pretty_json = json.dumps(json_response, indent=4)
+    st.code(pretty_json, language='json')
