@@ -103,13 +103,15 @@ if uploaded_file1 is not None:
         else:
             fields_str = ', '.join(null_fields[:-1]) + ', and ' + null_fields[-1]
     
-        remarks = f"{fields_str} cannot be auto-detected."
+        remarks_to_customer = f"{fields_str} cannot be auto-detected. Please upload a clear invoice image for verification."
+        remarks_to_cs = f"{fields_str} cannot be auto-detected. Please verify."
     else:
-        remarks = ""
+        remarks_to_customer = ""
+        remarks_to_cs = ""
 
     # Add remarks to the JSON response        
-    json_response['remarks_to_customer'] = remarks + " Please upload a clear invoice image for verification."
-    json_response['remarks_to_cs'] = remarks
+    json_response['remarks_to_customer'] = remarks_to_customer
+    json_response['remarks_to_cs'] = remarks_to_cs
 
     ########################################################
     # List to store keys of updated values
@@ -163,16 +165,16 @@ if uploaded_file1 is not None:
             else:
                 fields_str = ', '.join(null_fields[:-1]) + ', and ' + null_fields[-1]
         
-            remarks = f"{fields_str} still cannot be auto-detected. Please upload a clear invoice image for verification."
+            remarks_to_customer = f"{fields_str} still cannot be auto-detected. Please upload a clear invoice image for verification."
         else:
-            remarks = ""
+            remarks_to_customer = ""
 
         # Add remarks to the JSON response        
-        json_response['remarks_to_customer'] = remarks
+        json_response['remarks_to_customer'] = remarks_to_customer
 
         #if updated_key is not empty, add remarks to the JSON response
         if updated_keys:
-            json_response['remarks_to_cs'] = f"{updated_keys} values are auto-detected from second image, which may not come from the same transaction. Please verify."
+            json_response['remarks_to_cs'] = f"{updated_keys} are auto-detected from second image, which may not come from the same transaction. Please verify."
 
     # Display the final JSON response
     pretty_json = json.dumps(json_response, indent=4)
