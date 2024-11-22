@@ -80,11 +80,7 @@ if uploaded_file1 is not None:
     }
 
     Sequential Processing:
-    1. First, analyze Image 1 ('image1_info'):
-    - Extract all available required fields
-    - Record which fields were successfully extracted, then do not change them at any time
-
-    2. If Image 2 ('image2_info') is provided AND any required fields (except 'remarks') are missing:
+    If Image 2 ('image2_info') is also provided AND any required fields (except 'remarks') are missing:
     - Analyze Image 2
     - Only update fields that were not detected in Image 1.
     - Do not overwrite any fields that were successfully extracted from Image 1.
