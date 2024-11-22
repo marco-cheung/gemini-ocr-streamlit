@@ -147,19 +147,23 @@ if uploaded_file1 is not None:
                 json_response[key] = json_response2[key]
 
         # Identify fields that are still null
-        remaining_null_fields = [key for key in null_fields if not json_response.get(key)]
+        remaining_null_fields = [key for key, value in json_response.items() if not value]
 
-        # Update remarks if any fields are still null
+        # Update original json response and display remarks if any field is null
         if remaining_null_fields:
-            if json_response["remarks"]:
-                json_response["remarks"] += "\n"
-            if len(remaining_null_fields) == 1:
-                fields_str = remaining_null_fields[0]
-            elif len(remaining_null_fields) == 2:
-                fields_str = ' and '.join(remaining_null_fields)
+            if len(null_fields) == 1:
+                fields_str = null_fields[0]
+            elif len(null_fields) == 2:
+                fields_str = ' and '.join(null_fields)
             else:
-                fields_str = ', '.join(remaining_null_fields[:-1]) + ', and ' + remaining_null_fields[-1]
-            json_response["remarks"] += f"{fields_str} still cannot be auto-detected. Please upload a clear invoice image for verification."
+                fields_str = ', '.join(null_fields[:-1]) + ', and ' + null_fields[-1]
+        
+            remarks = f"{fields_str} still cannot be auto-detected. Please upload a clear invoice image for verification."
+        else:
+            remarks = ""
+
+        # Add remarks to the JSON response        
+        json_response['remarks'] = remarks
 
     # Display the final JSON response
     pretty_json = json.dumps(json_response, indent=4)
