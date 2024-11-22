@@ -77,7 +77,7 @@ if uploaded_file1 is not None:
         "order_date": string,      // Format: YYYY-MM-DD or null
         "order_datetime": string,  // Format: YYYY-MM-DD HH:mm or null
         "invoice_num": string,     // Alphanumeric characters only, trimmed of all whitespaces
-        "payment_total": number,   // Final amount paid by customer, net of discounts. Decimal or null.
+        "payment_total": float,   // Final amount paid by customer, net of discounts. Decimal or null.
         "remarks": string          // If "shop_name" and "payment_total" are null, return: "Order Date and Payment Total cannot be auto-detected. Please upload a clear invoice image for verification."
                                     // Ignore "order_datetime" and "invoice_num" if not available.
     }
