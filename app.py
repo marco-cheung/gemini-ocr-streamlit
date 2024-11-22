@@ -96,7 +96,7 @@ if uploaded_file1 is not None:
     # Parse the content as JSON and display it in a code block
     json_response = json.loads(content)
 
-    # Identify fields with null values (excluding 'remarks')
+    # Identify mandatory fields ("shop_name", "order_date", "payment_total") with null values
     null_fields = [key for key, value in json_response.items() if not value and key in ("shop_name", "order_date", "payment_total")]
     
     # Update original json response and display remarks if any field is null
