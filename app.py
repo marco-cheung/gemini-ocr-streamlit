@@ -75,7 +75,7 @@ if uploaded_file1 is not None:
     }
 
     Rules:
-    1. shop_name: UTF-8 encoded, no special chars, convert Unicode escape sequences to readable texts (utf-8)
+    1. shop_name: Output readable text in UTF-8 encoding without Unicode escape sequences or special characters
     2. order_date: YYYY-MM-DD format or null
     3. order_datetime: YYYY-MM-DD HH:mm format or null
     4. invoice_num: Trimmed whitespace or null
@@ -130,7 +130,7 @@ if uploaded_file1 is not None:
         }
 
         Rules:
-        1. shop_name: UTF-8 encoded, no special chars, convert Unicode escape sequences to readable texts (utf-8)
+        1. shop_name: Output readable text in UTF-8 encoding without Unicode escape sequences or special characters
         2. order_date: YYYY-MM-DD format or null
         3. order_datetime: YYYY-MM-DD HH:mm format or null
         4. invoice_num: Trimmed whitespace or null
