@@ -81,6 +81,8 @@ if uploaded_file1 is not None:
     "remarks": string          // Set remarks to "Please upload a clear invoice image for verification." if any critical field ("shop_name", "order_date", "payment_total") is null after processing image.
     }
 
+    Do not change extracted information from first image. If the second image is provided, extract additional missing information and append it to the response. 
+
     Format the response as clean JSON without markdown decorators or explanations.
     """
     
