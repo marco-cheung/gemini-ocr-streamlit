@@ -100,12 +100,12 @@ if uploaded_file1 is not None:
     - Return null if not found
 
     Sequential Processing:
-    1. First, analyze Image 1:
+    1. First, analyze Image 1 ('image1_info'):
     - Extract all available required fields
     - Record which fields were successfully extracted
 
     2. If Image 2 is provided AND any required fields are missing:
-    - Analyze Image 2
+    - Analyze Image 2 ('image2_info')
     - Only update fields that were null from Image 1
     - Do not override valid values from Image 1
 
