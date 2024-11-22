@@ -27,10 +27,7 @@ def generate_response(prompt, image1_info, image2_info=None):
         inputs.append(image2_info)
     return generative_multimodal_model.generate_content(
         inputs,
-        generation_config=GenerationConfig(
-            response_mime_type="application/json",
-            response_schema=response_schema
-        )
+        generation_config=GenerationConfig(response_mime_type="application/json")
     )
 
 # Create two columns
@@ -77,7 +74,7 @@ if uploaded_file1 is not None:
     "shop_name": string,       // UTF-8 encoded, special chars removed
     "order_date": string,      // YYYY-MM-DD or null
     "order_datetime": string,  // YYYY-MM-DD HH:mm or null
-    "invoice_number": string,  // Trimmed
+    "invoice_num": string,  // Trimmed
     "payment_total": number,   // Decimal or null
     "remarks": string         // Validation message if needed
     }
@@ -128,41 +125,7 @@ if uploaded_file1 is not None:
 
     Format the response as clean JSON without markdown decorators or explanations.
     """
-
-    response_schema = {
-    "type": "object",
-    "properties": {
-        "shop_name": {
-            "type": "string",
-            "nullable": True
-        },
-        "order_date": {
-            "type": "string", 
-            "format": "date",
-            "nullable": True
-        },
-        "order_datetime": {
-            "type": "string", 
-            "format": "datetime",
-            "nullable": True
-        },
-        "invoice_num": {
-            "type": "string", 
-            "format": "string",
-            "nullable": True
-        },
-        "payment_total": {
-            "type": "string",
-            "nullable": True
-        },
-        "remarks": {
-            "type": "string",
-            "nullable": True
-        }
-    },
-    "required": ["shop_name", "order_date", "order_datetime", "invoice_num", "payment_total", "remarks"]
-    }
-
+    
     response = generate_response(prompt, image1_info, image2_info)
 
     content = response.text.encode().decode('utf-8')
