@@ -117,18 +117,27 @@ if uploaded_file1 is not None:
     # If there are null fields and a second image is provided, try to extract them from image2
     if null_fields and image2_info:
         # Modify the prompt to extract only the null fields
-        fields_to_extract = ", ".join(f'"{field}": null' for field in null_fields)
+        fields_to_extract = ", ".join(f'"{field}"' for field in null_fields)
 
         # Prompt for the null fields
         prompt_null_fields = f"""
-        You are an intelligent receipt analyzer. Analyze the provided image and extract the following key information:
         {{
-            {fields_to_extract}
+            "shop_name": "Store Name", 
+            "order_date": "YYYY-MM-DD",
+            "order_datetime": "YYYY-MM-DD HH:mm",
+            "invoice_num": "123456",
+            "payment_total": 99.99
         }}
 
         Rules:
-        1. Only extract the following fields: {', '.join(null_fields)}
-        2. Follow the same formatting and rules as before.
+        1. shop_name: UTF-8 encoded, no special chars, convert any escaped Unicode characters (like \\u0041 or \\u{{1F600}}) into their actual UTF-8 character representations
+        2. order_date: YYYY-MM-DD format or null
+        3. order_datetime: YYYY-MM-DD HH:mm format or null
+        4. invoice_num: Trimmed whitespace or null
+        5. payment_total: Final amount paid by customer, i.e. net payment amount after deducting amount such as gift card and e-Coupon discount
+
+        Additional Instructions:
+        Only extract the following fields: {fields_to_extract}
 
         Return clean JSON only, no additional text or further explanation.
         """
