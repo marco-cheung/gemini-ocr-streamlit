@@ -104,8 +104,8 @@ if uploaded_file1 is not None:
     - Extract all available required fields
     - Record which fields were successfully extracted, do not change them in step 2
 
-    2. If Image 2 is provided AND any required fields are missing:
-    - Analyze Image 2 ('image2_info')
+    2. If Image 2 ('image2_info') is provided AND any required fields (except 'remarks') are missing:
+    - Analyze Image 2
     - Only update fields that were null
     - Do not override extracted field values in step 1
 
