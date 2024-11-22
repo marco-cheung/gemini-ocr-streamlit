@@ -109,11 +109,8 @@ if uploaded_file1 is not None:
 
     # Add remarks to the JSON response        
     json_response['remarks'] = remarks
-    
-    # Display the response
-    pretty_json = json.dumps(json_response, indent=4)
-    st.code(pretty_json, language='json')
 
+    ########################################################
     # If there are null fields and a second image is provided, try to extract them from image2
     if null_fields and image2_info:
 
@@ -164,6 +161,6 @@ if uploaded_file1 is not None:
                 fields_str = ', '.join(remaining_null_fields[:-1]) + ', and ' + remaining_null_fields[-1]
             json_response["remarks"] += f"{fields_str} still cannot be auto-detected. Please upload a clear invoice image for verification."
 
-        # Display the final JSON response
-        pretty_json = json.dumps(json_response, indent=4)
-        st.code(pretty_json, language='json')
+    # Display the final JSON response
+    pretty_json = json.dumps(json_response, indent=4)
+    st.code(pretty_json, language='json')
