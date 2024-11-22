@@ -144,9 +144,21 @@ if uploaded_file1 is not None:
         for key in null_fields:
             if key in json_response2 and json_response2[key]:
                 json_response[key] = json_response2[key]
+
+        # Identify fields that are still null
+        remaining_null_fields = [key for key in null_fields if not json_response.get(key)]
+
+        # Update remarks if any fields are still null
+        if remaining_null_fields:
+            if json_response["remarks"]:
+                json_response["remarks"] += "\n"
+            if len(remaining_null_fields) == 1:
+                fields_str = remaining_null_fields[0]
+            elif len(remaining_null_fields) == 2:
+                fields_str = ' and '.join(remaining_null_fields)
             else:
-                # Update remarks if fields are still null
-                json_response["remarks"] += f"\n{key} still cannot be auto-detected. Please upload a clear invoice image for verification."
+                fields_str = ', '.join(remaining_null_fields[:-1]) + ', and ' + remaining_null_fields[-1]
+            json_response["remarks"] += f"{fields_str} still cannot be auto-detected. Please upload a clear invoice image for verification."
 
         # Display the final JSON response
         pretty_json = json.dumps(json_response, indent=4)
