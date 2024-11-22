@@ -75,7 +75,7 @@ if uploaded_file1 is not None:
     }
 
     Rules:
-    1. shop_name: UTF-8 encoded, no special chars, convert any escaped Unicode characters (like \u0041 or \u{1F600}) into their actual UTF-8 character representations
+    1. shop_name: UTF-8 encoded, no special chars, convert any escaped Unicode characters (like '\u0041') into their actual UTF-8 character representations
     2. order_date: YYYY-MM-DD format or null
     3. order_datetime: YYYY-MM-DD HH:mm format or null
     4. invoice_num: Trimmed whitespace or null
@@ -120,17 +120,17 @@ if uploaded_file1 is not None:
         fields_to_extract = ", ".join(f'"{field}"' for field in null_fields)
 
         # Prompt for the null fields
-        prompt_null_fields = f"""
-        {{
+        prompt_null_fields = """
+        {
             "shop_name": "Store Name", 
             "order_date": "YYYY-MM-DD",
             "order_datetime": "YYYY-MM-DD HH:mm",
             "invoice_num": "123456",
             "payment_total": 99.99
-        }}
+        }
 
         Rules:
-        1. shop_name: UTF-8 encoded, no special chars, convert any escaped Unicode characters (like \\u0041 or \\u{{1F600}}) into their actual UTF-8 character representations
+        1. shop_name: UTF-8 encoded, no special chars, convert any escaped Unicode characters (like '\u0041') into their actual UTF-8 character representations
         2. order_date: YYYY-MM-DD format or null
         3. order_datetime: YYYY-MM-DD HH:mm format or null
         4. invoice_num: Trimmed whitespace or null
