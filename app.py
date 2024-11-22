@@ -109,8 +109,12 @@ if uploaded_file1 is not None:
             fields_str = ', '.join(null_fields[:-1]) + ', and ' + null_fields[-1]
     
         remarks = f"{fields_str} cannot be auto-detected. Please upload a clear invoice image for verification."
-        json_response['remarks'] = remarks
+    else:
+        remarks = ""
+
+    # Add remarks to the JSON response        
+    json_response['remarks'] = remarks
     
-    # Display the JSON response
+    # Display the response
     pretty_json = json.dumps(json_response, indent=4)
     st.code(pretty_json, language='json')
