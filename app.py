@@ -100,4 +100,15 @@ if uploaded_file1 is not None:
 
     # Identify fields with null values (excluding 'remarks')
     null_fields = [key for key, value in json_response.items() if not value and key != "remarks"]
-    st.write(null_fields)
+    
+    # Update original json response and display remarks if any field is null
+    if null_fields:
+        if len(null_fields) == 1:
+            fields_str = null_fields[0]
+        elif len(null_fields) == 2:
+            fields_str = ' and '.join(null_fields)
+        else:
+            fields_str = ', '.join(null_fields[:-1]) + ', and ' + null_fields[-1]
+    
+        remarks = f"{fields_str} cannot be auto-detected. Please upload a clear invoice image for verification."
+        json_response['remarks'] = remarks
