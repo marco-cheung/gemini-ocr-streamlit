@@ -91,7 +91,7 @@ if uploaded_file1 is not None:
     - Return null if not detected
 
     3. Invoice Number:
-    - Remove leading/trailing whitespace
+    - Remove all whitespaces
     - Preserve alphanumeric characters
 
     4. Payment Total:
@@ -102,7 +102,7 @@ if uploaded_file1 is not None:
     Sequential Processing:
     1. First, analyze Image 1 ('image1_info'):
     - Extract all available required fields
-    - Record which fields were successfully extracted, do not change them in step 2
+    - Record which fields were successfully extracted, then do not change them at any time
 
     2. If Image 2 ('image2_info') is provided AND any required fields (except 'remarks') are missing:
     - Analyze Image 2
