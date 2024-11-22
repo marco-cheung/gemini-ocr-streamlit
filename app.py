@@ -105,7 +105,7 @@ if uploaded_file1 is not None:
     - Preserve alphanumeric characters
 
     4. Payment Total:
-    - Search for keywords: "Total", "Amount Due", "Grand Total", "Payment", "Balance Due"
+    - Search for keywords such as "Amount Due", "Grand Total" to extract final payment amount
     - Extract numerical value only
     - Return null if not found 
 
