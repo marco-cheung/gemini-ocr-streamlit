@@ -72,7 +72,7 @@ if uploaded_file1 is not None:
     prompt = """
     1) Two-fold OCR for text detection in images:
     - For 'image1_info', if any required fields are missing or undetectable, check 'image2_info' for missing values if available.
-    - If 'shop name', 'order date', or 'payment total' are still missing, return a JSON response with 'remarks' set to 'Please upload a clear invoice image for text recognition.'
+    - If any of the following fields ('shop_name', 'order_date', 'payment_total') is still missing after checking with 'image2_info', return a JSON response with 'remarks' set to 'Please upload a clear invoice image for text recognition.'
 
     2) Output:
     - Return only the Markdown content without explanations or comments.
