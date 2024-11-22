@@ -89,7 +89,7 @@ if uploaded_file1 is not None:
     6. remarks: If shop_name/order_datetime/payment_total is null, return "[Field with null values] cannot be auto-detected. Please upload a clear invoice image for verification."
                 For example, if shop_name is null, return "shop_name cannot be auto-detected. Please upload a clear invoice image for verification."
     
-    Return clean JSON only, no additional text.
+    Return clean JSON only, no additional text or further explanation.
     """
     
     response = generate_response(prompt, image1_info, image2_info)
