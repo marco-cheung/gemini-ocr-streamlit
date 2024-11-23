@@ -68,7 +68,7 @@ if uploaded_file1 is not None:
                 image2_info = None
    
     # Create the generative model
-    generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002")
+    generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002") # "gemini-1.5-flash-002" for faster response
 
     # Generate contents
     prompt = """
@@ -186,10 +186,11 @@ if uploaded_file1 is not None:
         # Add remarks to the JSON response        
         json_response['remarks_to_customer'] = remarks_to_customer
 
-        #if updated_key is not empty, add remarks to the JSON response
+        # If updated_key is not empty, add remarks to the JSON response
         if updated_keys:
             json_response['remarks_to_cs'] = f"{updated_keys} are auto-detected from second image, which may not come from the same transaction. Please verify."
 
     # Display the final JSON response
+    # Set ensure_ascii is false, to keep output as-is
     pretty_json = json.dumps(json_response, indent=4, ensure_ascii=False)
     st.code(pretty_json, language='json')
