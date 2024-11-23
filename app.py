@@ -80,6 +80,7 @@ if uploaded_file1 is not None:
         "order_datetime": "YYYY-MM-DD HH:mm",
         "invoice_num": "123456",
         "payment_total": "99.99"
+        "airport_address": 0 or 1 
     }
 
     Rules:
@@ -88,7 +89,8 @@ if uploaded_file1 is not None:
     3. order_datetime: YYYY-MM-DD HH:mm format or null. Convert AM/PM to 24 Hour time
     4. invoice_num: Trimmed whitespace or null
     5. payment_total: Final amount paid by customer, i.e. net payment amount after deducting amount such as gift card and e-Coupon discount. Or null.
-  
+    6. airport_address: if shop address contains 'airport' or 'HKIA' or '機場', set to 1, else 0.
+    
     Return clean JSON only, no additional text or further explanation.
     """
     
