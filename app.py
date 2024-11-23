@@ -21,8 +21,8 @@ st.image(banner_image_path, use_container_width=True)
 # Streamlit app
 st.title("Demo of Receipt OCR with Google Gemini API")
 
-# Function to convert webp image to png
-def convert_webp_to_png(image_data):
+# Function to convert image to png
+def convert_to_png(image_data):
     image = PIL.Image.open(io.BytesIO(image_data)).convert('RGB')
     output = io.BytesIO()
     image.save(output, format='PNG')
@@ -45,7 +45,7 @@ with col1:
 if uploaded_file1 is not None:
     image1 = PIL.Image.open(uploaded_file1)
     #image1_info = Image.from_bytes(uploaded_file1.getvalue())
-    image1_info = Image.from_bytes(convert_webp_to_png(uploaded_file1.getvalue()))
+    image1_info = Image.from_bytes(convert_to_png(uploaded_file1.getvalue()))
 
     #Display col2 file uploader if uploaded_file1 is not None
     with col2:
