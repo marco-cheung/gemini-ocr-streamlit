@@ -44,7 +44,6 @@ with col1:
 # Display uploaded image
 if uploaded_file1 is not None:
     image1 = PIL.Image.open(uploaded_file1)
-    #image1_info = Image.from_bytes(uploaded_file1.getvalue())
     image1_info = Image.from_bytes(convert_to_png(uploaded_file1.getvalue()))
 
     #Display col2 file uploader if uploaded_file1 is not None
@@ -63,7 +62,7 @@ if uploaded_file1 is not None:
         with col_img2:
             if uploaded_file2 is not None:
                 image2 = PIL.Image.open(uploaded_file2)
-                image2_info = Image.from_bytes(uploaded_file2.getvalue())
+                image2_info = Image.from_bytes(convert_to_png(uploaded_file2.getvalue()))
                 st.image(image2, caption='Uploaded Image 2.', use_container_width=True)          
             else:
                 image2_info = None
