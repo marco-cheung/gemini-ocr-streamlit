@@ -38,7 +38,7 @@ with col1:
 if uploaded_file1 is not None:
     image = PIL.Image.open(uploaded_file1)
 
-    # Convert the image to JPEG
+    # Convert the image to JPEG so that image format like 'webp' can be recognized
     with io.BytesIO() as output:
         image.save(output, format="JPEG")
         image_bytes = output.getvalue()
