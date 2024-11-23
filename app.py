@@ -21,6 +21,13 @@ st.image(banner_image_path, use_container_width=True)
 # Streamlit app
 st.title("Demo of Receipt OCR with Google Gemini API")
 
+# Function to convert webp image to png
+def convert_webp_to_png(image_data):
+    image = PIL.Image.open(io.BytesIO(image_data)).convert('RGB')
+    output = io.BytesIO()
+    image.save(output, format='PNG')
+    return output.getvalue()
+
 
 # Function to generate response from the generative model
 def generate_response(prompt, image):
@@ -37,13 +44,8 @@ with col1:
 # Display uploaded image
 if uploaded_file1 is not None:
     image1 = PIL.Image.open(uploaded_file1)
-
-    # Convert the image to JPEG so that image format like 'webp' can be recognized
-    with io.BytesIO() as output:
-        image1.save(output, format="JPEG")
-        image_bytes = output.getvalue()
-
-    image1_info = io.BytesIO(image_bytes)
+    #image1_info = Image.from_bytes(uploaded_file1.getvalue())
+    image1_info = Image.from_bytes(convert_webp_to_png(uploaded_file1.getvalue()))
 
     #Display col2 file uploader if uploaded_file1 is not None
     with col2:
