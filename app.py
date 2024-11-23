@@ -122,9 +122,9 @@ if uploaded_file1 is not None:
     json_response['remarks_to_customer'] = remarks_to_customer
     json_response['remarks_to_cs'] = remarks_to_cs
 
-    # Handle Unicode escape sequences in "shop_name" (if key 'shop_name' exists in json_response)
+    # Handle Unicode escape sequences in "shop_name"
     if 'shop_name' in json_response:
-        json_response['shop_name'] = json_response['shop_name'].encode('utf-8').decode('unicode_escape')
+        json_response['shop_name'] = json_response['shop_name'].encode('latin1').decode('unicode_escape').encode('utf-8').decode('utf-8')
 
 
     ########################################################
@@ -168,6 +168,8 @@ if uploaded_file1 is not None:
             if not json_response[key] and key in json_response2 and json_response2[key]:
                 json_response[key] = json_response2[key]
                 updated_keys.append(key)
+
+        
 
         # Identify fields that are still null
         remaining_null_fields = [key for key, value in json_response.items() if not value]
