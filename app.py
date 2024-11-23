@@ -89,7 +89,7 @@ if uploaded_file1 is not None:
     3. order_datetime: YYYY-MM-DD HH:mm format or null. Convert AM/PM to 24 Hour time
     4. invoice_num: Trimmed whitespace or null
     5. payment_total: Final amount paid by customer, i.e. net payment amount after deducting amount such as gift card and e-Coupon discount. Or null.
-    6. airport_address: Set to 1 if the shop address contains any of the following: Airport, HKIA, 機場, 客運大樓; otherwise, set to 0.
+    6. airport_address: Set to 1 if shop address contains any of the following: Airport, HKIA, 機場, 客運大樓; otherwise, set to 0.
     
     Return clean JSON only, no additional text or further explanation.
     """
