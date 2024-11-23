@@ -76,7 +76,7 @@ if uploaded_file1 is not None:
 
     Rules:
     1. shop_name: Output readable text in UTF-8 encoding without Unicode escape sequences or special characters
-    2. order_date: YYYY-MM-DD format or null
+    2. order_date: YYYY-MM-DD format or null. Convert AM/PM to 24 Hour time
     3. order_datetime: YYYY-MM-DD HH:mm format or null
     4. invoice_num: Trimmed whitespace or null
     5. payment_total: Final amount paid by customer, i.e. net payment amount after deducting amount such as gift card and e-Coupon discount. Or null.
@@ -132,7 +132,7 @@ if uploaded_file1 is not None:
 
         Rules:
         1. shop_name: Output readable text in UTF-8 encoding without Unicode escape sequences or special characters
-        2. order_date: YYYY-MM-DD format or null
+        2. order_date: YYYY-MM-DD format or null. Convert AM/PM to 24 Hour time
         3. order_datetime: YYYY-MM-DD HH:mm format or null
         4. invoice_num: Trimmed whitespace or null
         5. payment_total: Final amount paid by customer, i.e. net payment amount after deducting amount such as gift card and e-Coupon discount. Or null.
