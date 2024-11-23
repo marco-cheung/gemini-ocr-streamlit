@@ -130,28 +130,8 @@ if uploaded_file1 is not None:
     # If there are null fields and a second image is provided, try to extract them from image2
     if null_fields and image2_info:
 
-        # Prompt for the null fields
-        prompt_null_fields = """
-        {
-            "shop_name": "Store Name", 
-            "order_date": "YYYY-MM-DD",
-            "order_datetime": "YYYY-MM-DD HH:mm",
-            "invoice_num": "123456",
-            "payment_total": "99.99"
-        }
-
-        Rules:
-        1. shop_name: Output readable text in UTF-8 encoding without Unicode escape sequences or special characters
-        2. order_date: YYYY-MM-DD format or null. Convert AM/PM to 24 Hour time
-        3. order_datetime: YYYY-MM-DD HH:mm format or null. Convert AM/PM to 24 Hour time
-        4. invoice_num: Trimmed whitespace or null
-        5. payment_total: Final amount paid by customer, i.e. net payment amount after deducting amount such as gift card and e-Coupon discount. Or null.
-
-        Return clean JSON only, no additional text or further explanation.
-        """
-
         # Generate response for the second image
-        response2 = generate_response(prompt_null_fields, image2_info)
+        response2 = generate_response(prompt, image2_info)
 
         # Parse the response from image2
         content2 = response2.text
@@ -164,8 +144,6 @@ if uploaded_file1 is not None:
             if not json_response[key] and key in json_response2 and json_response2[key]:
                 json_response[key] = json_response2[key]
                 updated_keys.append(key)
-
-        
 
         # Identify fields that are still null
         remaining_null_fields = [key for key, value in json_response.items() if not value]
