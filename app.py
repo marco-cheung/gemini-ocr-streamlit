@@ -81,15 +81,12 @@ if uploaded_file1 is not None:
     4. invoice_num: Trimmed whitespace or null
     5. payment_total: Final amount paid by customer, i.e. net payment amount after deducting amount such as gift card and e-Coupon discount. Or null.
   
-    Note:
-    For shop_name, please decode texts from any improperly escaped Unicode characters. Example: "Caf\\u00e9" -> "Café"
-
     Return clean JSON only, no additional text or further explanation.
     """
     
     response = generate_response(prompt, image1_info)
 
-    content = response.text.encode().decode('utf-8')
+    content = response.text.encode('utf-8').decode('unicode_escape')
    
     # Parse the content as JSON and display it in a code block
     json_response = json.loads(content)
@@ -140,9 +137,6 @@ if uploaded_file1 is not None:
         4. invoice_num: Trimmed whitespace or null
         5. payment_total: Final amount paid by customer, i.e. net payment amount after deducting amount such as gift card and e-Coupon discount. Or null.
 
-        Note:
-        For shop_name, please decode texts from any improperly escaped Unicode characters. Example: "Caf\\u00e9" -> "Café"
-
         Return clean JSON only, no additional text or further explanation.
         """
 
@@ -150,7 +144,7 @@ if uploaded_file1 is not None:
         response2 = generate_response(prompt_null_fields, image2_info)
 
         # Parse the response from image2
-        content2 = response2.text.encode().decode('utf-8')
+        content2 = response2.text.encode('utf-8').decode('unicode_escape')
         json_response2 = json.loads(content2)
 
         # Update null values in json_response from json_response2
