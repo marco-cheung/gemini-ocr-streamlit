@@ -4,6 +4,7 @@ from vertexai.generative_models import GenerationConfig, GenerativeModel, Image
 import os
 import json
 import PIL.Image
+import io
 
 # Initialize Vertex AI
 PROJECT_ID = os.environ.get("GCP_PROJECT")
@@ -35,8 +36,14 @@ with col1:
 
 # Display uploaded image
 if uploaded_file1 is not None:
-    image1 = PIL.Image.open(uploaded_file1)
-    image1_info = Image.from_bytes(uploaded_file1.getvalue())
+    image = PIL.Image.open(uploaded_file1)
+
+    # Convert the image to JPEG
+    with io.BytesIO() as output:
+        image.save(output, format="JPEG")
+        image_bytes = output.getvalue()
+
+    image1_info = io.BytesIO(image_bytes)
 
     #Display col2 file uploader if uploaded_file1 is not None
     with col2:
