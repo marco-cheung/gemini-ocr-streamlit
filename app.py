@@ -122,11 +122,7 @@ if uploaded_file1 is not None:
     json_response['remarks_to_customer'] = remarks_to_customer
     json_response['remarks_to_cs'] = remarks_to_cs
 
-    # Handle Unicode escape sequences in "shop_name"
-    if 'shop_name' in json_response:
-        json_response['shop_name'] = json_response['shop_name'].encode('latin1').decode('unicode_escape').encode('utf-8').decode('utf-8')
-
-
+    
     ########################################################
     # List to store keys of updated values
     updated_keys = []
@@ -195,5 +191,5 @@ if uploaded_file1 is not None:
             json_response['remarks_to_cs'] = f"{updated_keys} are auto-detected from second image, which may not come from the same transaction. Please verify."
 
     # Display the final JSON response
-    pretty_json = json.dumps(json_response, indent=4)
+    pretty_json = json.dumps(json_response, indent=4, ensure_ascii=False).encode('utf8')
     st.code(pretty_json, language='json')
