@@ -86,7 +86,8 @@ if uploaded_file1 is not None:
     
     response = generate_response(prompt, image1_info)
 
-    content = response.text.encode('utf-8').decode('unicode_escape')
+    # Parse the response
+    content = response.text
    
     # Parse the content as JSON and display it in a code block
     json_response = json.loads(content)
@@ -144,7 +145,9 @@ if uploaded_file1 is not None:
         response2 = generate_response(prompt_null_fields, image2_info)
 
         # Parse the response from image2
-        content2 = response2.text.encode('utf-8').decode('unicode_escape')
+        content2 = response2.text
+
+        # Parse the content as JSON and display it in a code block
         json_response2 = json.loads(content2)
 
         # Update null values in json_response from json_response2
