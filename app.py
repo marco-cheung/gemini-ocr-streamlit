@@ -191,5 +191,5 @@ if uploaded_file1 is not None:
             json_response['remarks_to_cs'] = f"{updated_keys} are auto-detected from second image, which may not come from the same transaction. Please verify."
 
     # Display the final JSON response
-    pretty_json = json.dumps(json_response, indent=4, ensure_ascii=False).encode('utf8')
+    pretty_json = json.dumps(json_response, indent=4, ensure_ascii=False)
     st.code(pretty_json, language='json')
