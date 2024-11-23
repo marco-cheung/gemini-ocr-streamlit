@@ -77,10 +77,13 @@ if uploaded_file1 is not None:
     Rules:
     1. shop_name: Output readable text in UTF-8 encoding without Unicode escape sequences or special characters
     2. order_date: YYYY-MM-DD format or null. Convert AM/PM to 24 Hour time
-    3. order_datetime: YYYY-MM-DD HH:mm format or null
+    3. order_datetime: YYYY-MM-DD HH:mm format or null. Convert AM/PM to 24 Hour time
     4. invoice_num: Trimmed whitespace or null
     5. payment_total: Final amount paid by customer, i.e. net payment amount after deducting amount such as gift card and e-Coupon discount. Or null.
   
+    Note:
+    For shop_name, please decode texts from any improperly escaped Unicode characters. Example: "Caf\\u00e9" -> "Café"
+
     Return clean JSON only, no additional text or further explanation.
     """
     
@@ -133,9 +136,12 @@ if uploaded_file1 is not None:
         Rules:
         1. shop_name: Output readable text in UTF-8 encoding without Unicode escape sequences or special characters
         2. order_date: YYYY-MM-DD format or null. Convert AM/PM to 24 Hour time
-        3. order_datetime: YYYY-MM-DD HH:mm format or null
+        3. order_datetime: YYYY-MM-DD HH:mm format or null. Convert AM/PM to 24 Hour time
         4. invoice_num: Trimmed whitespace or null
         5. payment_total: Final amount paid by customer, i.e. net payment amount after deducting amount such as gift card and e-Coupon discount. Or null.
+
+        Note:
+        For shop_name, please decode texts from any improperly escaped Unicode characters. Example: "Caf\\u00e9" -> "Café"
 
         Return clean JSON only, no additional text or further explanation.
         """
