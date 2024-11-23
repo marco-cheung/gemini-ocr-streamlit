@@ -122,6 +122,11 @@ if uploaded_file1 is not None:
     json_response['remarks_to_customer'] = remarks_to_customer
     json_response['remarks_to_cs'] = remarks_to_cs
 
+    # Handle Unicode escape sequences in "shop_name" (if key 'shop_name' exists in json_response)
+    if 'shop_name' in json_response:
+        json_response['shop_name'] = json_response['shop_name'].encode('utf-8').decode('unicode_escape')
+
+
     ########################################################
     # List to store keys of updated values
     updated_keys = []
