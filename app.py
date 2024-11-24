@@ -150,7 +150,7 @@ if uploaded_file1 is not None:
         # Identify fields that are still null
         remaining_null_fields = [key for key, value in json_response.items() if not value]
 
-        # Update original json response and display remarks if any field is null
+        # Display remarks if any field remains null
         if remaining_null_fields:
             if len(remaining_null_fields) == 1:
                 fields_str = remaining_null_fields[0]
