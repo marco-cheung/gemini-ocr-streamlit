@@ -152,12 +152,12 @@ if uploaded_file1 is not None:
 
         # Update original json response and display remarks if any field is null
         if remaining_null_fields:
-            if len(null_fields) == 1:
-                fields_str = null_fields[0]
-            elif len(null_fields) == 2:
-                fields_str = ' and '.join(null_fields)
+            if len(remaining_null_fields) == 1:
+                fields_str = remaining_null_fields[0]
+            elif len(remaining_null_fields) == 2:
+                fields_str = ' and '.join(remaining_null_fields)
             else:
-                fields_str = ', '.join(null_fields[:-1]) + ', and ' + null_fields[-1]
+                fields_str = ', '.join(remaining_null_fields[:-1]) + ', and ' + remaining_null_fields[-1]
         
             remarks_to_customer = f"{fields_str} still cannot be auto-detected. Please upload a clear invoice image for verification."
         else:
