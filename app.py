@@ -105,7 +105,7 @@ if uploaded_file1 is not None:
     # Identify mandatory fields ("shop_name", "order_date", "payment_total") with null values
     null_fields = [key for key, value in json_response.items() if not value and key in ("shop_name", "order_date", "payment_total")]
     
-    # Update original json response and display remarks if any field is null
+    # Display remarks if any field is null
     if null_fields:
         if len(null_fields) == 1:
             fields_str = null_fields[0]
