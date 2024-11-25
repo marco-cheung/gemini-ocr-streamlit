@@ -68,7 +68,9 @@ if uploaded_file1 is not None:
                 image2_info = None
    
     # Create the generative model
-    generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002") # "gemini-1.5-flash-002" for faster response
+    #generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002") # "gemini-1.5-flash-002" for faster response
+    tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/3296926297816563712'
+    generative_multimodal_model = GenerativeModel("tuned_model_endpoint_name")
 
     # Generate contents
     prompt = """
