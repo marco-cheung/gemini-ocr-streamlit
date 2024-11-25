@@ -5,6 +5,8 @@ import os
 import json
 import PIL.Image
 import io
+import pandas as pd
+from thefuzz import process  # for fuzzy string matching
 
 # Initialize Vertex AI
 PROJECT_ID = os.environ.get("GCP_PROJECT")
@@ -35,6 +37,7 @@ def generate_response(prompt, image):
     #return generative_multimodal_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1,
                                                                                                    #response_mime_type="application/json")
                                                                                                    #)
+    # Create the generative model using tuned model
     return tuned_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1, response_mime_type="application/json"))
     
 # Create two columns
@@ -171,6 +174,15 @@ if uploaded_file1 is not None:
         # If updated_key is not empty, add remarks to the JSON response
         if updated_keys:
             json_response['remarks_to_cs'] = f"{updated_keys} are auto-detected from second image, which may not come from the same transaction. Please verify."
+
+    ########################################################
+    # Find the best match of shop name from a list of shop names
+    shop_list = pd.read_csv('gs://crm_receipt_image/hkia_shop_list.csv')
+    # Create a list of shop names
+    shop_names = shop_list['trade_name'].tolist()  
+    # Find the best match of shop name from the list
+    json_response['shop_name'] = process.extractOne(json_response['shop_name'], shop_names)[0]
+
 
     # Display the final JSON response
     # Set ensure_ascii is false, to keep output as-is
