@@ -4,3 +4,4 @@ google-cloud-aiplatform
 google-cloud-logging
 pillow
 thefuzz
+gcsfs  #authenticate with Google Cloud Storage

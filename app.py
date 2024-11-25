@@ -177,7 +177,7 @@ if uploaded_file1 is not None:
 
     ########################################################
     # Find the best match of shop name from a list of shop names
-    shop_list = pd.read_csv('gs://crm_receipt_image/hkia_shop_list.csv')
+    shop_list = pd.read_csv('gs://crm_receipt_image/hkia_shop_list.csv', skiprows=[0])
     # Create a list of shop names
     shop_names = shop_list['trade_name'].tolist()  
     # Find the best match of shop name from the list
