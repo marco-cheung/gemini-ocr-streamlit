@@ -32,9 +32,11 @@ def convert_to_png(image_data):
 # Function to generate response from the generative model
 def generate_response(prompt, image):
     inputs = [prompt, image]
-    return generative_multimodal_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1,
-                                                                                                   response_mime_type="application/json")
-                                                                                                   )
+    #return generative_multimodal_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1,
+                                                                                                   #response_mime_type="application/json")
+                                                                                                   #)
+    return tuned_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1, response_mime_type="application/json"))
+    
 # Create two columns
 col1, col2 = st.columns(2)
 
@@ -70,7 +72,7 @@ if uploaded_file1 is not None:
     # Create the generative model
     #generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002") # "gemini-1.5-flash-002" for faster response
     tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/3296926297816563712'
-    generative_multimodal_model = GenerativeModel("tuned_model_endpoint_name")
+    tuned_model = GenerativeModel("tuned_model_endpoint_name")
 
     # Generate contents
     prompt = """
