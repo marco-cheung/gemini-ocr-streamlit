@@ -183,8 +183,8 @@ if uploaded_file1 is not None:
 
     # Find the best match of shop name from the list
     try:
-        json_response['shop_name'] = process.extractOne(json_response['shop_name'], shop_names, score_cutoff=80)[0]
-    except TypeError: # if no match found/ score is below 80
+        json_response['shop_name'] = process.extractOne(json_response['shop_name'], shop_names, score_cutoff=90)[0]
+    except TypeError: # if no match found/ score is below 90
         json_response['shop_name'] = 'Others'
 
 
