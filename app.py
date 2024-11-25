@@ -86,7 +86,7 @@ if uploaded_file1 is not None:
     1. shop_name: Output readable text in UTF-8 encoding without Unicode escape sequences or special characters.
     2. order_date: YYYY-MM-DD format or null. Convert AM/PM to 24 Hour time. If "05042024", it should be "2024-04-05".
     3. order_datetime: YYYY-MM-DD HH:mm format or null. Convert AM/PM to 24 Hour time.
-    4. payment_total: Final amount paid by customer, i.e. net payment amount after deducting amount such as gift card and e-Coupon discount. Or null.
+    4. payment_total: Final amount paid by customer, i.e. net spending after deduction of any kind of gift cards, vouchers, HKIA Dollar, coupons and discounts). Or null.
     5. airport_address: Set to 1 if shop address contains any of the following: Airport, HKIA, 機場, 客運大樓; otherwise, set to 0.
     
     Return clean JSON only, no additional text or further explanation.
