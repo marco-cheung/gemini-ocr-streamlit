@@ -71,7 +71,7 @@ if uploaded_file1 is not None:
    
     # Create the generative model
     #generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002") # "gemini-1.5-flash-002" for faster response
-    tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/tuningJobs/1603208727777771520' # "gemini-pro-exp002"
+    tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/2270105582776090624' # "gemini-pro-exp002"
     tuned_model = GenerativeModel(tuned_model_endpoint_name)
 
     # Generate contents
