@@ -183,8 +183,9 @@ if uploaded_file1 is not None:
 
     # Find the best match of shop name from the list
     try:
+        # Use fuzz.ratio to compare similarity between two strings and extract the best match
         json_response['shop_name_matched'] = process.extractOne(json_response['shop_name'], shop_names, scorer=fuzz.ratio, score_cutoff=60)[0]
-    except TypeError: # if fuzz ratio (standard Levenshtein distance similarity ratio between two sequences) and score < 60
+    except TypeError: # if no match is found
         json_response['shop_name_matched'] = 'Others'
 
 
