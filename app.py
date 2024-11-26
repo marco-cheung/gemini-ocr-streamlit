@@ -6,7 +6,7 @@ import json
 import PIL.Image
 import io
 import pandas as pd
-from thefuzz import process  # for fuzzy string matching
+from thefuzz import fuzz, process  # for fuzzy string matching
 
 # Initialize Vertex AI
 PROJECT_ID = os.environ.get("GCP_PROJECT")
@@ -183,8 +183,8 @@ if uploaded_file1 is not None:
 
     # Find the best match of shop name from the list
     try:
-        json_response['shop_name_matched'] = process.extractOne(json_response['shop_name'], shop_names, score_cutoff=85)[0]
-    except TypeError: # if no match found/ score is below 85
+        json_response['shop_name_matched'] = process.extractOne(json_response['shop_name'], shop_names, scorer=fuzz.ratio, score_cutoff=60)[0]
+    except TypeError: # if fuzz ratio (standard Levenshtein distance similarity ratio between two sequences) and score < 60
         json_response['shop_name_matched'] = 'Others'
 
 
