@@ -64,10 +64,12 @@ with image_container:
     col_img1, col_img2 = st.columns(2)
                 
     with col_img1:
-        st.image(image1, caption='Uploaded Image 1.', use_container_width=True)
+        if image1 is not None:
+            st.image(image1, caption='Uploaded Image 1.', use_container_width=True)
             
     with col_img2:
-         st.image(image2, caption='Uploaded Image 2.', use_container_width=True)          
+         if image1 is not None:
+            st.image(image2, caption='Uploaded Image 2.', use_container_width=True)          
 
 
 with col3:
