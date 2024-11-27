@@ -46,9 +46,6 @@ col1, col2, col3 = st.columns(3)
 with col1:
     uploaded_file1 = st.file_uploader("Shop Invoice", key="file1")
 
-with col2:
-    uploaded_file2 = st.file_uploader("Shop Invoice (2nd image when necessary)", key="file2")
-
 with col3:
     if st.button("Submit"):
         st.write("Analyzing the receipt...")
@@ -57,6 +54,9 @@ with col3:
         if uploaded_file1 is not None:
             image1 = PIL.Image.open(uploaded_file1)
             image1_info = Image.from_bytes(convert_to_png(uploaded_file1.getvalue()))
+
+            with col2:
+                uploaded_file2 = st.file_uploader("Shop Invoice (2nd image when necessary)", key="file2")
 
             # Create a container to display images side by side
             image_container = st.container()
