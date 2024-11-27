@@ -46,37 +46,38 @@ col1, col2, col3 = st.columns(3)
 with col1:
     uploaded_file1 = st.file_uploader("Shop Invoice", key="file1")
     if uploaded_file1 is not None:
+        # Display uploaded image
+        image1 = PIL.Image.open(uploaded_file1)
+        image1_info = Image.from_bytes(convert_to_png(uploaded_file1.getvalue()))
+        
         with col2:
             uploaded_file2 = st.file_uploader("Shop Invoice (2nd image when necessary)", key="file2")
+            if uploaded_file2 is not None:
+                image2 = PIL.Image.open(uploaded_file2)
+                image2_info = Image.from_bytes(convert_to_png(uploaded_file2.getvalue()))
+
+
+# Create a container to display images side by side
+image_container = st.container()
+
+with image_container:
+    col_img1, col_img2 = st.columns(2)
+                
+    with col_img1:
+        st.image(image1, caption='Uploaded Image 1.', use_container_width=True)
+            
+    with col_img2:
+         st.image(image2, caption='Uploaded Image 2.', use_container_width=True)          
+
 
 with col3:
     if st.button("Submit"):
         if uploaded_file1 is None:
-            st.write("Please upload receipt image(s).")
+            st.write("Please upload receipt image(s) first.")
 
     else:
         st.write("Analyzing the receipt...")
 
-        # Display uploaded image
-        image1 = PIL.Image.open(uploaded_file1)
-        image1_info = Image.from_bytes(convert_to_png(uploaded_file1.getvalue()))
-
-        # Create a container to display images side by side
-        image_container = st.container()
-
-        with image_container:
-            col_img1, col_img2 = st.columns(2)
-                
-            with col_img1:
-                st.image(image1, caption='Uploaded Image 1.', use_container_width=True)
-            
-            with col_img2:
-                if uploaded_file2 is not None:
-                    image2 = PIL.Image.open(uploaded_file2)
-                    image2_info = Image.from_bytes(convert_to_png(uploaded_file2.getvalue()))
-                    st.image(image2, caption='Uploaded Image 2.', use_container_width=True)          
-                else:
-                    image2_info = None
         
         # Create the generative model
         #generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002") # "gemini-1.5-flash-002" for faster response
