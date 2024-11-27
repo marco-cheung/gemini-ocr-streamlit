@@ -13,8 +13,8 @@ PROJECT_ID = os.environ.get("GCP_PROJECT")
 REGION = os.environ.get("GCP_REGION")
 vertexai.init(project=PROJECT_ID, location=REGION)
 
-# Change page title
-st.set_page_config(page_title="Receipt OCR")
+# Change page title and layout
+st.set_page_config(page_title="Receipt OCR", layout="wide")
 
 # Display the banner image
 banner_image_path = "image/hkairport-logo.png"
