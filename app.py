@@ -45,7 +45,9 @@ col1, col2, col3 = st.columns(3)
 
 # Create a container to upload images
 image1 = None  # Initialize image1
+image1_info = None  # Initialize image1_info
 image2 = None  # Initialize image2
+image2_info = None  # Initialize image2_info
 
 with col1:
     uploaded_file1 = st.file_uploader("Shop Invoice", key="file1")
