@@ -178,8 +178,8 @@ if uploaded_file1 is not None:
     ########################################################
     # Find the best match of shop name from a list of shop names
     shop_list = pd.read_csv('gs://crm_receipt_image/hkia_shop_list.csv')
-    # Create a list of shop names and convert names to lowercase
-    shop_names = [name.lower() for name in shop_list['trade_name'].tolist()]
+    # Create a list of shop names 
+    shop_names = shop_list['trade_name'].tolist()
 
     # Find the best match of shop name from the list
     try:
