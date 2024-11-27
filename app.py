@@ -74,7 +74,7 @@ if uploaded_file1 is not None:
    
     # Create the generative model
     #generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002") # "gemini-1.5-flash-002" for faster response
-    tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/8006565608139259904' # "gemini-pro-exp003"
+    tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/2270105582776090624' # "gemini-pro-exp002"
     tuned_model = GenerativeModel(tuned_model_endpoint_name)
 
     # Generate contents
@@ -178,8 +178,8 @@ if uploaded_file1 is not None:
     ########################################################
     # Find the best match of shop name from a list of shop names
     shop_list = pd.read_csv('gs://crm_receipt_image/hkia_shop_list.csv')
-    # Create a list of shop names
-    shop_names = shop_list['trade_name'].tolist()
+    # Create a list of shop names and convert names to lowercase
+    shop_names = [name.lower() for name in shop_list['trade_name'].tolist()]
 
     # Find the best match of shop name from the list
     try:
