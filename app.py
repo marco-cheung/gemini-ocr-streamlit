@@ -57,19 +57,19 @@ with col1:
                 image2_info = Image.from_bytes(convert_to_png(uploaded_file2.getvalue()))
 
 
-# Create a container to display images side by side
-image_container = st.container()
+    # Create a container to display images side by side
+    image_container = st.container()
 
-with image_container:
-    col_img1, col_img2 = st.columns(2)
+    with image_container:
+        col_img1, col_img2 = st.columns(2)
+                    
+        with col_img1:
+            if image1 is not None:
+                st.image(image1, caption='Uploaded Image 1.', use_container_width=True)
                 
-    with col_img1:
-        if image1 is not None:
-            st.image(image1, caption='Uploaded Image 1.', use_container_width=True)
-            
-    with col_img2:
-         if image1 is not None:
-            st.image(image2, caption='Uploaded Image 2.', use_container_width=True)          
+        with col_img2:
+            if image1 is not None:
+                st.image(image2, caption='Uploaded Image 2.', use_container_width=True)          
 
 
 with col3:
