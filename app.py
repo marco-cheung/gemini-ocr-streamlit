@@ -51,7 +51,7 @@ with col1:
 
 with col3:
     if st.button("Submit"):
-        if uploaded_file1 is not None:
+        if uploaded_file1 is None:
             st.write("Please upload receipt image(s).")
 
     else:
