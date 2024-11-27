@@ -43,6 +43,10 @@ def generate_response(prompt, image):
 # Create two columns
 col1, col2, col3 = st.columns(3)
 
+# Create a container to upload images
+image1 = None  # Initialize image1
+image2 = None  # Initialize image2
+
 with col1:
     uploaded_file1 = st.file_uploader("Shop Invoice", key="file1")
     if uploaded_file1 is not None:
@@ -68,7 +72,7 @@ with col1:
                 st.image(image1, caption='Uploaded Image 1.', use_container_width=True)
                 
         with col_img2:
-            if image1 is not None:
+            if image2 is not None:
                 st.image(image2, caption='Uploaded Image 2.', use_container_width=True)          
 
 
