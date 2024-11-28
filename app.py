@@ -81,126 +81,126 @@ if middle.button("Submit", use_container_width=True):
     else:
         st.write("Analyzing the receipt...")
    
-    # Create the generative model
-    #generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002") # "gemini-1.5-flash-002" for faster response
-    tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/8006565608139259904' # "gemini-pro-exp003"
-    tuned_model = GenerativeModel(tuned_model_endpoint_name)
+        # Create the generative model
+        #generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002") # "gemini-1.5-flash-002" for faster response
+        tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/8006565608139259904' # "gemini-pro-exp003"
+        tuned_model = GenerativeModel(tuned_model_endpoint_name)
 
-    # Generate contents
-    prompt = """
-    You are an intelligent receipt analyzer. Analyze the provided image and extract the following key information:
+        # Generate contents
+        prompt = """
+        You are an intelligent receipt analyzer. Analyze the provided image and extract the following key information:
 
-    {
-        "shop_name": "Store Name", 
-        "order_date": "YYYY-MM-DD",
-        "order_datetime": "YYYY-MM-DD HH:mm",
-        "payment_total": "99.99"
-        "airport_address": 0 or 1 
-    }
+        {
+            "shop_name": "Store Name", 
+            "order_date": "YYYY-MM-DD",
+            "order_datetime": "YYYY-MM-DD HH:mm",
+            "payment_total": "99.99"
+            "airport_address": 0 or 1 
+        }
 
-    Rules:
-    1. shop_name: Output readable text in UTF-8 encoding without Unicode escape sequences or special characters.
-    2. order_date: YYYY-MM-DD format or null. Convert AM/PM to 24 Hour time. If "05042024", it should be "2024-04-05".
-    3. order_datetime: YYYY-MM-DD HH:mm format or null. Convert AM/PM to 24 Hour time.
-    4. payment_total: Final amount paid by customer, i.e. net spending after deduction of any kind of gift cards, vouchers, HKIA Dollar, coupons and discounts. Or null.
-    5. airport_address: Set to 1 if shop address contains any of the following: Airport, HKIA, 機場, 客運大樓; otherwise, set to 0.
-    
-    Return clean JSON only, no additional text or further explanation.
-    """
-    
-    response = generate_response(prompt, image1_info)
-
-    # Parse the response
-    content = response.text
-   
-    # Parse the content as JSON and display it in a code block
-    json_response = json.loads(content)
-
-    # Identify mandatory fields ("shop_name", "order_date", "payment_total") with null values
-    null_fields = [key for key, value in json_response.items() if not value and key in ("shop_name", "order_date", "payment_total")]
-    
-    # Display remarks if any field is null
-    if null_fields:
-        if len(null_fields) == 1:
-            fields_str = null_fields[0]
-        elif len(null_fields) == 2:
-            fields_str = ' and '.join(null_fields)
-        else:
-            fields_str = ', '.join(null_fields[:-1]) + ', and ' + null_fields[-1]
-    
-        remarks_to_customer = f"{fields_str} cannot be auto-detected. Please upload a clear invoice image for verification."
-        remarks_to_cs = f"{fields_str} cannot be auto-detected. Please verify."
-    else:
-        remarks_to_customer = ""
-        remarks_to_cs = ""
-
-    # Add remarks to the JSON response        
-    json_response['remarks_to_customer'] = remarks_to_customer
-    json_response['remarks_to_cs'] = remarks_to_cs
-
-    
-    ########################################################
-    # List to store keys of updated values
-    updated_keys = []
-    
-    # If there are null fields and a second image is provided, try to extract them from image2
-    if null_fields and image2_info:
-
-        # Generate response for the second image
-        response2 = generate_response(prompt, image2_info)
-
-        # Parse the response from image2
-        content2 = response2.text
-
-        # Parse the content as JSON and display it in a code block
-        json_response2 = json.loads(content2)
-
-        # Update null values in json_response from json_response2
-        for key in json_response:
-            if not json_response[key] and key in json_response2 and json_response2[key]:
-                json_response[key] = json_response2[key]
-                updated_keys.append(key)
-
-        # Identify fields that are still null
-        remaining_null_fields = [key for key, value in json_response.items() if not value]
-
-        # Display remarks if any field remains null
-        if remaining_null_fields:
-            if len(remaining_null_fields) == 1:
-                fields_str = remaining_null_fields[0]
-            elif len(remaining_null_fields) == 2:
-                fields_str = ' and '.join(remaining_null_fields)
-            else:
-                fields_str = ', '.join(remaining_null_fields[:-1]) + ', and ' + remaining_null_fields[-1]
+        Rules:
+        1. shop_name: Output readable text in UTF-8 encoding without Unicode escape sequences or special characters.
+        2. order_date: YYYY-MM-DD format or null. Convert AM/PM to 24 Hour time. If "05042024", it should be "2024-04-05".
+        3. order_datetime: YYYY-MM-DD HH:mm format or null. Convert AM/PM to 24 Hour time.
+        4. payment_total: Final amount paid by customer, i.e. net spending after deduction of any kind of gift cards, vouchers, HKIA Dollar, coupons and discounts. Or null.
+        5. airport_address: Set to 1 if shop address contains any of the following: Airport, HKIA, 機場, 客運大樓; otherwise, set to 0.
         
-            remarks_to_customer = f"{fields_str} still cannot be auto-detected. Please upload a clear invoice image for verification."
+        Return clean JSON only, no additional text or further explanation.
+        """
+        
+        response = generate_response(prompt, image1_info)
+
+        # Parse the response
+        content = response.text
+    
+        # Parse the content as JSON and display it in a code block
+        json_response = json.loads(content)
+
+        # Identify mandatory fields ("shop_name", "order_date", "payment_total") with null values
+        null_fields = [key for key, value in json_response.items() if not value and key in ("shop_name", "order_date", "payment_total")]
+        
+        # Display remarks if any field is null
+        if null_fields:
+            if len(null_fields) == 1:
+                fields_str = null_fields[0]
+            elif len(null_fields) == 2:
+                fields_str = ' and '.join(null_fields)
+            else:
+                fields_str = ', '.join(null_fields[:-1]) + ', and ' + null_fields[-1]
+        
+            remarks_to_customer = f"{fields_str} cannot be auto-detected. Please upload a clear invoice image for verification."
+            remarks_to_cs = f"{fields_str} cannot be auto-detected. Please verify."
         else:
             remarks_to_customer = ""
+            remarks_to_cs = ""
 
         # Add remarks to the JSON response        
         json_response['remarks_to_customer'] = remarks_to_customer
+        json_response['remarks_to_cs'] = remarks_to_cs
 
-        # If updated_key is not empty, add remarks to the JSON response
-        if updated_keys:
-            json_response['remarks_to_cs'] = f"{updated_keys} are auto-detected from second image, which may not come from the same transaction. Please verify."
+        
+        ########################################################
+        # List to store keys of updated values
+        updated_keys = []
+        
+        # If there are null fields and a second image is provided, try to extract them from image2
+        if null_fields and image2_info:
 
-    ########################################################
-    # Find the best match of shop name from a list of shop names
-    shop_list = pd.read_csv('gs://crm_receipt_image/hkia_shop_list.csv')
-    # Create a list of shop names 
-    shop_names = shop_list['trade_name'].tolist()
+            # Generate response for the second image
+            response2 = generate_response(prompt, image2_info)
 
-    # Find the best match of shop name from the list
-    try:
-        # Use fuzz.ratio to compare similarity between two strings and extract the best match
-        # Kindly note that 'process.extractOne' pre-processes the strings using utils.full_process before applying the scorer
-            # e.g. Convert to lowercase, Trim whitespace collapse multiple spaces to single space, etc.
-        json_response['shop_name_matched'] = process.extractOne(json_response['shop_name'].lower(), shop_names, scorer=fuzz.ratio, score_cutoff=60)[0]
-    except TypeError: # if no match is found
-        json_response['shop_name_matched'] = 'Others'
-       
+            # Parse the response from image2
+            content2 = response2.text
 
-    # Display the final JSON response
-    # Set ensure_ascii is false, to keep output as-is
-    pretty_json = json.dumps(json_response, indent=4, ensure_ascii=False)
-    st.code(pretty_json, language='json')
+            # Parse the content as JSON and display it in a code block
+            json_response2 = json.loads(content2)
+
+            # Update null values in json_response from json_response2
+            for key in json_response:
+                if not json_response[key] and key in json_response2 and json_response2[key]:
+                    json_response[key] = json_response2[key]
+                    updated_keys.append(key)
+
+            # Identify fields that are still null
+            remaining_null_fields = [key for key, value in json_response.items() if not value]
+
+            # Display remarks if any field remains null
+            if remaining_null_fields:
+                if len(remaining_null_fields) == 1:
+                    fields_str = remaining_null_fields[0]
+                elif len(remaining_null_fields) == 2:
+                    fields_str = ' and '.join(remaining_null_fields)
+                else:
+                    fields_str = ', '.join(remaining_null_fields[:-1]) + ', and ' + remaining_null_fields[-1]
+            
+                remarks_to_customer = f"{fields_str} still cannot be auto-detected. Please upload a clear invoice image for verification."
+            else:
+                remarks_to_customer = ""
+
+            # Add remarks to the JSON response        
+            json_response['remarks_to_customer'] = remarks_to_customer
+
+            # If updated_key is not empty, add remarks to the JSON response
+            if updated_keys:
+                json_response['remarks_to_cs'] = f"{updated_keys} are auto-detected from second image, which may not come from the same transaction. Please verify."
+
+        ########################################################
+        # Find the best match of shop name from a list of shop names
+        shop_list = pd.read_csv('gs://crm_receipt_image/hkia_shop_list.csv')
+        # Create a list of shop names 
+        shop_names = shop_list['trade_name'].tolist()
+
+        # Find the best match of shop name from the list
+        try:
+            # Use fuzz.ratio to compare similarity between two strings and extract the best match
+            # Kindly note that 'process.extractOne' pre-processes the strings using utils.full_process before applying the scorer
+                # e.g. Convert to lowercase, Trim whitespace collapse multiple spaces to single space, etc.
+            json_response['shop_name_matched'] = process.extractOne(json_response['shop_name'].lower(), shop_names, scorer=fuzz.ratio, score_cutoff=60)[0]
+        except TypeError: # if no match is found
+            json_response['shop_name_matched'] = 'Others'
+        
+
+        # Display the final JSON response
+        # Set ensure_ascii is false, to keep output as-is
+        pretty_json = json.dumps(json_response, indent=4, ensure_ascii=False)
+        st.code(pretty_json, language='json')
