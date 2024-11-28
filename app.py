@@ -81,8 +81,9 @@ if middle.button("Submit", use_container_width=True):
     else: 
         # Create the generative model
         #generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002") # "gemini-1.5-flash-002" for faster response
-        tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/2270105582776090624' # "gemini-pro-exp002"
-        tuned_model = GenerativeModel(tuned_model_endpoint_name)
+        tuned_model = GenerativeModel("gemini-1.5-pro-exp-0827")
+        #tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/2270105582776090624' # "gemini-pro-exp002"
+        #tuned_model = GenerativeModel(tuned_model_endpoint_name)
 
         # Generate contents
         prompt = """
