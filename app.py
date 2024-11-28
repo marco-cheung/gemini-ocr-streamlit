@@ -197,6 +197,9 @@ if middle.button("Submit", use_container_width=True):
                 # e.g. Convert to lowercase, Trim whitespace collapse multiple spaces to single space, etc.
             if json_response['shop_name'] is not None:
                 json_response['shop_name_matched'] = process.extractOne(json_response['shop_name'].lower(), shop_names, scorer=fuzz.ratio, score_cutoff=60)[0]
+            else:
+                json_response['shop_name_matched'] = ''
+        
         except TypeError: # if no match is found
             json_response['shop_name_matched'] = 'Others'
         
