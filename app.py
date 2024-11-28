@@ -103,9 +103,11 @@ if middle.button("Submit", use_container_width=True):
         4. payment_total: Final amount paid by customer, i.e. net spending after deduction of any kind of gift cards, vouchers, HKIA Dollar, coupons and discounts. Blank if it is not found.
         5. airport_address: Set to 1 if shop address contains any of the following: Airport, HKIA, 機場, 客運大樓; otherwise, set to 0.
         
-        Return clean JSON only, no additional text or further explanation.
-
-        For example, if shop name is not found, simply "" instead of "nan".
+        Instructions:
+        - Return only the clean JSON object with the extracted information.
+        - Do not include any additional text or explanations.
+        - If an item is not found, return "" instead of "nan"
+        - If the image is not a valid or authentic receipt, return set all field values to blank.
         """
         
         response = generate_response(prompt, image1_info)
