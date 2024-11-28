@@ -86,7 +86,7 @@ if middle.button("Submit", use_container_width=True):
 
         # Generate contents
         prompt = """
-        You are an intelligent receipt analyzer. Analyze the provided image and extract the following key information:
+        You are an intelligent and reliable receipt analyzer. Analyze the provided image and extract the following key information:
 
         {
             "shop_name": "Store Name", 
@@ -104,7 +104,7 @@ if middle.button("Submit", use_container_width=True):
         5. airport_address: Set to 1 if shop address contains any of the following: Airport, HKIA, 機場, 客運大樓; otherwise, set to 0.
         
         Instructions:
-        - If the image is not a valid or authentic receipt, return set all field values to blank. Do not wild guess if you are not sure.
+        - If the image is not an authentic receipt, return set all field values to blank.
         - Return only the clean JSON object with the extracted information.
         - Do not include any additional text or explanations.
         - If an item is not found, return "" instead of "nan".
