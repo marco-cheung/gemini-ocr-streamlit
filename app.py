@@ -71,6 +71,15 @@ if uploaded_file1 is not None:
                 st.image(image2, caption='Uploaded Image 2.', use_container_width=True)          
             else:
                 image2_info = None
+
+# Create a container to display the submit button
+left, middle, right = st.columns(3)
+if middle.button("Submit", use_container_width=True):
+    if uploaded_file1 is None:
+        middle.markdown("Please upload receipt image(s) first.")
+
+    else:
+        st.write("Analyzing the receipt...")
    
     # Create the generative model
     #generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002") # "gemini-1.5-flash-002" for faster response
