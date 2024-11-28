@@ -87,28 +87,33 @@ if middle.button("Submit", use_container_width=True):
 
         # Generate contents
         prompt = """
-        You are an intelligent receipt analyzer. If the image is not an authentic receipt, set all field values in the following response schema to blank.
-        Analyze the provided image and extract the following key information:
+        You are an intelligent receipt analyzer. If the image is not an authentic receipt, simply return an empty, fixed JSON response of below:
+        {
+            "shop_name": "", 
+            "order_date": "",
+            "order_datetime": "",
+            "payment_total": "",
+            "airport_address": ""
+        }
 
+        However, if the image is an authentic receipt, follow instructions of below:
         {
             "shop_name": "Store Name", 
             "order_date": "YYYY-MM-DD",
             "order_datetime": "YYYY-MM-DD HH:mm",
-            "payment_total": "99.99"
-            "airport_address": 0 or 1 
+            "payment_total": "99.99",
+            "airport_address": 0 or 1
         }
 
         Rules:
-        1. shop_name: Carefully check if shop name appears on the receipt image, excluding special characters. Blank if it is not found.
-        2. order_date: YYYY-MM-DD format or null. Convert AM/PM to 24 Hour time. If "05042024", it should be "2024-04-05". Blank if it is not found.
-        3. order_datetime: YYYY-MM-DD HH:mm format or null. Convert AM/PM to 24 Hour time. Blank if it is not found.
-        4. payment_total: Final amount paid by customer, i.e. net spending after deduction of any kind of gift cards, vouchers, HKIA Dollar, coupons and discounts. Blank if it is not found.
-        5. airport_address: Set to 1 if shop address contains any of the following: Airport, HKIA, 機場, 客運大樓; otherwise, set to 0.
-        
+        1. shop_name: Carefully check if shop name appears on the receipt image, excluding special characters. Leave blank if not found.
+        2. order_date: YYYY-MM-DD format. Convert AM/PM to 24-hour time. If "05042024", it should be "2024-04-05". Leave blank if not found.
+        3. order_datetime: YYYY-MM-DD HH:mm format. Convert AM/PM to 24-hour time. Leave blank if not found.
+        4. payment_total: Final amount paid by customer after deductions. Leave blank if not found.
+        5. airport_address: Set to 1 if shop address contains any of: Airport, HKIA, 機場, 客運大樓; else, set to 0.
+
         Instructions:
-        - Return only the clean JSON object with the extracted information.
         - Do not include any additional text or explanations.
-        - If an item is not found, return "" instead of "nan".
         """
         
         response = generate_response(prompt, image1_info)
