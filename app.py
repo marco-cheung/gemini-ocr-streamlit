@@ -38,7 +38,7 @@ def generate_response(prompt, image):
                                                                                                    #response_mime_type="application/json")
                                                                                                    #)
     # Create the generative model using tuned model
-    return tuned_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.0, top_p=0, response_mime_type="application/json"))
+    return tuned_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1, response_mime_type="application/json"))
     
 # Create two columns
 col1, col2 = st.columns(2)
@@ -81,7 +81,7 @@ if middle.button("Submit", use_container_width=True):
     else: 
         # Create the generative model
         #generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002") # "gemini-1.5-flash-002" for faster response
-        tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/8006565608139259904' # "gemini-pro-exp003"
+        tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/2270105582776090624' # "gemini-pro-exp002"
         tuned_model = GenerativeModel(tuned_model_endpoint_name)
 
         # Generate contents
