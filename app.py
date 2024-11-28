@@ -97,13 +97,13 @@ if middle.button("Submit", use_container_width=True):
         }
 
         Rules:
-        1. shop_name: Carefully check if shop name appears on the receipt image, excluding special characters. Null if no shop name is found.
-        2. order_date: YYYY-MM-DD format or null. Convert AM/PM to 24 Hour time. If "05042024", it should be "2024-04-05".
-        3. order_datetime: YYYY-MM-DD HH:mm format or null. Convert AM/PM to 24 Hour time.
-        4. payment_total: Final amount paid by customer, i.e. net spending after deduction of any kind of gift cards, vouchers, HKIA Dollar, coupons and discounts. Or null.
+        1. shop_name: Carefully check if shop name appears on the receipt image, excluding special characters. Blank if it is not found.
+        2. order_date: YYYY-MM-DD format or null. Convert AM/PM to 24 Hour time. If "05042024", it should be "2024-04-05". Blank if it is not found.
+        3. order_datetime: YYYY-MM-DD HH:mm format or null. Convert AM/PM to 24 Hour time. Blank if it is not found.
+        4. payment_total: Final amount paid by customer, i.e. net spending after deduction of any kind of gift cards, vouchers, HKIA Dollar, coupons and discounts. Blank if it is not found.
         5. airport_address: Set to 1 if shop address contains any of the following: Airport, HKIA, 機場, 客運大樓; otherwise, set to 0.
         
-        Return clean JSON only, no additional text or further explanation. For shop_name, order_date, order_datetime, payment_total, please keep it null if no information is found.
+        Return clean JSON only, no additional text or further explanation.
         """
         
         response = generate_response(prompt, image1_info)
