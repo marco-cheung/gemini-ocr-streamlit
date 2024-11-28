@@ -38,7 +38,7 @@ def generate_response(prompt, image):
                                                                                                    #response_mime_type="application/json")
                                                                                                    #)
     # Create the generative model using tuned model
-    return tuned_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.0, response_mime_type="application/json"))
+    return tuned_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.0, top_p=0, response_mime_type="application/json"))
     
 # Create two columns
 col1, col2 = st.columns(2)
