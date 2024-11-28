@@ -97,7 +97,7 @@ if middle.button("Submit", use_container_width=True):
         }
 
         Rules:
-        1. shop_name: Carefully check the receipt for any plain UTF-8 text without special characters. Simply return null if no shop names are found.
+        1. shop_name: Carefully check if shop name appears on the receipt image, excluding special characters. If no shop name is found, return null. Do not fabricate a shop name if it does not exist.
         2. order_date: YYYY-MM-DD format or null. Convert AM/PM to 24 Hour time. If "05042024", it should be "2024-04-05".
         3. order_datetime: YYYY-MM-DD HH:mm format or null. Convert AM/PM to 24 Hour time.
         4. payment_total: Final amount paid by customer, i.e. net spending after deduction of any kind of gift cards, vouchers, HKIA Dollar, coupons and discounts. Or null.
