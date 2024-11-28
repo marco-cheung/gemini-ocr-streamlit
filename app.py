@@ -112,8 +112,7 @@ if middle.button("Submit", use_container_width=True):
         4. payment_total: Final amount paid by customer after deductions. Leave blank if not found.
         5. airport_address: Set to 1 if shop address contains any of: Airport, HKIA, 機場, 客運大樓; else, set to 0.
 
-        Instructions:
-        - Do not include any additional text or explanations.
+        Do not include any additional text or explanations.
         """
         
         response = generate_response(prompt, image1_info)
