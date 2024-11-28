@@ -97,13 +97,13 @@ if middle.button("Submit", use_container_width=True):
         }
 
         Rules:
-        1. shop_name: Carefully check if shop name appears on the receipt image, excluding special characters. If no shop name is found, return null. Do not fabricate a shop name if it does not exist.
+        1. shop_name: Carefully check if shop name appears on the receipt image, excluding special characters. Null if no shop name is found.
         2. order_date: YYYY-MM-DD format or null. Convert AM/PM to 24 Hour time. If "05042024", it should be "2024-04-05".
         3. order_datetime: YYYY-MM-DD HH:mm format or null. Convert AM/PM to 24 Hour time.
         4. payment_total: Final amount paid by customer, i.e. net spending after deduction of any kind of gift cards, vouchers, HKIA Dollar, coupons and discounts. Or null.
         5. airport_address: Set to 1 if shop address contains any of the following: Airport, HKIA, 機場, 客運大樓; otherwise, set to 0.
         
-        Return clean JSON only, no additional text or further explanation.
+        Return clean JSON only, no additional text or further explanation. For shop_name, order_date, order_datetime, payment_total, please keep it null if no information is found.
         """
         
         response = generate_response(prompt, image1_info)
@@ -193,7 +193,8 @@ if middle.button("Submit", use_container_width=True):
             # Use fuzz.ratio to compare similarity between two strings and extract the best match
             # Kindly note that 'process.extractOne' pre-processes the strings using utils.full_process before applying the scorer
                 # e.g. Convert to lowercase, Trim whitespace collapse multiple spaces to single space, etc.
-            json_response['shop_name_matched'] = process.extractOne(json_response['shop_name'].lower(), shop_names, scorer=fuzz.ratio, score_cutoff=60)[0]
+            if json_response['shop_name'] is not None:
+                json_response['shop_name_matched'] = process.extractOne(json_response['shop_name'].lower(), shop_names, scorer=fuzz.ratio, score_cutoff=60)[0]
         except TypeError: # if no match is found
             json_response['shop_name_matched'] = 'Others'
         
