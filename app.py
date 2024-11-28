@@ -104,6 +104,8 @@ if middle.button("Submit", use_container_width=True):
         5. airport_address: Set to 1 if shop address contains any of the following: Airport, HKIA, 機場, 客運大樓; otherwise, set to 0.
         
         Return clean JSON only, no additional text or further explanation.
+
+        For example, if shop name is not found, simply "" instead of "nan".
         """
         
         response = generate_response(prompt, image1_info)
