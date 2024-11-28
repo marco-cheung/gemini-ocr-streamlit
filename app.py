@@ -76,7 +76,7 @@ if uploaded_file1 is not None:
 left, middle, right = st.columns(3)
 if middle.button("Submit", use_container_width=True):
     if uploaded_file1 is None:
-        middle.markdown("Please upload receipt image(s) first.")
+        st.write(f"**Note: Please upload receipt image(s) first.**")
 
     else:
         st.write("Analyzing the receipt...")
