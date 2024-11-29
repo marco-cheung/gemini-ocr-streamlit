@@ -86,9 +86,9 @@ if middle.button("Submit", use_container_width=True):
 
         # Generate contents
         prompt = """
-        You are an intelligent receipt analyzer. Your task is to extract specific information from receipt images and return it in JSON format. For non-authentic receipt images, return empty {} JSON and ignore the remaining instructions and rules.
+        You are an intelligent receipt analyzer. For non-authentic receipt images, return empty {} JSON and ignore the remaining instructions and rules.
 
-        Unless the image is an authentic receipt, analyze and return the following information:
+        For authentic receipts, analyze and return JSON response object:
         {
             "shop_name": "Store Name", 
             "order_date": "YYYY-MM-DD",
