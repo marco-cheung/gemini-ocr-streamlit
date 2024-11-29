@@ -81,14 +81,15 @@ if middle.button("Submit", use_container_width=True):
     else: 
         # Create the generative model
         #generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002") # "gemini-1.5-flash-002" for faster response
-        tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/2270105582776090624' # "gemini-pro-exp002"
+        tuned_model_endpoint_name = GenerativeModel("gemini-1.5-pro-002")
+        #tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/2270105582776090624' # "gemini-pro-exp002"
         tuned_model = GenerativeModel(tuned_model_endpoint_name)
 
         # Generate contents
         prompt = """
-        You are an intelligent receipt analyzer. If the image is a non-authentic receipt, simply return an empty {} JSON response.
+        You are an intelligent receipt analyzer. Your task is to extract specific information from receipt images and return it in JSON format. For non-authentic receipt images, return empty {} JSON and ignore the remaining instructions and rules.
 
-        Unless the image is an authentic receipt, follow instructions of below:
+        Unless the image is an authentic receipt, analyze and return the following information:
         {
             "shop_name": "Store Name", 
             "order_date": "YYYY-MM-DD",
@@ -103,8 +104,6 @@ if middle.button("Submit", use_container_width=True):
         3. order_datetime: YYYY-MM-DD HH:mm format. Convert AM/PM to 24-hour time. Leave blank if not found.
         4. payment_total: Final amount paid by customer after deductions. Leave blank if not found.
         5. airport_address: Set to 1 if shop address contains any of: Airport, HKIA, 機場, 客運大樓; else, set to 0.
-
-        At any rate, do not include any additional text or explanations.
         """
         
         response = generate_response(prompt, image1_info)
