@@ -39,7 +39,15 @@ def generate_response(prompt, image):
                                                                                                    )
     # Create the generative model using tuned model
     #return tuned_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1, response_mime_type="application/json"))
-    
+
+
+def set_fields_to_null_if_invalid(receipt_data):
+    if str(receipt_data.get('valid_receipt')) == '0':
+        for key in receipt_data:
+            if key not in ['airport_address', 'valid_receipt']:
+                receipt_data[key] = None
+    return receipt_data
+
 # Create two columns
 col1, col2 = st.columns(2)
 
@@ -87,21 +95,20 @@ if middle.button("Submit", use_container_width=True):
         # Generate contents
         prompt = """
         You are a receipt analyzer. Extract and validate the following information in JSON format:
+                {
+                    "shop_name": string | null,       // Store name without special chars
+                    "order_date": string | null,      // YYYY-MM-DD
+                    "order_datetime": string | null,   // YYYY-MM-DD HH:mm
+                    "payment_total": number | null,    // Final amount paid
+                    "airport_address": 0 | 1,         // 1 if airport location, else 0
+                    "valid_receipt": 0 | 1            // 1 if authentic receipt, else 0
+                }
 
-        {
-            "shop_name": string | null,       // Store name without special chars
-            "order_date": string | null,      // YYYY-MM-DD
-            "order_datetime": string | null,   // YYYY-MM-DD HH:mm
-            "payment_total": number | null,    // Final amount paid
-            "airport_address": 0 | 1,         // 1 if airport location, else 0
-            "valid_receipt": 0 | 1            // 1 if authentic receipt, else 0
-        }
-
-        Validation rules:
-        - Set all fields except airport_address and valid_receipt to null if receipt is not authentic
-        - order_date: Format as 'YYYY-MM-DD'. Convert AM/PM to 24-hour time. If date is given as '05042024', it should be '2024-04-05'.
-        - order_datetime: Format as 'YYYY-MM-DD HH:mm'. Convert AM/PM to 24-hour time
-        - airport_address: Check for keywords "Airport", "HKIA", "機場", "客運大樓"
+                Validation rules:
+                - Set all fields except airport_address and valid_receipt to null if receipt is not authentic
+                - order_date: Format as 'YYYY-MM-DD'. Convert AM/PM to 24-hour time. If date is given as '05042024', it should be '2024-04-05'.
+                - order_datetime: Format as 'YYYY-MM-DD HH:mm'. Convert AM/PM to 24-hour time
+                - airport_address: Check for keywords "Airport", "HKIA", "機場", "客運大樓"
         """
         
         response = generate_response(prompt, image1_info)
@@ -199,6 +206,11 @@ if middle.button("Submit", use_container_width=True):
         except TypeError: # if no match is found
             json_response['shop_name_matched'] = 'Others'
         
+        #If 'valid_receipt' is '0', update json_response by setting all fields to null (except 'airport_address' and 'valid_receipt'
+        json_response = set_fields_to_null_if_invalid(json_response)
+
+        # Add remarks to the JSON response        
+        json_response['remarks_to_customer'] = "A valid HKIA receipt is not found in the image. Please upload again."
 
         # Display the final JSON response
         # Set ensure_ascii is false, to keep output as-is
