@@ -44,8 +44,11 @@ def generate_response(prompt, image):
 def set_fields_to_null_if_invalid(receipt_data):
     if str(receipt_data.get('valid_receipt')) == '0':
         for key in receipt_data:
-            if key not in ['airport_address', 'valid_receipt']:
+            if key not in ['airport_address', 'valid_receipt','remarks_to_customer']:
                 receipt_data[key] = None
+        
+        receipt_data['remarks_to_customer'] = "A valid HKIA receipt is not found in the image. Please upload again."
+    
     return receipt_data
 
 # Create two columns
@@ -208,9 +211,6 @@ if middle.button("Submit", use_container_width=True):
         
         #If 'valid_receipt' is '0', update json_response by setting all fields to null (except 'airport_address' and 'valid_receipt'
         json_response = set_fields_to_null_if_invalid(json_response)
-
-        # Add remarks to the JSON response        
-        json_response['remarks_to_customer'] = "A valid HKIA receipt is not found in the image. Please upload again."
 
         # Display the final JSON response
         # Set ensure_ascii is false, to keep output as-is
