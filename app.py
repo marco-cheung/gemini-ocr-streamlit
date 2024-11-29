@@ -111,7 +111,7 @@ if middle.button("Submit", use_container_width=True):
                 - Set all fields except airport_address and valid_receipt to null if receipt is not authentic
                 - order_date: Format as 'YYYY-MM-DD'. Convert AM/PM to 24-hour time. If date is given as '05042024', it should be '2024-04-05'.
                 - order_datetime: Format as 'YYYY-MM-DD HH:mm'. Convert AM/PM to 24-hour time
-                - airport_address: Check for keywords including "Airport"/"HKIA"/"機場"/"客運大樓"
+                - airport_address: Check if the given address is located at Hong Kong International Airport by looking for keywords like 'Airport', 'HKIA', '機場' or '客運大樓' in the address text 
         """
         
         response = generate_response(prompt, image1_info)
