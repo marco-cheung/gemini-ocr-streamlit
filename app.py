@@ -42,7 +42,7 @@ def generate_response(prompt, image):
 
 
 def set_fields_to_null_if_invalid(receipt_data):
-    if str(receipt_data.get('valid_receipt')) == '0':
+    if receipt_data.get('valid_receipt') == 0 or receipt_data.get('airport_address') == 0:
         for key in receipt_data:
             if key not in ['airport_address', 'valid_receipt','remarks_to_customer']:
                 receipt_data[key] = None
@@ -111,7 +111,7 @@ if middle.button("Submit", use_container_width=True):
                 - Set all fields except airport_address and valid_receipt to null if receipt is not authentic
                 - order_date: Format as 'YYYY-MM-DD'. Convert AM/PM to 24-hour time. If date is given as '05042024', it should be '2024-04-05'.
                 - order_datetime: Format as 'YYYY-MM-DD HH:mm'. Convert AM/PM to 24-hour time
-                - airport_address: Check for keywords including "Airport"/"HKIA"/"機場"/"客運大樓" to identify airport location
+                - airport_address: Check for keywords including "Airport"/"HKIA"/"機場"/"客運大樓"
         """
         
         response = generate_response(prompt, image1_info)
