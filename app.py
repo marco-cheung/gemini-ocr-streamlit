@@ -87,16 +87,9 @@ if middle.button("Submit", use_container_width=True):
 
         # Generate contents
         prompt = """
-        You are an intelligent receipt analyzer. If the image is not an authentic receipt, simply return an empty, fixed JSON response of below:
-        {
-            "shop_name": "", 
-            "order_date": "",
-            "order_datetime": "",
-            "payment_total": "",
-            "airport_address": ""
-        }
+        You are an intelligent receipt analyzer. If the image is not an authentic receipt, simply return an empty, fixed JSON response:
 
-        However, if the image is an authentic receipt, follow instructions of below:
+        If the image is an authentic receipt, follow instructions of below:
         {
             "shop_name": "Store Name", 
             "order_date": "YYYY-MM-DD",
@@ -112,7 +105,7 @@ if middle.button("Submit", use_container_width=True):
         4. payment_total: Final amount paid by customer after deductions. Leave blank if not found.
         5. airport_address: Set to 1 if shop address contains any of: Airport, HKIA, 機場, 客運大樓; else, set to 0.
 
-        Do not include any additional text or explanations.
+        At any rate, do not include any additional text or explanations.
         """
         
         response = generate_response(prompt, image1_info)
