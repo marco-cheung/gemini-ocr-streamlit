@@ -86,7 +86,7 @@ if middle.button("Submit", use_container_width=True):
 
         # Generate contents
         prompt = """
-        You are an intelligent receipt analyzer. For non-authentic receipt images, return empty {} JSON and ignore the remaining instructions and rules.
+        You are an intelligent receipt analyzer. If image is not an authentic receipt, return an empty {} JSON response.
 
         For authentic receipts, analyze and return JSON response object:
         {
