@@ -86,24 +86,22 @@ if middle.button("Submit", use_container_width=True):
 
         # Generate contents
         prompt = """
-        You are an intelligent receipt analyzer. If image is not an authentic receipt, return an empty {} JSON only.
+        You are a receipt analyzer. Extract and validate the following information in JSON format:
 
-        Unless image is an authentic receipt, analyze and return JSON response object:
         {
-         "shop_name": "Store Name", 
-         "order_date": "YYYY-MM-DD",
-         "order_datetime": "YYYY-MM-DD HH:mm",
-         "payment_total": "99.99",
-         "airport_address": 0 or 1
-         "valid_receipt": 0 or 1,
+            "shop_name": string | null,       // Store name without special chars
+            "order_date": string | null,      // YYYY-MM-DD
+            "order_datetime": string | null,   // YYYY-MM-DD HH:mm
+            "payment_total": number | null,    // Final amount paid
+            "airport_address": 0 | 1,         // 1 if airport location, else 0
+            "valid_receipt": 0 | 1            // 1 if authentic receipt, else 0
         }
-            Rules of extracting texts from an authentic receipt:
-            1. shop_name: Carefully check if shop name appears on the receipt image, excluding special characters. Leave blank if not found.
-            2. order_date: YYYY-MM-DD format. Convert AM/PM to 24-hour time. If "05042024", it should be "2024-04-05". Leave blank if not found.
-            3. order_datetime: YYYY-MM-DD HH:mm format. Convert AM/PM to 24-hour time. Leave blank if not found.
-            4. payment_total: Final amount paid by customer after deductions. Leave blank if not found.
-            5. airport_address: Set to 1 if shop address contains any of: Airport, HKIA, 機場, 客運大樓; else, set to 0.
-            6. valid_receipt: Set to 1 if image is an authentic receipt, else, set to 0.
+
+        Validation rules:
+        - Set all fields except airport_address and valid_receipt to null if receipt is not authentic
+        - order_date: Format as 'YYYY-MM-DD'. Convert AM/PM to 24-hour time. If date is given as '05042024', it should be '2024-04-05'.
+        - order_datetime: Format as 'YYYY-MM-DD HH:mm'. Convert AM/PM to 24-hour time
+        - airport_address: Check for keywords "Airport", "HKIA", "機場", "客運大樓"
         """
         
         response = generate_response(prompt, image1_info)
