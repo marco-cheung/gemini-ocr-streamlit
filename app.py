@@ -91,9 +91,9 @@ if middle.button("Submit", use_container_width=True):
 
     else: 
         # Create the generative model
-        generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002") # "gemini-1.5-flash-002" for faster response
-        #tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/2270105582776090624' # "gemini-pro-exp002"
-        #tuned_model = GenerativeModel(tuned_model_endpoint_name)
+        #generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002") # "gemini-1.5-flash-002" for faster response
+        tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/3108351257559957504' # "gemini-pro-exp005"
+        tuned_model = GenerativeModel(tuned_model_endpoint_name)
 
         # Generate contents
         prompt = """
@@ -108,9 +108,9 @@ if middle.button("Submit", use_container_width=True):
                 }
 
                 Validation rules:
-                - Set all fields except airport_address and valid_receipt to null if receipt is not authentic
+                - Set all fields except airport_address and valid_receipt to null if receipt is not authentic.
                 - order_date: Format as 'YYYY-MM-DD'. Convert AM/PM to 24-hour time. If date is given as '05042024', it should be '2024-04-05'.
-                - order_datetime: Format as 'YYYY-MM-DD HH:mm'. Convert AM/PM to 24-hour time
+                - order_datetime: Format as 'YYYY-MM-DD HH:mm'. Convert AM/PM to 24-hour time.
                 - airport_address: Return 1 if address contains 'HKIA', '機場' or '客運大樓' and matches Hong Kong Int'l Airport location. Otherwise return 0.
         """
         
