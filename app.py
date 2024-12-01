@@ -34,11 +34,11 @@ def convert_to_png(image_data):
 # Function to generate response from the generative model
 def generate_response(prompt, image):
     inputs = [prompt, image]
-    return generative_multimodal_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1,
-                                                                                                   response_mime_type="application/json")
-                                                                                                   )
+    #return generative_multimodal_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1,
+                                                                                                   #response_mime_type="application/json")
+                                                                                                   #)
     # Create the generative model using tuned model
-    #return tuned_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1, response_mime_type="application/json"))
+    return tuned_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1, response_mime_type="application/json"))
 
 
 def set_fields_to_null_if_invalid(receipt_data):
