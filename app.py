@@ -32,8 +32,8 @@ def convert_to_png(image_data):
 
 
 # Function to generate response from the generative model
-def generate_response(prompt, image):
-    inputs = [prompt, image]
+def generate_response(image, prompt):
+    inputs = [image, prompt]
     #return generative_multimodal_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1,
                                                                                                    #response_mime_type="application/json")
                                                                                                    #)
@@ -115,7 +115,7 @@ if middle.button("Submit", use_container_width=True):
                 - airport_address: Return 1 if address contains 'HKIA', '機場' or '客運大樓' and matches Hong Kong Int'l Airport location. Otherwise return 0.
         """
         
-        response = generate_response(prompt, image1_info)
+        response = generate_response(image1_info, prompt)
 
         # Parse the response
         content = response.text
@@ -154,7 +154,7 @@ if middle.button("Submit", use_container_width=True):
         if null_fields and image2_info:
 
             # Generate response for the second image
-            response2 = generate_response(prompt, image2_info)
+            response2 = generate_response(image2_info, prompt)
 
             # Parse the response from image2
             content2 = response2.text
