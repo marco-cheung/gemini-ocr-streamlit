@@ -92,7 +92,7 @@ if middle.button("Submit", use_container_width=True):
     else: 
         # Create the generative model
         #generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002") # "gemini-1.5-flash-002" for faster response
-        tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/6796012102050906112' # "gemini-pro-exp008"
+        tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/6337770839965958144' # "gemini-pro-exp009"
         tuned_model = GenerativeModel(tuned_model_endpoint_name)
 
         # Generate contents
@@ -111,7 +111,7 @@ if middle.button("Submit", use_container_width=True):
                 - Set all fields except airport_address and valid_receipt to null if receipt is not authentic.
                 - order_date: Format as 'YYYY-MM-DD'. Convert AM/PM to 24-hour time. If date is given as '05042024', it should be '2024-04-05'.
                 - order_datetime: Format as 'YYYY-MM-DD HH:mm'. Convert AM/PM to 24-hour time.
-                - payment_total: Total payment amount after deduction of any kind of gift cards, vouchers, HKIA Dollar, coupons and discounts.
+                - payment_total: Net spending amount after deduction of any kind of gift cards, vouchers, HKIA Dollar, coupons and discounts.
                 - airport_address: Return 1 if address contains 'HKIA', '機場' or '客運大樓' and matches Hong Kong Int'l Airport location. Otherwise return 0.
         """
         
