@@ -34,7 +34,7 @@ def convert_to_png(image_data):
 # Function to generate response from the generative model
 def generate_response(image, prompt):
     inputs = [image, prompt]
-    return generative_multimodal_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1))                                                                                                  )
+    return generative_multimodal_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1))                
     # Create the generative model using tuned model
     #return tuned_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1))
 
