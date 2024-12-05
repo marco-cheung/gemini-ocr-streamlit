@@ -34,9 +34,11 @@ def convert_to_png(image_data):
 # Function to generate response from the generative model
 def generate_response(image, prompt):
     inputs = [image, prompt]
-    return generative_multimodal_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1))                
+    #return generative_multimodal_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1,
+                                                                                                   #response_mime_type="application/json")
+                                                                                                   #)
     # Create the generative model using tuned model
-    #return tuned_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1))
+    return tuned_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1))
 
 
 def set_fields_to_null_if_invalid(receipt_data):
@@ -89,9 +91,9 @@ if middle.button("Submit", use_container_width=True):
 
     else: 
         # Create the generative model
-        generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002") # "gemini-1.5-flash-002" for faster response
-        #tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/6796012102050906112' # "gemini-pro-exp008"
-        #tuned_model = GenerativeModel(tuned_model_endpoint_name)
+        #generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002") # "gemini-1.5-flash-002" for faster response
+        tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/6796012102050906112' # "gemini-pro-exp008"
+        tuned_model = GenerativeModel(tuned_model_endpoint_name)
 
         # Generate contents
         prompt = """
