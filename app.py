@@ -121,4 +121,4 @@ if middle.button("Submit", use_container_width=True):
 
         # Parse the response
         content = response.text
-        print(content)
+        st.write(content)
