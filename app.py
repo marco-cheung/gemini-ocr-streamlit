@@ -97,7 +97,7 @@ if middle.button("Submit", use_container_width=True):
 
         # Generate contents
         prompt = """
-        You are a receipt analyzer. Extract and validate the following information in JSON format:
+        You are a receipt analyzer. Extract and validate the following information:
                 {
                     "shop_name": string | null,       // Store name without special chars
                     "order_date": string | null,      // YYYY-MM-DD
