@@ -38,7 +38,7 @@ def generate_response(image, prompt):
                                                                                                    #response_mime_type="application/json")
                                                                                                    #)
     # Create the generative model using tuned model
-    return tuned_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1, response_mime_type="application/json"))
+    return tuned_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1, top_p=0.95, response_mime_type="application/json"))
 
 
 def set_fields_to_null_if_invalid(receipt_data):
