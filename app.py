@@ -34,11 +34,10 @@ def convert_to_png(image_data):
 # Function to generate response from the generative model
 def generate_response(image, prompt):
     inputs = [image, prompt]
-    #return generative_multimodal_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1,
-                                                                                                   #response_mime_type="application/json")
-                                                                                                   #)
+    return generative_multimodal_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1,response_mime_type="application/json"))
+    
     # Create the generative model using tuned model
-    return tuned_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1, top_p=0.95, response_mime_type="application/json"))
+    #return tuned_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1, response_mime_type="application/json"))
 
 
 def set_fields_to_null_if_invalid(receipt_data):
@@ -91,9 +90,9 @@ if middle.button("Submit", use_container_width=True):
 
     else: 
         # Create the generative model
-        #generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002") # "gemini-1.5-flash-002" for faster response
-        tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/3847843195983495168' # "gemini-pro-exp011"
-        tuned_model = GenerativeModel(tuned_model_endpoint_name)
+        generative_multimodal_model = GenerativeModel("gemini-exp-1206") # or "gemini-1.5-pro-002"
+        #tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/3847843195983495168' # "gemini-pro-exp011"
+        #tuned_model = GenerativeModel(tuned_model_endpoint_name)
 
         # Generate contents
         prompt = """
@@ -113,6 +112,8 @@ if middle.button("Submit", use_container_width=True):
                 - order_datetime: Format as 'YYYY-MM-DD HH:mm'. Convert AM/PM to 24-hour time.
                 - payment_total: Total amount charged after deduction of any kind of gift cards, vouchers, HKIA Dollar, coupons and discounts.
                 - airport_address: Return 1 if address contains 'HKIA', '機場' or '客運大樓' and matches Hong Kong Int'l Airport location. Otherwise return 0.
+        
+        Elaborate you get "payment_total" from the receipt image.
         """
         
         response = generate_response(image1_info, prompt)
