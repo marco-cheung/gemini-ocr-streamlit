@@ -102,7 +102,7 @@ if middle.button("Submit", use_container_width=True):
                     "shop_name": string | null,       // Store name without special chars
                     "order_date": string | null,      // YYYY-MM-DD
                     "order_datetime": string | null,   // YYYY-MM-DD HH:mm
-                    "payment_total": number | null,    // Total amount paid, may not equal to the amount shown on the "TO PAY" line
+                    "payment_total": number | null,    // Total amount charged after discounts were applied
                     "airport_address": 0 | 1,         // 1 if Hong Kong International Airport location, else 0
                     "valid_receipt": 0 | 1            // 1 if authentic receipt, else 0
                 }
