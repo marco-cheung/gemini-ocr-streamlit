@@ -102,7 +102,7 @@ if middle.button("Submit", use_container_width=True):
                     "shop_name": string | null,       // Store name without special chars
                     "order_date": string | null,      // YYYY-MM-DD
                     "order_datetime": string | null,   // YYYY-MM-DD HH:mm
-                    "payment_total": number | null,    // Total purchased amount after discounts were applied
+                    "payment_total": number | null,    // Total purchase amount after discounts were applied
                     "airport_address": 0 | 1,         // 1 if Hong Kong International Airport location, else 0
                     "valid_receipt": 0 | 1            // 1 if authentic receipt, else 0
                 }
@@ -111,7 +111,7 @@ if middle.button("Submit", use_container_width=True):
                 - Set all fields except airport_address and valid_receipt to null if receipt is not authentic.
                 - order_date: Format as 'YYYY-MM-DD'. Convert AM/PM to 24-hour time. If date is given as '05042024', it should be '2024-04-05'.
                 - order_datetime: Format as 'YYYY-MM-DD HH:mm'. Convert AM/PM to 24-hour time.
-                - payment_total: Total purchased amount after deduction of any kind of gift cards, vouchers, HKIA Dollar, coupons and discounts.
+                - payment_total: Total purchase amount after deduction of any kind of gift cards, vouchers, HKIA Dollar, coupons and discounts.
                 - airport_address: Return 1 if address contains 'HKIA', '機場' or '客運大樓' and matches Hong Kong Int'l Airport location. Otherwise return 0.
         """
         
