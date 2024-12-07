@@ -29,8 +29,6 @@ generation_config = GenerationConfig(
     temperature=0.1,
     top_p=1.0,
     top_k=32,
-    candidate_count=1,
-    max_output_tokens=8192,
     response_mime_type="application/json"
 )
 
