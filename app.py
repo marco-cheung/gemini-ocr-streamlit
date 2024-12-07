@@ -26,7 +26,7 @@ st.title("Demo of Receipt OCR with Google Gemini API")
 
 # Set model parameters
 generation_config = GenerationConfig(
-    temperature=0.9,
+    temperature=0.1,
     top_p=1.0,
     top_k=32,
     candidate_count=1,
