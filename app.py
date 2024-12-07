@@ -31,6 +31,7 @@ generation_config = GenerationConfig(
     top_k=32,
     candidate_count=1,
     max_output_tokens=8192,
+    response_mime_type="application/json"
 )
 
 # Function to convert image to png
