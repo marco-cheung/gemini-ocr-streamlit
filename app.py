@@ -112,7 +112,7 @@ if middle.button("Submit", use_container_width=True):
                     "shop_name": string | null,       // Store name without special chars
                     "order_date": string | null,      // YYYY-MM-DD
                     "order_datetime": string | null,   // YYYY-MM-DD HH:mm
-                    "payment_total": number | null,    // final total after discounts were applied
+                    "payment_total": number | null,    // Final payment amount after all discounts, promotions, and coupons have been applied.
                     "airport_address": 0 | 1,         // 1 if Hong Kong International Airport location, else 0
                     "valid_receipt": 0 | 1            // 1 if authentic receipt, else 0
                 }
@@ -121,8 +121,11 @@ if middle.button("Submit", use_container_width=True):
                 - Set all fields except airport_address and valid_receipt to null if receipt is not authentic.
                 - order_date: Format as 'YYYY-MM-DD'. Convert AM/PM to 24-hour time. If date is given as '05042024', it should be '2024-04-05'.
                 - order_datetime: Format as 'YYYY-MM-DD HH:mm'. Convert AM/PM to 24-hour time.
-                - payment_total: final purchase amount after deduction of any kind of gift cards, vouchers, HKIA Dollar, coupons and discounts.
+                - payment_total: Final payment amount after all discounts, gift cards, vouchers, HKIA Dollar and coupons have been applied. This is the amount the customer actually paid.
                 - airport_address: Return 1 if address contains 'HKIA', '機場' or '客運大樓' and matches Hong Kong Int'l Airport location. Otherwise return 0.
+                - valid_receipt: 1 if the receipt appears to be a genuine, unaltered sales receipt. If it seems fabricated, incomplete, or heavily edited, mark it as 0.
+        
+                Example of payment_total: If the receipt shows final payment amount of $70 and "TO PAY" total of $0, payment_total should be 70.
         """
         
         response = generate_response(image1_info, prompt)
