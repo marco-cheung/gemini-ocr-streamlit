@@ -110,7 +110,7 @@ if middle.button("Submit", use_container_width=True):
                 "shop_name": string | null,       // Store name without special chars
                 "order_date": string | null,      // YYYY-MM-DD
                 "order_datetime": string | null,   // YYYY-MM-DD HH:mm
-                "payment_total": number | null,    // Final amount paid by the customer after all discounts, gift cards, vouchers, HKIA Dollar and coupons have been applied. Do not use the "TO PAY" amount if it differs from the actual payment amount.
+                "payment_total": number | null,    // Final amount paid by the customer after all discounts, gift cards, vouchers, HKIA Dollar and coupons have been applied. Do not use the "TO PAY" amount if it differs from the actual payment amount
                 "airport_address": 0 | 1,         // 1 if Hong Kong International Airport location, else 0
                 "valid_receipt": 0 | 1            // 1 if authentic receipt, else 0
             }
