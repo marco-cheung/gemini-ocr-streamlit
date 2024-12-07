@@ -45,10 +45,10 @@ def convert_to_png(image_data):
 # Function to generate response from the generative model
 def generate_response(image, prompt):
     inputs = [image, prompt]
-    return generative_multimodal_model.generate_content(inputs, generation_config=generation_config)
+    #return generative_multimodal_model.generate_content(inputs, generation_config=generation_config)
 
     # Create the generative model using tuned model
-    #return tuned_model.generate_content(inputs, generation_config=GenerationConfig(temperature=0.1, top_p=0.95, response_mime_type="application/json"))
+    return tuned_model.generate_content(inputs, generation_config=generation_config)
 
 
 def set_fields_to_null_if_invalid(receipt_data):
@@ -101,31 +101,31 @@ if middle.button("Submit", use_container_width=True):
 
     else: 
         # Create the generative model
-        generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002") # "gemini-1.5-flash-002" for faster response
-        #tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/3847843195983495168' # "gemini-pro-exp011"
-        #tuned_model = GenerativeModel(tuned_model_endpoint_name)
+        #generative_multimodal_model = GenerativeModel("gemini-1.5-pro-002") # "gemini-1.5-flash-002" for faster response
+        tuned_model_endpoint_name = 'projects/1081365314029/locations/us-central1/endpoints/3847843195983495168' # "gemini-pro-exp011"
+        tuned_model = GenerativeModel(tuned_model_endpoint_name)
 
         # Generate contents
         prompt = """
         You are a receipt analyzer. Extract and validate the following information in JSON format:
-                {
-                    "shop_name": string | null,       // Store name without special chars
-                    "order_date": string | null,      // YYYY-MM-DD
-                    "order_datetime": string | null,   // YYYY-MM-DD HH:mm
-                    "payment_total": number | null,    // Final payment amount after all discounts, promotions, and coupons have been applied.
-                    "airport_address": 0 | 1,         // 1 if Hong Kong International Airport location, else 0
-                    "valid_receipt": 0 | 1            // 1 if authentic receipt, else 0
-                }
+            {
+                "shop_name": string | null,       // Store name without special chars
+                "order_date": string | null,      // YYYY-MM-DD
+                "order_datetime": string | null,   // YYYY-MM-DD HH:mm
+                "payment_total": number | null,    // Final payment amount after all discounts, promotions, and coupons have been applied.
+                "airport_address": 0 | 1,         // 1 if Hong Kong International Airport location, else 0
+                "valid_receipt": 0 | 1            // 1 if authentic receipt, else 0
+            }
 
-                Validation rules:
-                - Set all fields except airport_address and valid_receipt to null if receipt is not authentic.
-                - order_date: Format as 'YYYY-MM-DD'. Convert AM/PM to 24-hour time. If date is given as '05042024', it should be '2024-04-05'.
-                - order_datetime: Format as 'YYYY-MM-DD HH:mm'. Convert AM/PM to 24-hour time.
-                - payment_total: Final payment amount after all discounts, gift cards, vouchers, HKIA Dollar and coupons have been applied. This is the amount the customer actually paid.
-                - airport_address: Return 1 if address contains 'HKIA', '機場' or '客運大樓' and matches Hong Kong Int'l Airport location. Otherwise return 0.
-                - valid_receipt: 1 if the receipt appears to be a genuine, unaltered sales receipt. If it seems fabricated, incomplete, or heavily edited, mark it as 0.
+            Validation rules:
+            - Set all fields except airport_address and valid_receipt to null if receipt is not authentic.
+            - order_date: Format as 'YYYY-MM-DD'. Convert AM/PM to 24-hour time. If date is given as '05042024', it should be '2024-04-05'.
+            - order_datetime: Format as 'YYYY-MM-DD HH:mm'. Convert AM/PM to 24-hour time.
+            - payment_total: Final payment amount after all discounts, gift cards, vouchers, HKIA Dollar and coupons have been applied. This is the amount the customer actually paid.
+            - airport_address: Return 1 if address contains 'HKIA', '機場' or '客運大樓' and matches Hong Kong Int'l Airport location. Otherwise return 0.
+            - valid_receipt: 1 if the receipt appears to be a genuine, unaltered sales receipt. If it seems fabricated, incomplete, or heavily edited, mark it as 0.
         
-                Example of payment_total: If the receipt shows final payment amount of $70 and "TO PAY" total of $0, payment_total should be 70.
+        Example of payment_total: If the receipt shows final payment amount of $70 and "TO PAY" total of $0, payment_total should be 70.
         """
         
         response = generate_response(image1_info, prompt)
