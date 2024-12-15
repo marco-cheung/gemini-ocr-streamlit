@@ -137,7 +137,7 @@ if middle.button("Submit", use_container_width=True):
         json_response = json.loads(content)
 
         # Identify mandatory fields ("shop_name", "order_date", "payment_total") with null values
-        null_fields = [key for key, value in json_response.items() if not value and key in ("shop_name", "order_date", "payment_total")]
+        null_fields = [key for key, value in json_response.items() if value is None and key in ("shop_name", "order_date", "payment_total")]
         
         # Display remarks if any field is null
         if null_fields:
