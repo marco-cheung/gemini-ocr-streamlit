@@ -50,7 +50,7 @@ def generate_response(image, prompt):
 
 
 def set_fields_to_null_if_invalid(receipt_data):
-    if receipt_data.get('valid_receipt') == 0 or receipt_data.get('airport_address') == 0:
+    if receipt_data.get('valid_receipt') == 0 or receipt_data.get('airport_address') == 0 or receipt_data.get('payment_total') in (0, 0.0):
         for key in receipt_data:
             if key not in ['airport_address', 'valid_receipt','remarks_to_customer']:
                 receipt_data[key] = None
@@ -223,7 +223,7 @@ if middle.button("Submit", use_container_width=True):
         except TypeError: # if no match is found
             json_response['shop_name_matched'] = 'Others'
         
-        #If 'valid_receipt' is '0', update json_response by setting all fields to null (except 'airport_address' and 'valid_receipt'
+        #If 'valid_receipt'/'airport_address'/'payment_total' is zero, update json_response by setting all fields to null (except 'airport_address' and 'valid_receipt')
         json_response = set_fields_to_null_if_invalid(json_response)
 
         # Display the final JSON response
